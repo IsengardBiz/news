@@ -1,0 +1,9 @@
+News Version 1.0 Final
+======================
+
+- First public release of the module.
+
+Version 1.01
+------------
+
+* Fixed undefined variable: news_tag_name in file /modules/news/article.php line 367 (sato-san)
