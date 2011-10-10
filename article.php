@@ -147,7 +147,7 @@ if($articleObj && !$articleObj->isNew()) {
 		if ($newsConfig['show_tag_select_box'] == true) {
 			// prepare a tag navigation select box
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
-					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, true);
+					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, true, $icmsModule->mid());
 			$icmsTpl->assign('news_tag_select_box', $tag_select_box);
 			$icmsTpl->assign('news_show_tag_select_box', true);
 		}

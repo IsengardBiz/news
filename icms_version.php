@@ -33,8 +33,8 @@ $modversion = array(
 
 /**  Development information */
   'status_version'=> "1.0",
-  'status'=> "RC3",
-  'date'=> "Unreleased",
+  'status'=> "Final",
+  'date'=> "10/10/2011",
   'author_word'=> "This module is best used with the Sprockets utility module also installed.",
 
 /** Contributors */
