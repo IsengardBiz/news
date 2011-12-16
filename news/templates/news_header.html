@@ -1,0 +1,14 @@
+<{if $news_show_breadcrumb}>
+	<div class="news_headertable">
+		<{if $news_module_home}>
+			<span class="news_modulename"><{$news_module_home}></span>
+		<{/if}>
+		<{if $news_category_path}>
+			<span class="news_breadcrumb">
+			<{if $news_module_home}>
+				&gt;
+			<{/if}>
+			<{$news_category_path}></span>
+		<{/if}>
+	</div>
+<{/if}>
