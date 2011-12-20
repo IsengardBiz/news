@@ -26,7 +26,7 @@ function encode_entities($field) {
 	return $field;
 }
 
-global $newsConfig;
+$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 $clean_tag_id = $sort_order = '';
 
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : false;
@@ -35,13 +35,13 @@ include_once ICMS_ROOT_PATH . '/modules/' . basename(dirname(__FILE__))
 	. '/class/icmsfeed.php';
 $news_feed = new IcmsFeed();
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(__FILE__)), 'news');
-$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
+
 $sprocketsModule = icms_getModuleInfo('sprockets');
 if ($sprocketsModule) {
 	$sprockets_taglink_handler = icms_getModuleHandler('taglink',
-			$sprocketsModule->dirname(), 'sprockets');
+			$sprocketsModule->getVar('dirname'), 'sprockets');
 	$sprockets_tag_handler = icms_getModuleHandler('tag',
-			$sprocketsModule->dirname(), 'sprockets');
+			$sprocketsModule->getVar('dirname'), 'sprockets');
 }
 
 // generates a feed of recent news articles across all tags
@@ -55,7 +55,7 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	$news_feed->description = _CO_NEWS_NEW_DSC . $site_name . '.';
 	$news_feed->language = _LANGCODE;
 	$news_feed->charset = _CHARSET;
-	$news_feed->category = $newsModule->name();
+	$news_feed->category = $newsModule->getVar('name');
 
 	$url = ICMS_URL . '/images/logo.gif';
 	$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
@@ -63,11 +63,12 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	$news_feed->width = 144;
 	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php"';
 
-	$criteria = new CriteriaCompo();
-	$criteria->add(new Criteria('online_status', true));
-	$criteria->add(new Criteria('date', time(), '<'));
+	$criteria = new icms_db_criteria_Compo();
+	$criteria->add(new icms_db_criteria_Item('online_status', true));
+	$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 	$criteria->setStart(0);
-	$criteria->setLimit($newsConfig['number_rss_items']);
+	$criteria->setLimit($newsModule->config['number_rss_items']);
+
 	$criteria->setSort('date');
 	$criteria->setOrder('DESC');
 
@@ -87,7 +88,7 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	$news_feed->description = $tag_description;
 	$news_feed->language = _LANGCODE;
 	$news_feed->charset = _CHARSET;
-	$news_feed->category = $newsModule->name();
+	$news_feed->category = $newsModule->getVar('name');
 
 	// if there's a tag icon, use it as the feed image
 	if ($tagObj->getVar('icon', 'e')) {
@@ -113,10 +114,10 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 			. " AND `online_status` = '1'"
 			. " AND `date` < '" . time() . "'"
 			. " AND `tid` = '" . $clean_tag_id . "'"
-			. " AND `mid` = '" . $newsModule->mid() . "'"
+			. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 			. " AND `item` = 'article'"
 			. " ORDER BY `date` DESC"
-			. " LIMIT " . $newsConfig['number_rss_items'];
+			. " LIMIT " . $newsModule->config['number_rss_items'];
 
 	$result = $xoopsDB->query($query);
 
@@ -133,7 +134,7 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	}
 }
 
-if ($newsConfig['use_submitter_as_creator'] == true ) {
+if ($newsModule->config['use_submitter_as_creator'] == true ) {
 	$member_handler = & xoops_gethandler('member');
 }
 
@@ -142,10 +143,10 @@ foreach($articleArray as $article) {
 	$flattened_article = $article->toArray();
 
 	// check if creator or submitter should be designated as author
-	if ($newsConfig['display_creator'] == false) {
+	if ($newsModule->config['display_creator'] == false) {
 		$creator = $site_name;
 	} else {
-		if ($newsConfig['use_submitter_as_creator'] == true) {
+		if ($newsModule->config['use_submitter_as_creator'] == true) {
 			$user = & $member_handler->getUser($article->getVar('submitter', 'e'));
 			$creator = $user->getVar('uname');
 		} else {

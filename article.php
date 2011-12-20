@@ -20,7 +20,7 @@ global $icmsConfig, $newsConfig;
 $sprocketsModule = icms_getModuleInfo('sprockets');
 
 $clean_article_id = $clean_story_id = $clean_tag_id = $clean_start = $articleObj
-	= $news_article_handler = '';
+	= $news_article_handler = $news_tag_name = '';
 $articleArray = $tagList = array();
 
 /** Use a naming convention that indicates the source of the content of the variable */
@@ -71,7 +71,7 @@ if($articleObj && !$articleObj->isNew()) {
 	if ($sprocketsModule && !empty($articleArray['tag'])) {
 		
 		$tag_icons = $articleTags = $tag_buffer = array();
-		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->dirname(),
+		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$tag_buffer = $sprockets_tag_handler->getObjects(null, true, false);
 		$articleTags = array_flip($articleArray['tag']);
@@ -110,7 +110,7 @@ if($articleObj && !$articleObj->isNew()) {
 	/**
 	 * Generating meta information for this page
 	 */
-	$icms_metagen = new IcmsMetagen($articleObj->getVar('title'),
+	$icms_metagen = new icms_ipf_Metagen($articleObj->getVar('title'),
 	$articleObj->getVar('meta_keywords','n'), $articleObj->getVar('meta_description', 'n'));
 	$icms_metagen->createMetaTags();
 	
@@ -126,11 +126,11 @@ if($articleObj && !$articleObj->isNew()) {
 		$form = $news_tag_name = '';
 		$tag_buffer = $tagList = $rights_buffer = $rightsList = array();
 		$sprockets_tag_handler = icms_getModuleHandler('tag',
-				$sprocketsModule->dirname(), 'sprockets');
+				$sprocketsModule->getVar('dirname'), 'sprockets');
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
-			$sprocketsModule->dirname(), 'sprockets');
+			$sprocketsModule->getVar('dirname'), 'sprockets');
 		$sprockets_rights_handler = icms_getModuleHandler('rights', 
-				$sprocketsModule->dirname(), 'sprockets');
+				$sprocketsModule->getVar('dirname'), 'sprockets');
 
 		// prepare buffers to reduce queries
 		$tag_buffer = $sprockets_tag_handler->getObjects(null, true, false);
@@ -147,7 +147,7 @@ if($articleObj && !$articleObj->isNew()) {
 		if ($newsConfig['show_tag_select_box'] == true) {
 			// prepare a tag navigation select box
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
-					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, true, $icmsModule->mid());
+					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, true, $icmsModule->getVar('mid'));
 			$icmsTpl->assign('news_tag_select_box', $tag_select_box);
 			$icmsTpl->assign('news_show_tag_select_box', true);
 		}
@@ -238,14 +238,14 @@ if($articleObj && !$articleObj->isNew()) {
 			
 		} else {
 
-			$criteria = new CriteriaCompo();
+			$criteria = new icms_db_criteria_Compo();
 
 			$criteria->setStart($clean_start);
 			$criteria->setLimit($newsConfig['number_of_articles_per_page']);
 			$criteria->setSort('date');
 			$criteria->setOrder('DESC');
-			$criteria->add(new Criteria('online_status', true));
-			$criteria->add(new Criteria('date', time(), '<'));
+			$criteria->add(new icms_db_criteria_Item('online_status', true));
+			$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 			
 			$article_object_array = $news_article_handler->getObjects($criteria, true, true);
 		}
@@ -264,10 +264,10 @@ if($articleObj && !$articleObj->isNew()) {
 			
 			// prepare multidimensional array of tag_ids with article_id (iid) as key
 			$taglink_buffer = $article_tag_id_buffer = array();
-			$criteria = new CriteriaCompo();
-			$criteria->add(new Criteria('mid', $newsModule->mid()));
-			$criteria->add(new Criteria('item', 'article'));
-			$criteria->add(new Criteria('iid', $linked_article_ids, 'IN'));
+			$criteria = new  icms_db_criteria_Compo();
+			$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
+			$criteria->add(new icms_db_criteria_Item('item', 'article'));
+			$criteria->add(new icms_db_criteria_Item('iid', $linked_article_ids, 'IN'));
 			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, true, true);
 			unset($criteria);
 
@@ -336,9 +336,9 @@ if($articleObj && !$articleObj->isNew()) {
 	
 		// pagination
 		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('online_status', true));
-		$criteria->add(new Criteria('date', time(), '<'));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// adjust for tag, if present
 		if (!empty($clean_tag_id)) {
@@ -348,7 +348,7 @@ if($articleObj && !$articleObj->isNew()) {
 			$article_count = $news_article_handler->getCount($criteria);
 		}
 		
-		$pagenav = new XoopsPageNav($article_count, $newsConfig['number_of_articles_per_page'],
+		$pagenav = new  icms_view_PageNav($article_count, $newsConfig['number_of_articles_per_page'],
 			$clean_start, 'start', $extra_arg);
 		
 		$icmsTpl->assign('news_navbar', $pagenav->renderNav());
@@ -369,10 +369,10 @@ if ($sprocketsModule) {
 		$icms_metagen = new IcmsMetagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION . ' '
 				. strtolower($news_tag_name));
 	} else {
-		$icms_metagen = new IcmsMetagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
+		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
 	}
 } else {
-	$icms_metagen = new IcmsMetagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
+	$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
 }
 
 $icms_metagen->createMetaTags();

@@ -28,8 +28,8 @@ if ($sprocketsModule) {
 	
 	$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 	$news_article_handler = icms_getModuleHandler('article', basename(dirname(__FILE__)), 'news');
-	$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->dirname(), 'sprockets');
-	$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->dirname(),
+	$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'), 'sprockets');
+	$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
 		'sprockets');
 
 	// get a list of tags containing online articles using a JOIN between article and taglink tables
@@ -43,7 +43,7 @@ if ($sprocketsModule) {
 			. " WHERE `article_id` = `iid`"
 			. " AND `online_status` = '1'"
 			. " AND `date` < '" . time() . "'"
-			. " AND `mid` = '" . $newsModule->mid() . "'"
+			. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 			. " AND `item` = 'article'";
 
 	$result = $xoopsDB->query($query);
@@ -98,7 +98,7 @@ if ($newsConfig['show_breadcrumb'] == true) {
 
 $icmsTpl->assign('news_module_home', news_getModuleName(true, true));
 $icmsTpl->assign('news_category_path', _CO_NEWS_ARCHIVE_TAGS);
-$icms_metagen = new IcmsMetagen(_CO_NEWS_ARCHIVE_TAGS, false, _CO_NEWS_ARCHIVE_TAGS_DESCRIPTION);
+$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVE_TAGS, false, _CO_NEWS_ARCHIVE_TAGS_DESCRIPTION);
 $icms_metagen->createMetaTags();
 
 include_once 'footer.php';

@@ -44,14 +44,14 @@ $dateformat=$newsConfig['date_format'];
 if ($dateformat == '') {
 	$dateformat = 'm';
 }
-$myts =& MyTextSanitizer::getInstance();
-$icmsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars(_CO_NEWS_ARCHIVES) . $pgtitle);
+
+$icmsTpl->assign('xoops_pagetitle', icms_core_DataFilter::htmlSpecialchars(_CO_NEWS_ARCHIVES) . $pgtitle);
 
 $useroffset = '';
 if (is_object($xoopsUser)) {
-	$timezone = $xoopsUser->timezone();
+	$timezone = $xoopsUser->getVar("timezone_offset");
 	if (isset($timezone)) {
-		$useroffset = $xoopsUser->timezone();
+		$useroffset = $xoopsUser->getVar("timezone_offset");
 	} else {
 		$useroffset = $xoopsConfig['default_TZ'];
 	}
@@ -207,7 +207,7 @@ $icmsTpl->assign('news_category_path', _CO_NEWS_ARCHIVE);
 /**
  * Generating meta information for this page
  */
-$icms_metagen = new IcmsMetagen(_CO_NEWS_ARCHIVES, false, _CO_NEWS_ARCHIVE_DESCRIPTION);
+$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVES, false, _CO_NEWS_ARCHIVE_DESCRIPTION);
 $icms_metagen->createMetaTags();
 
 include_once 'footer.php';

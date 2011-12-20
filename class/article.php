@@ -177,7 +177,7 @@ class NewsArticle extends IcmsPersistableSeoObject {
 		}
 
 		if ($this->handler->identifierName != "") {
-			$controller = new IcmsPersistableController($this->handler);
+			$controller = new icms_ipf_Controller($this->handler);
 			$ret['itemLink'] = $controller->getItemLink($this);
 			$ret['itemUrl'] = $controller->getItemLink($this, true);
 			$ret['editItemLink'] = $controller->getEditItemLink($this, false, true);
@@ -279,7 +279,7 @@ class NewsArticle extends IcmsPersistableSeoObject {
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		if ($sprocketsModule) {
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
-					$sprocketsModule->dirname(), 'sprockets');
+					$sprocketsModule->getVar('dirname'), 'sprockets');
 			$ret = $sprockets_taglink_handler->getTagsForObject($this->id(), $this->handler);
 			$this->setVar('tag', $ret);
 		}
@@ -299,7 +299,7 @@ class NewsArticle extends IcmsPersistableSeoObject {
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		if ($sprocketsModule) {			
 			$sprockets_rights_handler = icms_getModuleHandler('rights',
-				$sprocketsModule->dirname(), 'sprockets');
+				$sprocketsModule->getVar('dirname'), 'sprockets');
 			$rightsObj = $sprockets_rights_handler->get($rights_id);
 			$rights = $rightsObj->getItemLink();
 			
@@ -518,23 +518,23 @@ class NewsArticleHandler extends IcmsPersistableObjectHandler {
 	 */
 	public function getArticlesForSearch($queryarray, $andor, $limit, $offset, $userid) {
 		
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		$criteria->setStart($offset);
 		$criteria->setLimit($limit);
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
 
 		if ($userid != 0) {
-			$criteria->add(new Criteria('submitter', $userid));
+			$criteria->add(new icms_db_criteria_Item('submitter', $userid));
 		}
 		
 		if ($queryarray) {
-			$criteriaKeywords = new CriteriaCompo();
+			$criteriaKeywords = new icms_db_criteria_Compo();
 			for ($i = 0; $i < count($queryarray); $i++) {
-				$criteriaKeyword = new CriteriaCompo();
-				$criteriaKeyword->add(new Criteria('title', '%' . $queryarray[$i] . '%',
+				$criteriaKeyword = new icms_db_criteria_Compo();
+				$criteriaKeyword->add(new icms_db_criteria_Item('title', '%' . $queryarray[$i] . '%',
 					'LIKE'), 'OR');
-				$criteriaKeyword->add(new Criteria('description', '%' . $queryarray[$i]
+				$criteriaKeyword->add(new icms_db_criteria_Item('description', '%' . $queryarray[$i]
 					. '%', 'LIKE'), 'OR');
 				$criteriaKeywords->add($criteriaKeyword, $andor);
 				unset ($criteriaKeyword);
@@ -542,8 +542,8 @@ class NewsArticleHandler extends IcmsPersistableObjectHandler {
 			$criteria->add($criteriaKeywords);
 		}
 		
-		$criteria->add(new Criteria('online_status', true));
-		$criteria->add(new Criteria('date', time(), '<'));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 		
 		return $this->getObjects($criteria, true, true);
 	}

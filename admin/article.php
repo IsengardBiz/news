@@ -34,7 +34,7 @@ function editarticle($article_id = 0)
 
 	} else {
 		$newsModule->displayAdminMenu(0, _AM_NEWS_ARTICLES . " > " . _CO_ICMS_CREATINGNEW);
-		$articleObj->setVar('submitter', $icmsUser->uid());
+		$articleObj->setVar('submitter', $icmsUser->getVar('uid'));
 		// Reduce the date field by 10 minutes to compensate for the submission form jumping forward
 		// to the next 10 minute increment. This ensures that the publication date is in the past
 		// (unless the user changes it), thereby preventing the article from being embargoed
@@ -149,10 +149,10 @@ if (in_array($clean_op,$valid_op,true)){
 			
 			$tag_select_box = '';
 			$taglink_array = $tagged_article_list = array();
-			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->dirname(),
+			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
-			$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->dirname(),
-				'sprockets');
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
+					$sprocketsModule->getVar('dirname'), 'sprockets');
 			
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', $clean_tag_id,
 				_AM_NEWS_ARTICLE_ALL_ARTICLES);
@@ -184,19 +184,18 @@ if (in_array($clean_op,$valid_op,true)){
 			$criteria = null;
 		}
 
-  		include_once ICMS_ROOT_PATH."/kernel/icmspersistabletable.php";
-  		$objectTable = new IcmsPersistableTable($news_article_handler, $criteria);
+  		$objectTable = new icms_ipf_view_Table($news_article_handler, $criteria);
 		
 		$objectTable->addQuickSearch('title');
-		$objectTable->addColumn(new IcmsPersistableColumn('online_status', 'center', true));
-  		$objectTable->addColumn(new IcmsPersistableColumn('title'));
-		$objectTable->addColumn(new IcmsPersistableColumn('creator'));
-		$objectTable->addColumn(new IcmsPersistableColumn('counter'));
-		$objectTable->addColumn(new IcmsPersistableColumn('date'));
+		$objectTable->addColumn(new icms_ipf_view_Column('online_status', 'center', true));
+  		$objectTable->addColumn(new icms_ipf_view_Column('title'));
+		$objectTable->addColumn(new icms_ipf_view_Column('creator'));
+		$objectTable->addColumn(new icms_ipf_view_Column('counter'));
+		$objectTable->addColumn(new icms_ipf_view_Column('date'));
 		$objectTable->setDefaultSort('date');
 		$objectTable->setDefaultOrder('DESC');
 		if ($sprocketsModule) {
-			$objectTable->addColumn(new IcmsPersistableColumn('federated'));
+			$objectTable->addColumn(new icms_ipf_view_Column('federated'));
 			$objectTable->addFilter('federated', 'federation_filter');
 		}
 		$objectTable->addFilter('online_status', 'online_status_filter');

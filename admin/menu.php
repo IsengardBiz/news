@@ -29,7 +29,7 @@ if (isset($newsModule)) {
 	$i++;
 	$headermenu[$i]['title'] = _PREFERENCES;
 	$headermenu[$i]['link'] = '../../system/admin.php?fct=preferences&amp;op=showmod&amp;mod='
-		. $newsModule->mid();
+		. $newsModule->getVar('mid');
 
 	$i++;
 	$headermenu[$i]['title'] = _MI_NEWS_TEMPLATES;

@@ -95,7 +95,7 @@ function news_getModuleName($withLink = true, $forBreadCrumb = false, $moduleNam
 	if (!$moduleName) {
 		
 		$newsModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
-		$moduleName = $newsModule->dirname();
+		$moduleName = $newsModule->getVar('dirname');
 	}
 	$icmsModuleConfig = icms_getModuleConfig($moduleName);
 	if (!isset ($newsModule)) {
@@ -106,7 +106,7 @@ function news_getModuleName($withLink = true, $forBreadCrumb = false, $moduleNam
 		return $newsModule->name();
 	} else {
 		$ret = ICMS_URL . '/modules/' . $moduleName . '/';
-		return '<a href="' . $ret . '">' . $newsModule->name() . '</a>';
+		return '<a href="' . $ret . '">' . $newsModule->getVar('name') . '</a>';
 	}
 }
 
@@ -168,8 +168,9 @@ function news_getLinkedUnameFromId($userid, $name = false, $users = array (), $w
 		if ($users == array())
 		{
 			//fetching users
-			$member_handler = & xoops_gethandler('member');
-			$user = & $member_handler->getUser($userid);
+			//$member_handler = & xoops_gethandler('member');
+			//$user = & $member_handler->getUser($userid);
+			$user = icms::handler('member')->getUser($userid);
 			
 		} else {
 			
@@ -179,7 +180,6 @@ function news_getLinkedUnameFromId($userid, $name = false, $users = array (), $w
 		
 		if (is_object($user)) {
 			
-			$ts = & MyTextSanitizer::getInstance();
 			$username = $user->getVar('uname');
 			$fullname = '';
 			$fullname2 = $user->getVar('name');
@@ -196,7 +196,7 @@ function news_getLinkedUnameFromId($userid, $name = false, $users = array (), $w
 			} else {
 
 				$linkeduser = "<a href='" . ICMS_URL."/userinfo.php?uid=" . $userid . "'>"
-				. $ts->htmlSpecialChars($username) . "</a>";
+				.  icms_core_DataFilter::htmlSpecialchars($username) . "</a>";
 			}
 
 			// add contact info : email + PM
