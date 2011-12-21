@@ -19,7 +19,7 @@
 */
 function editarticle($article_id = 0)
 {
-	global $news_article_handler, $icmsUser, $icmsAdminTpl;
+	global $news_article_handler, $icmsAdminTpl;
 	
 	$articleObj = $newsModule = $sform = '';
 	
@@ -34,7 +34,7 @@ function editarticle($article_id = 0)
 
 	} else {
 		$newsModule->displayAdminMenu(0, _AM_NEWS_ARTICLES . " > " . _CO_ICMS_CREATINGNEW);
-		$articleObj->setVar('submitter', $icmsUser->getVar('uid'));
+		$articleObj->setVar('submitter', icms::$user->getVar('uid'));
 		// Reduce the date field by 10 minutes to compensate for the submission form jumping forward
 		// to the next 10 minute increment. This ensures that the publication date is in the past
 		// (unless the user changes it), thereby preventing the article from being embargoed

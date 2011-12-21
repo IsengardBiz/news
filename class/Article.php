@@ -22,7 +22,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 */
 	public function __construct(& $handler) {
 		
-		global $icmsConfig, $newsConfig, $icmsUser;
+		global $icmsConfig, $newsConfig;
 
 		parent::__construct($handler);
 

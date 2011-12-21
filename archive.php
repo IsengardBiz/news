@@ -20,7 +20,7 @@ include_once 'header.php';
 $xoopsOption['template_main'] = 'news_archive.html';
 include_once ICMS_ROOT_PATH . '/header.php';
 
-global $icmsConfig, $newsConfig;
+global $icmsConfig;
 
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(__FILE__)), 'news');
 
@@ -40,7 +40,7 @@ if ($fromyear && $frommonth) {
 	$pgtitle = sprintf(" - %d - %d",$fromyear,$frommonth);
 }
 
-$dateformat=$newsConfig['date_format'];
+$dateformat = icms::$module->config['date_format'];
 if ($dateformat == '') {
 	$dateformat = 'm';
 }
