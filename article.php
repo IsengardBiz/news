@@ -334,7 +334,6 @@ if($articleObj && !$articleObj->isNew()) {
 		}
 	
 		// pagination
-		include_once ICMS_ROOT_PATH . '/class/pagenav.php';
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->add(new icms_db_criteria_Item('online_status', true));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
@@ -365,7 +364,7 @@ $icmsTpl->assign('news_module_home', news_getModuleName(true, true));
 
 if ($sprocketsModule) {
 	if ($news_tag_name) {
-		$icms_metagen = new IcmsMetagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION . ' '
+		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION . ' '
 				. strtolower($news_tag_name));
 	} else {
 		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);

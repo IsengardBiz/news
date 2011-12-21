@@ -119,6 +119,8 @@ class NewsArticle extends icms_ipf_seo_Object {
 		
 		// the oai_identifier must not be changed
 		$this->doMakeFieldreadOnly('oai_identifier');
+		
+		$this->IcmsPersistableSeoObject();
 	}
 
 	/**
@@ -391,7 +393,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$notification_handler = xoops_getHandler ('notification');
 
 		$tags = array();
-		$tags['ITEM_TITLE'] = $this->title();
+		$tags['ITEM_TITLE'] = $this->getVar('title');
 		$tags['ITEM_URL'] = $this->getItemLink(true);
 
 		// global notification
