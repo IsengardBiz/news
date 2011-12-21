@@ -250,7 +250,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		
 		$notification_handler = icms::handler('icms_data_notification');
-		$module_handler = xoops_getHandler('module');
+		$module_handler = icms::handler("icms_module");
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
 		$category = 'global';
@@ -260,7 +260,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$category = 'article';
 		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
 		$notification_handler = icms::handler('icms_data_notification');
-		$module_handler = xoops_getHandler('module');
+		$module_handler = icms::handler("icms_module");
 		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
 		$module_id = $module->getVar('mid');
 		$category = 'global';
