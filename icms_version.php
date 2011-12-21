@@ -32,9 +32,9 @@ $modversion = array(
   'image'=> "images/icon_big.png", /* for backward compatibility */
 
 /**  Development information */
-  'status_version'=> "1.0",
-  'status'=> "Final",
-  'date'=> "10/10/2011",
+  'status_version'=> "1.0.1",
+  'status'=> "Beta",
+  'date'=> "21/12/2011",
   'author_word'=> "This module is best used with the Sprockets utility module also installed.",
 
 /** Contributors */
