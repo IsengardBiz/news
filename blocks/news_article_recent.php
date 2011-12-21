@@ -26,19 +26,17 @@ function news_article_recent_show($options) {
 	$newsModule = icms_getModuleInfo('news');
 	$sprocketsModule = icms_getModuleInfo('sprockets');
 	
-	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->dirname() . '/include/common.php');
+	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->getVar('dirname') . '/include/common.php');
 	
-	$news_article_handler = icms_getModuleHandler('article', $newsModule->dirname(), 'news');
+	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
 
 	// retrieve the last XX articles
 
 	if ($sprocketsModule && $options[1]) { // filter by tag
-	
-		global $xoopsDB;
 
 		$query = $rows = $tag_article_count = '';
 		$article_object_array = array();
-		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->dirname(),
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		
 		$query = "SELECT * FROM " . $news_article_handler->table . ", "
@@ -47,12 +45,12 @@ function news_article_recent_show($options) {
 					. " AND `online_status` = '1'"
 					. " AND `date` <= '" . time() . "'"
 					. " AND `tid` = '" . $options[1] . "'"
-					. " AND `mid` = '" . $newsModule->mid() . "'"
+					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"
 					. " LIMIT " . '0, ' . $options[0]++;
 
-		$result = $xoopsDB->query($query);
+		$result = icms::$xoopsDB->query($query);
 
 		if (!$result) {
 			echo 'Error: Recent articles block';
@@ -70,13 +68,13 @@ function news_article_recent_show($options) {
 
 	} else { // do not filter by tag
 
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		$criteria->setStart(0);
 		$criteria->setLimit($options[0] +1); // spotlighted article will not be included in the list
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
-		$criteria->add(new Criteria('online_status', true));
-		$criteria->add(new Criteria('date', time(), '<'));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// retrieve the news articles to show in the block
 		$block['recent_news_articles'] = $news_article_handler->getObjects($criteria, true, true);
@@ -142,8 +140,8 @@ function news_article_recent_show($options) {
 function news_article_recent_edit($options) {
 	
 	$newsModule = icms_getModuleInfo('news');
-	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->dirname() . '/include/common.php');
-	$news_article_handler = icms_getModuleHandler('article', $newsModule->dirname(), 'news');
+	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->getVar('dirname') . '/include/common.php');
+	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
 
 	// select number of recent articles to display in the block
 	$form = '<table><tr>';
@@ -154,7 +152,7 @@ function news_article_recent_edit($options) {
 	// optionally display results from a single tag - only if sprockets module is installed
 	$sprocketsModule = icms_getModuleInfo('sprockets');
 	if ($sprocketsModule) {
-		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->dirname(),
+		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$form .= '<tr><td>' . _MB_NEWS_ARTICLE_RECENT_TAG . '</td>';
 		// Parameters XoopsFormSelect: ($caption, $name, $value = null, $size = 1, $multiple = false)
@@ -191,12 +189,10 @@ function news_article_recent_edit($options) {
 	
 	// build select box for choosing article to spotlight - need to filter by tag (if set)
 	if ($sprocketsModule && $options[1]) {
-		
-		global $xoopsDB;
 
 		$query = $rows = $tag_article_count = '';
 		$article_array = array(0 => _MB_NEWS_ARTICLE_MOST_RECENT_ARTICLE);
-		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->dirname(),
+		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		
 		$query = "SELECT * FROM " . $news_article_handler->table . ", "
@@ -205,12 +201,12 @@ function news_article_recent_edit($options) {
 					. " AND `online_status` = '1'"
 					. " AND `date` <= '" . time() . "'"
 					. " AND `tid` = '" . $options[1] . "'"
-					. " AND `mid` = '" . $newsModule->mid() . "'"
+					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"
 					. " LIMIT " . '0, ' . $options[0]++;
 
-		$result = $xoopsDB->query($query);
+		$result = icms::$xoopsDB->query($query);
 
 		if (!$result) {
 			echo 'Error: Recent articles block';
@@ -220,19 +216,19 @@ function news_article_recent_edit($options) {
 
 			$rows = $news_article_handler->convertResultSet($result);
 			foreach ($rows as $key => $row) {
-				$article_array[$row->getVar('article_id')] = $row->title();
+				$article_array[$row->getVar('article_id')] = $row->getVar('title');
 			}
 		}
 		
 	} else {
 		
-		$criteria = new CriteriaCompo();
+		$criteria = new icms_db_criteria_Compo();
 		$criteria->setStart(0);
 		$criteria->setLimit($options[0]+1);
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
-		$criteria->add(new Criteria('online_status', true));
-		$criteria->add(new Criteria('date', time(), '<'));
+		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Itemria('date', time(), '<'));
 
 		// retrieve the articles
 		$article_array = $news_article_handler->getList($criteria);

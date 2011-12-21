@@ -180,7 +180,6 @@ if($articleObj && !$articleObj->isNew()) {
 			 * Retrieve a list of articles JOINED to taglinks by article_id/tag_id/module_id/item
 			 */
 
-			global $xoopsDB;
 			$query = $rows = $tag_article_count = '';
 			$linked_article_ids = array();
 			$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
@@ -192,17 +191,17 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `online_status` = '1'"
 					. " AND `date` < '" . time() . "'"
 					. " AND `tid` = '" . $clean_tag_id . "'"
-					. " AND `mid` = '" . $newsModule->mid() . "'"
+					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'";
 			
-			$result = $xoopsDB->query($group_query);
+			$result = icms::$xoopsDB->query($group_query);
 
 			if (!$result) {
 				echo 'Error';
 				exit;
 				
 			} else {
-				while ($row = $xoopsDB->fetchArray($result)) {
+				while ($row = icms::$xoopsDB->fetchArray($result)) {
 					foreach ($row as $key => $count) {
 						$article_count = $count;
 					}
@@ -217,12 +216,12 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `online_status` = '1'"
 					. " AND `date` < '" . time() . "'"
 					. " AND `tid` = '" . $clean_tag_id . "'"
-					. " AND `mid` = '" . $newsModule->mid() . "'"
+					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"
 					. " LIMIT " . $clean_start . ", " . $newsConfig['number_of_articles_per_page'];
 
-			$result = $xoopsDB->query($query);
+			$result = icms::$xoopsDB->query($query);
 
 			if (!$result) {
 				echo 'Error';
@@ -257,7 +256,7 @@ if($articleObj && !$articleObj->isNew()) {
 			// prepare a list of article_ids, this will be used to create a taglink buffer
 			// that is used to create tag links for each article
 			foreach ($article_object_array as $key => $value) {
-				$linked_article_ids[] = $value->id();
+				$linked_article_ids[] = $value->getVar('article_id');
 			}
 			
 			$linked_article_ids = '(' . implode(',', $linked_article_ids) . ')';

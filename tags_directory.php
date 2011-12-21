@@ -66,8 +66,8 @@ if ($sprocketsModule) {
 		$tag_ids = "('" . implode("','", $tag_ids) . "')";
 
 		// retrieve relevant tags
-		$criteria = new CriteriaCompo();
-		$criteria->add(new Criteria('tag_id', $tag_ids, 'IN'));
+		$criteria = new icms_db_criteria_Compo();
+		$criteria->add(new icms_db_criteria_Item('tag_id', $tag_ids, 'IN'));
 		$criteria->setSort('title');
 		$criteria->setOrder('ASC');
 
@@ -75,7 +75,7 @@ if ($sprocketsModule) {
 		$tag_array = $sprockets_tag_handler->getList($criteria);
 
 		foreach($tag_array as $key => $tag) {
-			$tag_list[] = '<a href="' . ICMS_URL . '/modules/' . $newsModule->dirname()
+			$tag_list[] = '<a href="' . ICMS_URL . '/modules/' . $newsModule->getVar('dirname')
 					. '/article.php?tag_id=' . $key . '" title="' . $tag . '">' . $tag . '</a>';
 		}
 		$have_tags = true;

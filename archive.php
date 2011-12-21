@@ -48,16 +48,14 @@ if ($dateformat == '') {
 $icmsTpl->assign('xoops_pagetitle', icms_core_DataFilter::htmlSpecialchars(_CO_NEWS_ARCHIVES) . $pgtitle);
 
 $useroffset = '';
-if (is_object($xoopsUser)) {
-	$timezone = $xoopsUser->getVar("timezone_offset");
+if (is_object(icms::$user)) {
+	$timezone = icms::$user->getVar("timezone_offset");
 	if (isset($timezone)) {
-		$useroffset = $xoopsUser->getVar("timezone_offset");
+		$useroffset = icms::$user->getVar("timezone_offset");
 	} else {
 		$useroffset = $xoopsConfig['default_TZ'];
 	}
 }
-
-global $xoopsDB;
 
 $sql = "SELECT `date` FROM " . $news_article_handler->table . " WHERE (`date` > '0' AND `date` <= '"
 	. time() . "') ORDER BY `date` DESC";
@@ -125,10 +123,10 @@ if ($fromyear != 0 && $frommonth != 0) {
 	$monthend = ($monthend > time()) ? time() : $monthend;
 
 	$count=0;
-	$criteria = new CriteriaCompo();
-	$criteria->add(new Criteria('date', $monthstart, '>'));
-	$criteria->add(new Criteria('date', $monthend, '<'));
-	$criteria->add(new Criteria('online_status', true));
+	$criteria = new icms_db_criteria_Compo();
+	$criteria->add(new icms_db_criteria_Item('date', $monthstart, '>'));
+	$criteria->add(new icms_db_criteria_Item('date', $monthend, '<'));
+	$criteria->add(new icms_db_criteria_Item('online_status', true));
 	$criteria->setSort('date');
 	$criteria->setOrder('DESC');
 	$storyarray = $news_article_handler->getObjects($criteria, true);
@@ -142,17 +140,17 @@ if ($fromyear != 0 && $frommonth != 0) {
 			$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 			$article_ids = array_keys($storyarray);
 			$article_tags_multi_array = array();
-			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->dirname(),
+			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 					'sprockets');
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
-					$sprocketsModule->dirname(), 'sprockets');
+					$sprocketsModule->getVar('dirname'), 'sprockets');
 			
 			// only get taglinks relevant to the articles being listed
 			$article_ids = "('" . implode("','", $article_ids) . "')";
-			$criteria = new CriteriaCompo();
-			$criteria->add(new Criteria('mid', $newsModule->mid()));
-			$criteria->add(new Criteria('item', 'article'));
-			$criteria->add(new Criteria('iid', $article_ids, 'IN'));
+			$criteria = new icms_db_criteria_Compo();
+			$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
+			$criteria->add(new icms_db_criteria_Item('item', 'article'));
+			$criteria->add(new icms_db_criteria_Item('iid', $article_ids, 'IN'));
 
 			$tag_buffer = $sprockets_tag_handler->getObjects(null, true);
 			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, true, false);
@@ -164,8 +162,8 @@ if ($fromyear != 0 && $frommonth != 0) {
 				}
 				$article_tags_multi_array[$taglink['iid']][] = '<a href="' . ICMS_URL
 					. '/modules/' . basename(dirname(__FILE__)) . '/article.php?tag_id='
-					. $taglink['tid'] . '" title="' . $tag_buffer[$taglink['tid']]->title() . '">'
-					. $tag_buffer[$taglink['tid']]->title() . '</a>';
+					. $taglink['tid'] . '" title="' . $tag_buffer[$taglink['tid']]->getVar('title') . '">'
+					. $tag_buffer[$taglink['tid']]->getVar('title') . '</a>';
 			}
 		}
 		
@@ -177,7 +175,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 	    	$story['counter'] = $article->getVar('counter');
 			if ($sprocketsModule) {
 				// use the article_id to extract the array of tags relevant to this article
-				$story['tags'] = implode(', ', $article_tags_multi_array[$article->id()]);
+				$story['tags'] = implode(', ', $article_tags_multi_array[$article->getVar('article_id')]);
 			} else {
 				$story['tags'] = false;
 			}

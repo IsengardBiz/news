@@ -84,7 +84,7 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	$tag_description = encode_entities($tag_description);
 
 	$news_feed->title = $site_name . ' - ' . $tag_title;
-	$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->id();
+	$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->getVar('id');
 	$news_feed->description = $tag_description;
 	$news_feed->language = _LANGCODE;
 	$news_feed->charset = _CHARSET;
@@ -98,9 +98,9 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	}
 	$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
 			'link' => NEWS_URL . 'rss.php?tag_id='
-			. $tagObj->id());
+			. $tagObj->getVar('id'));
 	$news_feed->width = 144;
-	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->id() . '"';
+	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->getVar('id') . '"';
 	
 	// retrieve articles relevant to this tag using a JOIN to the taglinks table
 
@@ -134,10 +134,6 @@ if (empty($clean_tag_id) || !$sprocketsModule) {
 	}
 }
 
-if ($newsModule->config['use_submitter_as_creator'] == true ) {
-	$member_handler = & xoops_gethandler('member');
-}
-
 // prepare an array of articles
 foreach($articleArray as $article) {
 	$flattened_article = $article->toArray();
@@ -147,6 +143,7 @@ foreach($articleArray as $article) {
 		$creator = $site_name;
 	} else {
 		if ($newsModule->config['use_submitter_as_creator'] == true) {
+			$member_handler = icms::handler('member');
 			$user = & $member_handler->getUser($article->getVar('submitter', 'e'));
 			$creator = $user->getVar('uname');
 		} else {

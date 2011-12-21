@@ -103,7 +103,7 @@ function news_getModuleName($withLink = true, $forBreadCrumb = false, $moduleNam
 	}
 
 	if (!$withLink) {
-		return $newsModule->name();
+		return $newsModule->getVar('name');
 	} else {
 		$ret = ICMS_URL . '/modules/' . $moduleName . '/';
 		return '<a href="' . $ret . '">' . $newsModule->getVar('name') . '</a>';
@@ -168,8 +168,6 @@ function news_getLinkedUnameFromId($userid, $name = false, $users = array (), $w
 		if ($users == array())
 		{
 			//fetching users
-			//$member_handler = & xoops_gethandler('member');
-			//$user = & $member_handler->getUser($userid);
 			$user = icms::handler('member')->getUser($userid);
 			
 		} else {

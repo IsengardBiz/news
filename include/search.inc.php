@@ -39,7 +39,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid) {
 	foreach ($articlesArray as $articleArray) {
 		$item['image'] = "images/article.png";
 		$item['link'] = $articleArray->getItemLink(true);
-		$item['title'] = $articleArray->title();
+		$item['title'] = $articleArray->getVar('title');
 		$item['time'] = $articleArray->getVar('date', 'e');
 		$item['uid'] = $articleArray->getVar('submitter', 'e');
 		$ret[] = $item;

@@ -79,12 +79,12 @@ extract($clean_vars);
 $newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 $sprocketsModule = icms_getModuleInfo('sprockets');
 
-$news_article_handler = icms_getModuleHandler('article', $newsModule->dirname(), 'news');
-$sprockets_archive_handler = icms_getModuleHandler('archive', $sprocketsModule->dirname(),
+$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
+$sprockets_archive_handler = icms_getModuleHandler('archive', $sprocketsModule->getVar('dirname'),
 	'sprockets');
 
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('module_id', $newsModule->mid()));
+$criteria = new icms_db_criteria_Compo();
+$criteria->add(new icms_db_criteria_Item('module_id', $newsModule->getVar('mid')));
 
 $archive_array = $sprockets_archive_handler->getObjects($criteria);
 $archiveObj = array_shift($archive_array);
