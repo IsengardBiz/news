@@ -1,16 +1,16 @@
-Hallo {X_UNAME}
+Hello {X_UNAME}
 
-Es wurde ein neuer Arikel veröffentlicht auf {X_SITENAME}:
+A new article has been published on {X_SITENAME}:
 
 {ITEM_TITLE}
 
-Sie können den Artikel hier lesen:
+You can read this item here:
 
 {ITEM_URL}
 
 -----------
 
-Möchten sie zukünftig keine weiteren Benachrichtigungen mehr erhalten, ändern Sie ihre Einstellungen hier:
+If you no longer wish to receive automatic notifications, please update your subscriptions by visiting the link below:
 {X_UNSUBSCRIBE_URL}
 
 -----------

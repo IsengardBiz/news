@@ -12,30 +12,30 @@
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
 // Requirements
-define("_AM_NEWS_REQUIREMENTS", "News Anforderungen");
-define("_AM_NEWS_REQUIREMENTS_INFO", "Wir haben ihr System überprüft, leider entspricht es nicht allen Anforderungen für einen reibungslosen Betrieb des News-Moduls. 
-	Beachten Sie untenstehende Systemanforderungen.");
-define("_AM_NEWS_REQUIREMENTS_ICMS_BUILD", "Das News-Modul benötigt mindestens ImpressCMS 1.1.1 RC 1.");
-define("_AM_NEWS_REQUIREMENTS_SUPPORT", "Sollten Sie Fragen, oder Bedenken haben, empfehlen wir Ihnen unser deutschsprachiges Forum auf 
-	<a href='http://impresscms.de'>http://impresscms.de</a>.");
+define("_AM_NEWS_REQUIREMENTS", "News Requirements");
+define("_AM_NEWS_REQUIREMENTS_INFO", "We've reviewed your system, unfortunately it doesn't meet all 
+	the requirements needed for News to function. Below are the requirements needed.");
+define("_AM_NEWS_REQUIREMENTS_ICMS_BUILD", "News requires at least ImpressCMS 1.1.1 RC 1.");
+define("_AM_NEWS_REQUIREMENTS_SUPPORT", "Should you have any question or concerns, please visit our 
+	forums at <a href='http://community.impresscms.org'>http://community.impresscms.org</a>.");
 
 // Article
-define("_AM_NEWS_ARTICLES", "Artikel");
-define("_AM_NEWS_ARTICLES_DSC", "Alle Artikel des Modules");
-define("_AM_NEWS_ARTICLE_CREATE", "Schreibe einen Artikel");
-define("_AM_NEWS_ARTICLE", "Artikel");
-define("_AM_NEWS_ARTICLE_CREATE_INFO", "Füllen Sie das folgende Formular aus, um einen Artikel zu schreiben.");
-define("_AM_NEWS_ARTICLE_EDIT", "Bearbeiten Sie diesen Artikel");
-define("_AM_NEWS_ARTICLE_EDIT_INFO", "Füllen Sie das folgende Formular aus, um diesen Artikel zu bearbeiten.");
-define("_AM_NEWS_ARTICLE_MODIFIED", "Ihr Artikel wurde erfolgreich bearbeitet.");
-define("_AM_NEWS_ARTICLE_CREATED", "Ihr Artikel wurde erfolgreich erstellt.");
-define("_AM_NEWS_ARTICLE_VIEW", "Artikel Informationen");
-define("_AM_NEWS_ARTICLE_VIEW_DSC", "Hier stehen die Informationen zum Artikel.");
-define("_AM_NEWS_ARTICLE_SWITCH_OFFLINE", "Ihr Artikel wurde offline gesetzt.");
-define("_AM_NEWS_ARTICLE_SWITCH_ONLINE", "Ihr Artikel ist nun freigeschaltet.");
+define("_AM_NEWS_ARTICLES", "Articles");
+define("_AM_NEWS_ARTICLES_DSC", "All articles in the module");
+define("_AM_NEWS_ARTICLE_CREATE", "Post an article");
+define("_AM_NEWS_ARTICLE", "Article");
+define("_AM_NEWS_ARTICLE_CREATE_INFO", "Fill-out the following form to create a new article.");
+define("_AM_NEWS_ARTICLE_EDIT", "Edit this article");
+define("_AM_NEWS_ARTICLE_EDIT_INFO", "Fill-out the following form in order to edit this article.");
+define("_AM_NEWS_ARTICLE_MODIFIED", "The article was successfully modified.");
+define("_AM_NEWS_ARTICLE_CREATED", "The article has been successfully created.");
+define("_AM_NEWS_ARTICLE_VIEW", "Article info");
+define("_AM_NEWS_ARTICLE_VIEW_DSC", "Here is the info about this article.");
+define("_AM_NEWS_ARTICLE_SWITCH_OFFLINE", "Article switched offline.");
+define("_AM_NEWS_ARTICLE_SWITCH_ONLINE", "Article switched online.");
 define("_AM_NEWS_ARTICLE_OFFLINE", "Offline.");
 define("_AM_NEWS_ARTICLE_ONLINE", "Online.");
-define("_AM_NEWS_ARTICLE_FILTER_BY_TAG", "Nach Tags filtern");
-define("_AM_NEWS_ARTICLE_ALL_ARTICLES", "-- Alle Artikel --");
+define("_AM_NEWS_ARTICLE_FILTER_BY_TAG", "Filter by tag");
+define("_AM_NEWS_ARTICLE_ALL_ARTICLES", "-- All articles --");
 define("_AM_NEWS_ARTICLE_FEDERATION_ENABLED", "Federation enabled");
 define("_AM_NEWS_ARTICLE_FEDERATION_DISABLED", "Federation disabled");

@@ -12,5 +12,5 @@
 
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
-define('_MD_NEWS_ADMIN_PAGE', ':: Administrationsseite ::');
-define("_MD_NEWS_ALL_ARTICLES", "Alle Artikel");
+define('_MD_NEWS_ADMIN_PAGE', ':: Admin page ::');
+define("_MD_NEWS_ALL_ARTICLES", "All articles");
