@@ -12,14 +12,14 @@
 
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
-define("_MB_NEWS_ARTICLE_RECENT_LIMIT", "Number of recent articles to display:");
-define("_MB_NEWS_ARTICLE_RECENT_TAG", "Filter articles by tag:");
-define("_MB_NEWS_ARTICLE_DATE_STRING", "Date format string (refer to the 
+define("_MB_NEWS_ARTICLE_RECENT_LIMIT", "Anzahl der darzustellenden neuen Artikel:");
+define("_MB_NEWS_ARTICLE_RECENT_TAG", "Filtere die Artikel nach Tags:");
+define("_MB_NEWS_ARTICLE_DATE_STRING", "Datumsformat (äquivalent zum 
 	<a href=\"http://php.net/manual/en/function.date.php\">PHP Manual)</a>");
-define("_MB_NEWS_ARTICLE_TITLE_LENGTH", "Maximum length of titles (characters)");
-define("_MB_NEWS_ARTICLE_ACTIVATE_SPOTLIGHT", "Activate spotlight function:");
-define("_MB_NEWS_ARTICLE_YES", "Yes");
-define("_MB_NEWS_ARTICLE_NO", "No");
-define("_MB_NEWS_ARTICLE_SPOTLIGHTED_ARTICLE", "Spotlighted article:");
-define("_MB_NEWS_ARTICLE_SPOTLIGHT_RECENT_ARTICLES", "Headlines");
-define("_MB_NEWS_ARTICLE_MOST_RECENT_ARTICLE", "-- Most recent article --");
+define("_MB_NEWS_ARTICLE_TITLE_LENGTH", "Maximale länge des Titels (Buchstarben)");
+define("_MB_NEWS_ARTICLE_ACTIVATE_SPOTLIGHT", "Aktivierung der Spotlight-Funktion:");
+define("_MB_NEWS_ARTICLE_YES", "Ja");
+define("_MB_NEWS_ARTICLE_NO", "Nein");
+define("_MB_NEWS_ARTICLE_SPOTLIGHTED_ARTICLE", "Artikel im Spotlight:");
+define("_MB_NEWS_ARTICLE_SPOTLIGHT_RECENT_ARTICLES", "Überschriften");
+define("_MB_NEWS_ARTICLE_MOST_RECENT_ARTICLE", "-- Neuster Artikel --");
