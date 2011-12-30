@@ -15,7 +15,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 define("_AM_NEWS_REQUIREMENTS", "News Requirements");
 define("_AM_NEWS_REQUIREMENTS_INFO", "We've reviewed your system, unfortunately it doesn't meet all 
 	the requirements needed for News to function. Below are the requirements needed.");
-define("_AM_NEWS_REQUIREMENTS_ICMS_BUILD", "News requires at least ImpressCMS 1.1.1 RC 1.");
+define("_AM_NEWS_REQUIREMENTS_ICMS_BUILD", "This version of News requires at least ImpressCMS 1.3.x.");
 define("_AM_NEWS_REQUIREMENTS_SUPPORT", "Should you have any question or concerns, please visit our 
 	forums at <a href='http://community.impresscms.org'>http://community.impresscms.org</a>.");
 

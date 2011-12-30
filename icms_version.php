@@ -17,7 +17,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 /**  General Information  */
 $modversion = array(
   'name'=> _MI_NEWS_MD_NAME,
-  'version'=> 1.0,
+  'version'=> 1.1,
   'description'=> _MI_NEWS_MD_DESC,
   'author'=> "Madfish (Simon Wilkinson)",
   'credits'=> "Functionality is based on the legacy News module, but this is a clean rewrite in IPF.",
@@ -32,9 +32,9 @@ $modversion = array(
   'image'=> "images/icon_big.png", /* for backward compatibility */
 
 /**  Development information */
-  'status_version'=> "1.0.1",
+  'status_version'=> "1.1",
   'status'=> "Beta",
-  'date'=> "21/12/2011",
+  'date'=> "30/12/2011",
   'author_word'=> "This module is best used with the Sprockets utility module also installed.",
 
 /** Contributors */
