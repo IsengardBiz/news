@@ -143,7 +143,7 @@ foreach($articleArray as $article) {
 		$creator = $site_name;
 	} else {
 		if ($newsModule->config['use_submitter_as_creator'] == true) {
-			$member_handler = icms::handler('member');
+			$member_handler = icms::handler('icms_member');
 			$user = & $member_handler->getUser($article->getVar('submitter', 'e'));
 			$creator = $user->getVar('uname');
 		} else {
