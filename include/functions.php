@@ -20,7 +20,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
  */
 function prepareArticleForDisplay($articleObj, $with_overrides = true) {
 
-	global $newsConfig;	
+	global $newsConfig;
 	
 	$articleArray = array();
 	
@@ -63,7 +63,7 @@ function prepareArticleForDisplay($articleObj, $with_overrides = true) {
  *
  * @todo to be move in icms core
  *
- * @param string $moduleName dirname of the moodule
+ * @param string $moduleName dirname of the module
  * @return string URL of the admin side of the module
  */
 
@@ -141,80 +141,6 @@ function news_getPreviousPage($default=false) {
  */
 function news_getMonthNameById($month_id) {
 	return Icms_getMonthNameById($month_id);
-}
-
-/**
-* Return a linked username or full name for a specific $userid
-*
-* @todo this function is fixing a ucwords bug in icms_getLinkedUnameFromId so we will update this in icms 1.2
-*
-* @param integer $userid uid of the related user
-* @param bool $name true to return the fullname, false to use the username; if true and the user does not have fullname, username will be used instead
-* @param array $users array already containing XoopsUser objects in which case we will save a query
-* @param bool $withContact true if we want contact details to be added in the value returned (PM and email links)
-* @return string name of user with a link on his profile
-*/
-function news_getLinkedUnameFromId($userid, $name = false, $users = array (), $withContact = false)
-{
-	if (!is_numeric($userid)) {
-		return $userid;
-	}
-	
-	$user = $fullname = $fullname2 = $linked_user = '';
-	$userid = intval($userid);
-	
-	if ($userid > 0) {
-		
-		if ($users == array())
-		{
-			//fetching users
-			$user = icms::handler('icms_member')->getUser($userid);
-			
-		} else {
-			
-			if (!isset($users[$userid])) {return $GLOBALS['icmsConfig']['anonymous'];}
-			$user = & $users[$userid];
-		}
-		
-		if (is_object($user)) {
-			
-			$username = $user->getVar('uname');
-			$fullname = '';
-			$fullname2 = $user->getVar('name');
-			
-			if (($name) && !empty($fullname2)) {
-				$fullname = $user->getVar('name');
-			}
-			
-			if (!empty ($fullname)) {
-				
-				$linkeduser = "$fullname [<a href='" . ICMS_URL
-				. "/userinfo.php?uid=" . $userid . "'>" . $ts->htmlSpecialChars($username) . "</a>]";
-				
-			} else {
-
-				$linkeduser = "<a href='" . ICMS_URL."/userinfo.php?uid=" . $userid . "'>"
-				.  icms_core_DataFilter::htmlSpecialchars($username) . "</a>";
-			}
-
-			// add contact info : email + PM
-			if ($withContact) {
-
-				$linkeduser .= '<a href="mailto:'.$user->getVar('email') 
-					.'"><img style="vertical-align: middle;" src="' . ICMS_URL
-					. '/images/icons/email.gif' . '" alt="' . _US_SEND_MAIL . '" title="'
-					. _US_SEND_MAIL.'"/></a>';
-				$js = "javascript:openWithSelfMain('" . ICMS_URL . '/pmlite.php?send2=1&to_userid='
-					. $userid . "', 'pmlite',450,370);";
-				$linkeduser .= '<a href="' . $js . '"><img style="vertical-align: middle;" src="'
-					. ICMS_URL . '/images/icons/pm.gif' . '" alt="' . _US_SEND_PM . '" title="'
-					. _US_SEND_PM . '"/></a>';
-			}
-
-			return $linkeduser;
-		}
-	}
-	return $GLOBALS['icmsConfig']['anonymous'];
 }
 
 /**
