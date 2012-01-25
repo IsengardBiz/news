@@ -63,7 +63,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		if ($sprocketsModule) {
 			$this->setControl('tag', array(
-			'name' => 'select_multi',
+			'name' => 'selectmulti',
 			'itemHandler' => 'tag',
 			'method' => 'getTags',
 			'module' => 'sprockets'));
