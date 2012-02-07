@@ -122,18 +122,3 @@ define("_CO_NEWS_CAL_DECEMBER", "December");
 define("_CO_NEWS_NO_TOPICS_TO_DISPLAY", "There are currently no topics to display.");
 define("_CO_NEWS_NEWS_TOPICS", "News tags");
 //define("", "");
-
-// some tag constants that should be pulled from Sprockets, but for whatever reason, aren't
-define("_CO_SPROCKETS_TAG_TAG", "Tag");
-define("_CO_SPROCKETS_TAG_CATEGORY", "Category");
-define("_CO_SPROCKETS_TAG_BOTH", "Both");
-define("_CO_SPROCKETS_TAG_SWITCH_ONLINE", "Switch online");
-define("_CO_SPROCKETS_TAG_SWITCH_OFFLINE", "Switch offline");
-define("_CO_SPROCKETS_TAG_ONLINE", "Online");
-define("_CO_SPROCKETS_TAG_OFFLINE", "Offline");
-define("_CO_SPROCKETS_TAG_YES", "Yes");
-define("_CO_SPROCKETS_TAG_NO", "No");
-define("_CO_SPROCKETS_TAG_NAVIGATION_ENABLE", "Enable as navigation element");
-define("_CO_SPROCKETS_TAG_NAVIGATION_DISABLE", "Disable as navigation element");
-define("_CO_SPROCKETS_TAG_NAVIGATION_ENABLED", "Navigation element enabled");
-define("_CO_SPROCKETS_TAG_NAVIGATION_DISABLED", "Navigation element disabled");

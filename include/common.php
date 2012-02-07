@@ -37,7 +37,3 @@ $news_isAdmin = icms_userIsAdmin(NEWS_DIRNAME);
 
 // Creating the module config array to make it available throughout the module
 $newsConfig = icms_getModuleConfig(NEWS_DIRNAME);
-
-// creating the icmsPersistableRegistry to make it available throughout the module
-global $icmsPersistableRegistry;
-$icmsPersistableRegistry = IcmsPersistableRegistry::getInstance();
