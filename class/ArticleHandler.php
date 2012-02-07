@@ -227,7 +227,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		// storing tags
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
 					$sprocketsModule->getVar('dirname'), 'sprockets', 'sprockets');
 			$sprockets_taglink_handler->storeTagsForObject($obj);
@@ -271,7 +271,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
 
 		// delete taglinks
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			$sprockets_taglink_handler->deleteAllForObject($obj);

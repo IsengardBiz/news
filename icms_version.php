@@ -73,7 +73,7 @@ $modversion['search'] = array (
 $i = 1;
 $modversion['hasMain'] = $i;
 $sprocketsModule = icms_getModuleInfo('sprockets');
-if ($sprocketsModule) {
+if (icms_get_module_status("sprockets")) {
 	$modversion['sub'][$i]['name'] = _MI_NEWS_TOPICS_DIRECTORY;
 	$modversion['sub'][$i]['url'] = "tags_directory.php";
 	$i++;

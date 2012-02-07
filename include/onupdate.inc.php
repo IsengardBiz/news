@@ -33,9 +33,6 @@ define('NEWS_DB_VERSION', 1);
  */
 
 function icms_module_update_news($module) {
-
-	$icmsDatabaseUpdater = XoopsDatabaseFactory::getDatabaseUpdater();
-	$icmsDatabaseUpdater->moduleUpgrade($module);
     return true;
 }
 
@@ -45,14 +42,11 @@ function icms_module_update_news($module) {
  * Checks that an upload directory is available (creates one if necessary) and authorises the 
  * module to use common image mimetypes that will probably be required.
  *
- * @global object $xoopsDB
  * @param object $module
  * @return boolean
  */
 function icms_module_install_news($module) {
 	
-	global $xoopsDB;
-
 	// create an uploads directory for images
 	$path = ICMS_ROOT_PATH . '/uploads/' . basename(dirname(dirname(__FILE__)));
 	$directory_exists = $file_exists = $writeable = true;

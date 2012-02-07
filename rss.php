@@ -37,7 +37,7 @@ $news_feed = new IcmsFeed();
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(__FILE__)), 'news');
 
 $sprocketsModule = icms_getModuleInfo('sprockets');
-if ($sprocketsModule) {
+if (icms_get_module_status("sprockets")) {
 	$sprockets_taglink_handler = icms_getModuleHandler('taglink',
 			$sprocketsModule->getVar('dirname'), 'sprockets');
 	$sprockets_tag_handler = icms_getModuleHandler('tag',
@@ -45,7 +45,7 @@ if ($sprocketsModule) {
 }
 
 // generates a feed of recent news articles across all tags
-if (empty($clean_tag_id) || !$sprocketsModule) {
+if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	$feed_title = _CO_NEWS_NEW;
 	$site_name = encode_entities($icmsConfig['sitename']);
 	$tag_title = _CO_NEWS_ALL;

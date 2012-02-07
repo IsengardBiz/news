@@ -75,17 +75,15 @@ if (in_array($clean_op,$valid_op,true)){
 		
   		break;
 	
-  	case "addarticle":
-        include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";		
-        $controller = new IcmsPersistableController($news_article_handler);
+  	case "addarticle":	
+        $controller = new icms_ipf_Controller($news_article_handler);
 		$controller->storeFromDefaultForm(_AM_NEWS_ARTICLE_CREATED, _AM_NEWS_ARTICLE_MODIFIED);
 		
   		break;
 
   	case "del":
 		$controller = '';
-  	    include_once ICMS_ROOT_PATH."/kernel/icmspersistablecontroller.php";
-        $controller = new IcmsPersistableController($news_article_handler);
+        $controller = new icms_ipf_Controller($news_article_handler);
   		$controller->handleObjectDeletion();
 
   		break;
@@ -145,7 +143,7 @@ if (in_array($clean_op,$valid_op,true)){
 		$newsModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			
 			$tag_select_box = '';
 			$taglink_array = $tagged_article_list = array();
@@ -155,7 +153,7 @@ if (in_array($clean_op,$valid_op,true)){
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', $clean_tag_id,
-				_AM_NEWS_ARTICLE_ALL_ARTICLES);
+				_AM_NEWS_ARTICLE_ALL_ARTICLES, TRUE, icms::$module->getVar('mid'));
 			if (!empty($tag_select_box)) {
 				echo '<h3>' . _AM_NEWS_ARTICLE_FILTER_BY_TAG . '</h3>';
 				echo $tag_select_box;
@@ -194,12 +192,12 @@ if (in_array($clean_op,$valid_op,true)){
 		$objectTable->addColumn(new icms_ipf_view_Column('date'));
 		$objectTable->setDefaultSort('date');
 		$objectTable->setDefaultOrder('DESC');
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			$objectTable->addColumn(new icms_ipf_view_Column('federated'));
 			$objectTable->addFilter('federated', 'federation_filter');
 		}
 		$objectTable->addFilter('online_status', 'online_status_filter');
-		if ($sprocketsModule) {$objectTable->addFilter('rights', 'rights_filter');}
+		if (icms_get_module_status("sprockets")) {$objectTable->addFilter('rights', 'rights_filter');}
   		$objectTable->addIntroButton('addarticle', 'article.php?op=mod', _AM_NEWS_ARTICLE_CREATE);
 		
   		$icmsAdminTpl->assign('news_article_table', $objectTable->fetch());

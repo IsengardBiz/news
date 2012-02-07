@@ -61,7 +61,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 
 		// only display the tag and rights fields if the sprockets module is installed
 		$sprocketsModule = icms_getModuleInfo('sprockets');
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			$this->setControl('tag', array(
 			'name' => 'selectmulti',
 			'itemHandler' => 'tag',
@@ -268,7 +268,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$ret = '';
 		
 		$sprocketsModule = icms_getModuleInfo('sprockets');
-		if ($sprocketsModule) {
+		if (icms_get_module_status("sprockets")) {
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			$ret = $sprockets_taglink_handler->getTagsForObject($this->id(), $this->handler);
@@ -288,7 +288,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$rights_id = $this->getVar('rights', 'e');
 		
 		$sprocketsModule = icms_getModuleInfo('sprockets');
-		if ($sprocketsModule) {			
+		if (icms_get_module_status("sprockets")) {			
 			$sprockets_rights_handler = icms_getModuleHandler('rights',
 				$sprocketsModule->getVar('dirname'), 'sprockets');
 			$rightsObj = $sprockets_rights_handler->get($rights_id);

@@ -32,7 +32,7 @@ function news_article_recent_show($options) {
 
 	// retrieve the last XX articles
 
-	if ($sprocketsModule && $options[1]) { // filter by tag
+	if (icms_get_module_status("sprockets") && $options[1]) { // filter by tag
 
 		$query = $rows = $tag_article_count = '';
 		$article_object_array = array();
@@ -151,7 +151,7 @@ function news_article_recent_edit($options) {
 
 	// optionally display results from a single tag - only if sprockets module is installed
 	$sprocketsModule = icms_getModuleInfo('sprockets');
-	if ($sprocketsModule) {
+	if (icms_get_module_status("sprockets")) {
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$form .= '<tr><td>' . _MB_NEWS_ARTICLE_RECENT_TAG . '</td>';
@@ -188,7 +188,7 @@ function news_article_recent_edit($options) {
 	
 	
 	// build select box for choosing article to spotlight - need to filter by tag (if set)
-	if ($sprocketsModule && $options[1]) {
+	if (icms_get_module_status("sprockets") && $options[1]) {
 
 		$query = $rows = $tag_article_count = '';
 		$article_array = array(0 => _MB_NEWS_ARTICLE_MOST_RECENT_ARTICLE);

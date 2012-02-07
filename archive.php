@@ -135,20 +135,16 @@ if ($fromyear != 0 && $frommonth != 0) {
 	if (is_array($storyarray) && $count>0) {
 		
 		// if Sprockets is installed, prepare tag buffers to reduce database lookups
-		$sprocketsModule = icms_getModuleInfo('sprockets');
-		if ($sprocketsModule) {
-			$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
+		if (icms_get_module_status("sprockets")) {
 			$article_ids = array_keys($storyarray);
 			$article_tags_multi_array = array();
-			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
-					'sprockets');
-			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
-					$sprocketsModule->getVar('dirname'), 'sprockets');
+			$sprockets_tag_handler = icms_getModuleHandler('tag', 'sprockets', 'sprockets');
+			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 'sprockets', 'sprockets');
 			
 			// only get taglinks relevant to the articles being listed
 			$article_ids = "('" . implode("','", $article_ids) . "')";
 			$criteria = new icms_db_criteria_Compo();
-			$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
+			$criteria->add(new icms_db_criteria_Item('mid', icms::$module->getVar('mid')));
 			$criteria->add(new icms_db_criteria_Item('item', 'article'));
 			$criteria->add(new icms_db_criteria_Item('iid', $article_ids, 'IN'));
 
@@ -173,7 +169,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 			
 	    	$story['title'] = $article->getItemLink();
 	    	$story['counter'] = $article->getVar('counter');
-			if ($sprocketsModule) {
+			if (icms_get_module_status("sprockets")) {
 				// use the article_id to extract the array of tags relevant to this article
 				$story['tags'] = implode(', ', $article_tags_multi_array[$article->getVar('article_id')]);
 			} else {

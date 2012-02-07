@@ -17,8 +17,6 @@ include_once ICMS_ROOT_PATH . '/header.php';
 
 global $icmsConfig, $newsConfig;
 
-$sprocketsModule = icms_getModuleInfo('sprockets');
-
 $clean_article_id = $clean_story_id = $clean_tag_id = $clean_start = $articleObj
 	= $news_article_handler = $news_tag_name = '';
 $articleArray = $tagList = array();
@@ -39,6 +37,17 @@ if ($clean_story_id) {
 $directory_name = basename(dirname(__FILE__));
 $script_name = getenv("SCRIPT_NAME");
 $document_root = str_replace('modules/' . $directory_name . '/article.php', '', $script_name);
+
+// Optional tagging support (only if Sprockets module installed)
+$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
+
+if (icms_get_module_status("sprockets"))
+{
+	icms_loadLanguageFile("sprockets", "common");
+	$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'), 'sprockets');
+	$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'), 'sprockets');
+	$sprockets_tag_buffer = $sprockets_tag_handler->getObjects(NULL, TRUE, FALSE);
+}
 
 // check if a single article has been requested
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(__FILE__)), 'news');
@@ -68,24 +77,23 @@ if($articleObj && !$articleObj->isNew()) {
 	$articleArray['deleteItemLink'] = $delete_item_link;
 
 	// do tag lookups (if sprockets module is installed)
-	if ($sprocketsModule && !empty($articleArray['tag'])) {
+	if (icms_get_module_status("sprockets") && !empty($articleArray['tag'])) {
 		
-		$tag_icons = $articleTags = $tag_buffer = array();
+		$tag_icons = $articleTags = array();
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
-		$tag_buffer = $sprockets_tag_handler->getObjects(null, true, false);
 		$articleTags = array_flip($articleArray['tag']);
 		
 		foreach ($articleTags as $key => &$value) {
 			$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-			. '/article.php?tag_id=' . $tag_buffer[$key]['tag_id'] . '">' . $tag_buffer[$key]['title']
+			. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">' . $sprockets_tag_buffer[$key]['title']
 			. '</a>';
 			
 			// get tag icons, if available
-			if (!empty($tag_buffer[$key]['icon'])) {
+			if (!empty($sprockets_tag_buffer[$key]['icon'])) {
 				$tag_icons[] = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-					. '/article.php?tag_id=' . $tag_buffer[$key]['tag_id'] . '">'
-					. $tag_buffer[$key]['icon'] . '</a>';
+					. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">'
+					. $sprockets_tag_buffer[$key]['icon'] . '</a>';
 			}
 		}
 		$articleArray['tag'] = implode(', ', $articleTags);
@@ -120,11 +128,11 @@ if($articleObj && !$articleObj->isNew()) {
 	//////////////////// DISPLAY ARTICLE INDEX PAGE ////////////////////
 	////////////////////////////////////////////////////////////////////
 	
-	if ($sprocketsModule) {
+	if (icms_get_module_status("sprockets")) {
 
 		// initialise
 		$form = $news_tag_name = '';
-		$tag_buffer = $tagList = $rights_buffer = $rightsList = array();
+		$tagList = $rights_buffer = $rightsList = array();
 		$sprockets_tag_handler = icms_getModuleHandler('tag',
 				$sprocketsModule->getVar('dirname'), 'sprockets');
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
@@ -133,14 +141,13 @@ if($articleObj && !$articleObj->isNew()) {
 				$sprocketsModule->getVar('dirname'), 'sprockets');
 
 		// prepare buffers to reduce queries
-		$tag_buffer = $sprockets_tag_handler->getObjects(null, true, false);
 		$rights_buffer = $sprockets_rights_handler->getObjects(null, true, false);
 
 		// append the tag to the News title and link RSS to tag-specific feed
-		if (array_key_exists($clean_tag_id, $tag_buffer) && ($clean_tag_id !== 0)) {
-			$news_tag_name = $tag_buffer[$clean_tag_id]['title'];
+		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
+			$news_tag_name = $sprockets_tag_buffer[$clean_tag_id]['title'];
 			$icmsTpl->assign('news_tag_name', $news_tag_name);
-			$icmsTpl->assign('news_category_path', $tag_buffer[$clean_tag_id]['title']);
+			$icmsTpl->assign('news_category_path', $sprockets_tag_buffer[$clean_tag_id]['title']);
 		}
 		
 		// Prepare a tag select box if sprockets module is installed & set in module preferences
@@ -155,12 +162,12 @@ if($articleObj && !$articleObj->isNew()) {
 	
 		// RSS feed including autodiscovery link, which is inserted in the module header
 		global $xoTheme;	
-		if ($sprocketsModule && $clean_tag_id) {
+		if (icms_get_module_status("sprockets") && $clean_tag_id) {
 			$icmsTpl->assign('news_rss_link', 'rss.php?tag_id=' . $clean_tag_id);
 			$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS_ON
-					. $tag_buffer[$clean_tag_id]['title']);
+					. $sprockets_tag_buffer[$clean_tag_id]['title']);
 			$rss_attributes = array('type' => 'application/rss+xml', 
-				'title' => $icmsConfig['sitename'] . ' - ' . $tag_buffer[$clean_tag_id]['title']);
+				'title' => $icmsConfig['sitename'] . ' - ' . $sprockets_tag_buffer[$clean_tag_id]['title']);
 			$rss_link = NEWS_URL . 'rss.php?tag_id=' . $clean_tag_id;
 		} else {				
 				$icmsTpl->assign('news_rss_link', 'rss.php');
@@ -174,7 +181,7 @@ if($articleObj && !$articleObj->isNew()) {
 		// list of articles, filtered by tags (if any), pagination and preferences
 		$article_object_array = array();
 
-		if ($clean_tag_id && $sprocketsModule) {
+		if ($clean_tag_id && icms_get_module_status("sprockets")) {
 
 			/**
 			 * Retrieve a list of articles JOINED to taglinks by article_id/tag_id/module_id/item
@@ -251,7 +258,7 @@ if($articleObj && !$articleObj->isNew()) {
 
 		unset($criteria);
 
-		if ($sprocketsModule && (count($article_object_array) > 0)) {
+		if (icms_get_module_status("sprockets") && (count($article_object_array) > 0)) {
 
 			// prepare a list of article_ids, this will be used to create a taglink buffer
 			// that is used to create tag links for each article
@@ -300,27 +307,27 @@ if($articleObj && !$articleObj->isNew()) {
 				$article['deleteItemLink'] = $delete_item_link;
 
 				// only if sprockets installed
-				if ($sprocketsModule && !empty($article['tag'])) {
+				if (icms_get_module_status("sprockets") && !empty($article['tag'])) {
 					
 					// get tag links and icons, if available
 					$articleTags = array_flip($article['tag']);
 					
 					foreach ($articleTags as $key => &$value) {
 						$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-						. '/article.php?tag_id=' . $tag_buffer[$key]['tag_id'] . '">'
-						. $tag_buffer[$key]['title'] . '</a>';
+						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">'
+						. $sprockets_tag_buffer[$key]['title'] . '</a>';
 						
-						if (!empty($tag_buffer[$key]['icon'])) {
+						if (!empty($sprockets_tag_buffer[$key]['icon'])) {
 							$tag_icons[] = '<a href="' . ICMS_URL . '/modules/'
 							. basename(dirname(__FILE__)) . '/article.php?tag_id='
-							. $tag_buffer[$key]['tag_id'] . '">' . $tag_buffer[$key]['icon']
+							. $sprockets_tag_buffer[$key]['tag_id'] . '">' . $sprockets_tag_buffer[$key]['icon']
 							. '</a>';
 						}
 					}
 					$article['tag'] = implode(', ', $articleTags);
 					$article['icon'] = $tag_icons;
 				}
-				if ($sprocketsModule) {
+				if (icms_get_module_status("sprockets")) {
 					$article['rights'] = $rights_buffer[$article['rights']]['itemLink'];
 				}
 			}
@@ -362,7 +369,7 @@ if ($newsConfig['show_breadcrumb'] == true) {
 
 $icmsTpl->assign('news_module_home', news_getModuleName(true, true));
 
-if ($sprocketsModule) {
+if (icms_get_module_status("sprockets")) {
 	if ($news_tag_name) {
 		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION . ' '
 				. strtolower($news_tag_name));

@@ -18,7 +18,7 @@ include_once ICMS_ROOT_PATH . '/header.php';
 
 // check if the Sprockets module is installed, because otherwise there are no tags
 $sprocketsModule = icms_getModuleInfo('sprockets');
-if ($sprocketsModule) {
+if (icms_get_module_status("sprockets")) {
 	
 	// initialise
 	$tagList = '';
