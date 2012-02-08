@@ -153,7 +153,7 @@ if (in_array($clean_op,$valid_op,true)){
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', $clean_tag_id,
-				_AM_NEWS_ARTICLE_ALL_ARTICLES, TRUE, icms::$module->getVar('mid'));
+				_AM_NEWS_ARTICLE_ALL_ARTICLES, FALSE, icms::$module->getVar('mid'));
 			if (!empty($tag_select_box)) {
 				echo '<h3>' . _AM_NEWS_ARTICLE_FILTER_BY_TAG . '</h3>';
 				echo $tag_select_box;
