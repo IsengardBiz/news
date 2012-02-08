@@ -15,8 +15,6 @@ if (!defined('ICMS_ROOT_PATH')) {
 	exit();
 }
 
-include_once ICMS_ROOT_PATH . '/class/template.php';
-
 class IcmsFeed {
 
 	public $title;
@@ -96,7 +94,7 @@ class IcmsFeed {
 		$xoopsLogger->disableLogger();
 
 		header('Content-Type: application/rss+xml; charset='._CHARSET);
-		$xoopsOption['template_main'] = "db:podcast_rss.html";
+		$xoopsOption['template_main'] = "db:news_rss.html";
 		$tpl = new icms_view_Tpl();
 
 		$tpl->assign('channel_title', $this->title);
