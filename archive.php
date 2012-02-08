@@ -108,7 +108,7 @@ if (!$rows) {
 
 if ($fromyear != 0 && $frommonth != 0) {
 	
-	$icmsTpl->assign('show_articles', true);
+	$icmsTpl->assign('show_articles', TRUE);
 	$icmsTpl->assign('lang_articles', _CO_NEWS_ARCHIVE_ARTICLES);
 	$icmsTpl->assign('currentmonth', $months_arr[$frommonth]);
 	$icmsTpl->assign('currentyear', $fromyear);
@@ -126,10 +126,10 @@ if ($fromyear != 0 && $frommonth != 0) {
 	$criteria = new icms_db_criteria_Compo();
 	$criteria->add(new icms_db_criteria_Item('date', $monthstart, '>'));
 	$criteria->add(new icms_db_criteria_Item('date', $monthend, '<'));
-	$criteria->add(new icms_db_criteria_Item('online_status', true));
+	$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 	$criteria->setSort('date');
 	$criteria->setOrder('DESC');
-	$storyarray = $news_article_handler->getObjects($criteria, true);
+	$storyarray = $news_article_handler->getObjects($criteria, TRUE);
 
 	$count=count($storyarray);
 	if (is_array($storyarray) && $count>0) {
@@ -148,8 +148,8 @@ if ($fromyear != 0 && $frommonth != 0) {
 			$criteria->add(new icms_db_criteria_Item('item', 'article'));
 			$criteria->add(new icms_db_criteria_Item('iid', $article_ids, 'IN'));
 
-			$tag_buffer = $sprockets_tag_handler->getObjects(null, true);
-			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, true, false);
+			$tag_buffer = $sprockets_tag_handler->getObjects(null, TRUE);
+			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, TRUE, FALSE);
 			
 			// prepare a multidimensional array holding the tags for each story
 			foreach ($taglink_buffer as $taglink) {
@@ -173,7 +173,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 				// use the article_id to extract the array of tags relevant to this article
 				$story['tags'] = implode(', ', $article_tags_multi_array[$article->getVar('article_id')]);
 			} else {
-				$story['tags'] = false;
+				$story['tags'] = FALSE;
 			}
 	    	$story['date'] = formatTimestamp($article->getVar('date', 'e'),$dateformat,$useroffset);
 	    	$icmsTpl->append('stories', $story);
@@ -183,25 +183,25 @@ if ($fromyear != 0 && $frommonth != 0) {
 	$icmsTpl->assign('lang_storytotal', _CO_NEWS_ARCHIVE_THEREAREINTOTAL . $count
 		. _CO_NEWS_ARCHIVE_ARTICLES_LOWER);
 } else {
-    $icmsTpl->assign('show_articles', false);
+    $icmsTpl->assign('show_articles', FALSE);
 }
 
 $icmsTpl->assign('lang_newsarchives', _CO_NEWS_ARCHIVES);
 
 // check if the module's breadcrumb should be displayed
-if ($newsConfig['show_breadcrumb'] == true) {
+if ($newsConfig['show_breadcrumb'] == TRUE) {
 	$icmsTpl->assign('news_show_breadcrumb', $newsConfig['show_breadcrumb']);
 } else {
-	$icmsTpl->assign('news_show_breadcrumb', false);
+	$icmsTpl->assign('news_show_breadcrumb', FALSE);
 }
 
-$icmsTpl->assign('news_module_home', news_getModuleName(true, true));
+$icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
 $icmsTpl->assign('news_category_path', _CO_NEWS_ARCHIVE);
 
 /**
  * Generating meta information for this page
  */
-$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVES, false, _CO_NEWS_ARCHIVE_DESCRIPTION);
+$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVES, FALSE, _CO_NEWS_ARCHIVE_DESCRIPTION);
 $icms_metagen->createMetaTags();
 
 include_once 'footer.php';

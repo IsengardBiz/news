@@ -66,7 +66,7 @@ if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
 $clean_article_id = isset($_GET['article_id']) ? (int) $_GET['article_id'] : 0 ;
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
-if (in_array($clean_op,$valid_op,true)){
+if (in_array($clean_op,$valid_op,TRUE)){
   switch ($clean_op) {
   	case "mod":
   	case "changedField":
@@ -185,7 +185,7 @@ if (in_array($clean_op,$valid_op,true)){
   		$objectTable = new icms_ipf_view_Table($news_article_handler, $criteria);
 		
 		$objectTable->addQuickSearch('title');
-		$objectTable->addColumn(new icms_ipf_view_Column('online_status', 'center', true));
+		$objectTable->addColumn(new icms_ipf_view_Column('online_status', 'center', TRUE));
   		$objectTable->addColumn(new icms_ipf_view_Column('title'));
 		$objectTable->addColumn(new icms_ipf_view_Column('creator'));
 		$objectTable->addColumn(new icms_ipf_view_Column('counter'));

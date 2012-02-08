@@ -94,14 +94,14 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$visibility = $articleObj = '';
 		
 		$articleObj = $this->get($article_id);
-		if ($articleObj->getVar($field, 'e') == true) {
+		if ($articleObj->getVar($field, 'e') == TRUE) {
 			$articleObj->setVar($field, 0);
 			$visibility = 0;
 		} else {
 			$articleObj->setVar($field, 1);
 			$visibility = 1;
 		}
-		$this->insert($articleObj, true);
+		$this->insert($articleObj, TRUE);
 		
 		return $visibility;
 	}
@@ -142,10 +142,10 @@ class NewsArticleHandler extends icms_ipf_Handler {
 			$criteria->add($criteriaKeywords);
 		}
 		
-		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 		
-		return $this->getObjects($criteria, true, true);
+		return $this->getObjects($criteria, TRUE, TRUE);
 	}
 	
 	// ADMIN TABLE FILTERS
@@ -201,7 +201,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$articleObj = $this->get($article_id);
 		if ($articleObj && !$articleObj->isNew()) {
 			$articleObj->setVar('post_comments', $total_num);
-			$this->insert($articleObj, true);
+			$this->insert($articleObj, TRUE);
 		}
 	}
 	
@@ -219,7 +219,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		if($obj->getVar('date') < time()) {
 			if (!$obj->getVar('article_notification_sent') && $obj->getVar ('online_status', 'e') == 1) {
 			$obj->sendNotifArticlePublished();
-			$obj->setVar('article_notification_sent', true);
+			$obj->setVar('article_notification_sent', TRUE);
 			$this->insert ($obj);
 			}
 		}
@@ -236,7 +236,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 			$sprockets_taglink_handler->storeTagsForObject($obj);
 		}
 	
-		return true;
+		return TRUE;
 	}
 	
 	/**
@@ -280,6 +280,6 @@ class NewsArticleHandler extends icms_ipf_Handler {
 			$sprockets_taglink_handler->deleteAllForObject($obj);
 		}
 
-		return true;
+		return TRUE;
 	}
 }

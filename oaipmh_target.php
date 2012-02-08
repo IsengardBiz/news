@@ -62,7 +62,7 @@ if (!empty($dirty_vars['resumptionToken']) && ($dirty_vars['verb'] == 'ListIdent
 	} else {
 		$dirty_vars = unserialize(urldecode($dirty_vars['resumptionToken']));
 	}
-	$dirty_vars['resumptionToken'] = true;
+	$dirty_vars['resumptionToken'] = TRUE;
 }
 
 // channel whitelisted variables through the validator function
@@ -217,7 +217,7 @@ if (icms_get_module_status("sprockets"))
 			exit;
 		}
 	}
-	$icmsTpl->assign('archive_module_home', news_getModuleName(true, true));
+	$icmsTpl->assign('archive_module_home', news_getModuleName(TRUE, TRUE));
 }
 else // Exit if Sprockets module is not installed and active
 {

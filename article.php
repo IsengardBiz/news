@@ -71,10 +71,10 @@ if($articleObj && !$articleObj->isNew()) {
 
 	$edit_item_link = $delete_item_link = '';
 
-	$edit_item_link = $articleObj->getEditItemLink(false, true, false);
-	$delete_item_link = $articleObj->getDeleteItemLink(false, true, false);
+	$edit_item_link = $articleObj->getEditItemLink(FALSE, TRUE, FALSE);
+	$delete_item_link = $articleObj->getDeleteItemLink(FALSE, TRUE, FALSE);
 
-	$articleArray = prepareArticleForDisplay($articleObj, true); // with DB overrides
+	$articleArray = prepareArticleForDisplay($articleObj, TRUE); // with DB overrides
 
 	$articleArray['editItemLink'] = $edit_item_link;
 	$articleArray['deleteItemLink'] = $delete_item_link;
@@ -104,17 +104,17 @@ if($articleObj && !$articleObj->isNew()) {
 	}
 
 	// display article rights field?
-	if ($newsConfig['display_rights'] == true) {
-		$icmsTpl->assign('news_display_rights', true);
+	if ($newsConfig['display_rights'] == TRUE) {
+		$icmsTpl->assign('news_display_rights', TRUE);
 	}
 
 	// display this article
 	$icmsTpl->assign('news_article', $articleArray);
-	$icmsTpl->assign('news_index_view', false);
+	$icmsTpl->assign('news_index_view', FALSE);
 	
 	// comments
 	if ($newsConfig['com_rule']) {
-		$icmsTpl->assign('news_article_comment', true);
+		$icmsTpl->assign('news_article_comment', TRUE);
 		include_once ICMS_ROOT_PATH . '/include/comment_view.php';
 	}
 		
@@ -144,7 +144,7 @@ if($articleObj && !$articleObj->isNew()) {
 				$sprocketsModule->getVar('dirname'), 'sprockets');
 
 		// prepare buffers to reduce queries
-		$rights_buffer = $sprockets_rights_handler->getObjects(null, true, false);
+		$rights_buffer = $sprockets_rights_handler->getObjects(null, TRUE, FALSE);
 
 		// append the tag to the News title and link RSS to tag-specific feed
 		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
@@ -154,12 +154,12 @@ if($articleObj && !$articleObj->isNew()) {
 		}
 		
 		// Prepare a tag select box if sprockets module is installed & set in module preferences
-		if ($newsConfig['show_tag_select_box'] == true) {
+		if ($newsConfig['show_tag_select_box'] == TRUE) {
 			// prepare a tag navigation select box
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
-					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, true, icms::$module->getVar('mid'));
+					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, TRUE, icms::$module->getVar('mid'));
 			$icmsTpl->assign('news_tag_select_box', $tag_select_box);
-			$icmsTpl->assign('news_show_tag_select_box', true);
+			$icmsTpl->assign('news_show_tag_select_box', TRUE);
 		}
 	}
 	
@@ -253,10 +253,10 @@ if($articleObj && !$articleObj->isNew()) {
 			$criteria->setLimit($newsConfig['number_of_articles_per_page']);
 			$criteria->setSort('date');
 			$criteria->setOrder('DESC');
-			$criteria->add(new icms_db_criteria_Item('online_status', true));
+			$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 			$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 			
-			$article_object_array = $news_article_handler->getObjects($criteria, true, true);
+			$article_object_array = $news_article_handler->getObjects($criteria, TRUE, TRUE);
 		}
 
 		unset($criteria);
@@ -277,7 +277,7 @@ if($articleObj && !$articleObj->isNew()) {
 			$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
 			$criteria->add(new icms_db_criteria_Item('item', 'article'));
 			$criteria->add(new icms_db_criteria_Item('iid', $linked_article_ids, 'IN'));
-			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, true, true);
+			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, TRUE, TRUE);
 			unset($criteria);
 
 			foreach ($taglink_buffer as $key => $taglink) {
@@ -301,10 +301,10 @@ if($articleObj && !$articleObj->isNew()) {
 				
 				$tag_icons = $edit_item_link = $delete_item_link = '';
 
-				$edit_item_link = $article->getEditItemLink(false, true, false);
-				$delete_item_link = $article->getDeleteItemLink(false, true, false);
+				$edit_item_link = $article->getEditItemLink(FALSE, TRUE, FALSE);
+				$delete_item_link = $article->getDeleteItemLink(FALSE, TRUE, FALSE);
 
-				$article = prepareArticleForDisplay($article, false); // without DB overrides
+				$article = prepareArticleForDisplay($article, FALSE); // without DB overrides
 
 				$article['editItemLink'] = $edit_item_link;
 				$article['deleteItemLink'] = $delete_item_link;
@@ -339,20 +339,20 @@ if($articleObj && !$articleObj->isNew()) {
 		$icmsTpl->assign('news_articles_array', $article_object_array);
 
 		// display article rights field?
-		if ($newsConfig['display_rights'] == true) {
-			$icmsTpl->assign('news_display_rights', true);
+		if ($newsConfig['display_rights'] == TRUE) {
+			$icmsTpl->assign('news_display_rights', TRUE);
 		}
 	
 		// pagination
 		$criteria = new icms_db_criteria_Compo();
-		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// adjust for tag, if present
 		if (!empty($clean_tag_id)) {
 			$extra_arg = 'tag_id=' . $clean_tag_id;
 		} else {
-			$extra_arg = false;
+			$extra_arg = FALSE;
 			$article_count = $news_article_handler->getCount($criteria);
 		}
 		
@@ -360,27 +360,27 @@ if($articleObj && !$articleObj->isNew()) {
 			$clean_start, 'start', $extra_arg);
 		
 		$icmsTpl->assign('news_navbar', $pagenav->renderNav());
-		$icmsTpl->assign('news_index_view', true);
+		$icmsTpl->assign('news_index_view', TRUE);
 }
 
 // check if the module's breadcrumb should be displayed
-if ($newsConfig['show_breadcrumb'] == true) {
+if ($newsConfig['show_breadcrumb'] == TRUE) {
 	$icmsTpl->assign('news_show_breadcrumb', $newsConfig['show_breadcrumb']);
 } else {
-	$icmsTpl->assign('news_show_breadcrumb', false);
+	$icmsTpl->assign('news_show_breadcrumb', FALSE);
 }
 
-$icmsTpl->assign('news_module_home', news_getModuleName(true, true));
+$icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
 
 if (icms_get_module_status("sprockets")) {
 	if ($news_tag_name) {
-		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION . ' '
+		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION . ' '
 				. strtolower($news_tag_name));
 	} else {
-		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
+		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
 	}
 } else {
-	$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, false, _CO_NEWS_META_DESCRIPTION);
+	$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
 }
 
 $icms_metagen->createMetaTags();

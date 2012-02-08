@@ -33,7 +33,7 @@ define('NEWS_DB_VERSION', 1);
  */
 
 function icms_module_update_news($module) {
-    return true;
+    return TRUE;
 }
 
 /**
@@ -49,7 +49,7 @@ function icms_module_install_news($module) {
 	
 	// create an uploads directory for images
 	$path = ICMS_ROOT_PATH . '/uploads/' . basename(dirname(dirname(__FILE__)));
-	$directory_exists = $file_exists = $writeable = true;
+	$directory_exists = $file_exists = $writeable = TRUE;
 
 	// check if upload directory exists, make one if not, and write an empty index file
 	if (!is_dir($path)) {
@@ -71,7 +71,7 @@ function icms_module_install_news($module) {
 	// authorise some audio mimetypes for convenience
 	news_authorise_mimetypes();
 
-	return true;
+	return TRUE;
 }
 
 /**

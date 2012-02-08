@@ -18,7 +18,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
  * @param object $articleObj
  * @return array 
  */
-function prepareArticleForDisplay($articleObj, $with_overrides = true) {
+function prepareArticleForDisplay($articleObj, $with_overrides = TRUE) {
 
 	global $newsConfig;
 	
@@ -43,14 +43,14 @@ function prepareArticleForDisplay($articleObj, $with_overrides = true) {
 	$articleArray['extended_text'] = trim($articleArray['extended_text']);
 
 	$articleArray['date'] = date($newsConfig['date_format'], $articleObj->getVar('date', 'e'));
-	if ($newsConfig['display_creator'] == false) {
+	if ($newsConfig['display_creator'] == FALSE) {
 		unset($articleArray['creator']);
 	} else {
-		if ($newsConfig['use_submitter_as_creator'] == true) {
+		if ($newsConfig['use_submitter_as_creator'] == TRUE) {
 			$articleArray['creator'] = $articleArray['submitter'];
 		}
 	}
-	if ($newsConfig['display_counter'] == false) {
+	if ($newsConfig['display_counter'] == FALSE) {
 		unset($articleArray['counter']);
 	} else {
 		$articleArray['counter']++;
@@ -90,7 +90,7 @@ function news_getModuleAdminLink($moduleName='news') {
  * @param string $moduleName
  * @return string 
  */
-function news_getModuleName($withLink = true, $forBreadCrumb = false) {
+function news_getModuleName($withLink = TRUE, $forBreadCrumb = FALSE) {
 	
 	if (!icms_get_module_status("news")) {
 		return '';
@@ -112,7 +112,7 @@ function news_getModuleName($withLink = true, $forBreadCrumb = false) {
  * @param string $default default page if previous page is not found
  * @return string previous page URL
  */
-function news_getPreviousPage($default=false) {
+function news_getPreviousPage($default=FALSE) {
 	
 	global $impresscms;
 	
@@ -168,7 +168,7 @@ function news_validate($input_var, $valid_vars) {
 			case 'int':
 			case 'integer':
 				$clean_var[$key] = $dirty_int = $clean_int = 0;
-				if (filter_var($input_var[$key], FILTER_VALIDATE_INT) == true) {
+				if (filter_var($input_var[$key], FILTER_VALIDATE_INT) == TRUE) {
 					$dirty_int = filter_var($input_var[$key], FILTER_SANITIZE_NUMBER_INT);
 					$clean_int = mysql_real_escape_string($dirty_int);
 					$clean_var[$key] = (int)$clean_int;
@@ -220,7 +220,7 @@ function news_validate($input_var, $valid_vars) {
 
 			case 'email':
 				$clean_var[$key] = $dirty_email = $clean_email = '';
-				if (filter_var($input_var[$key], FILTER_VALIDATE_EMAIL) == true) {
+				if (filter_var($input_var[$key], FILTER_VALIDATE_EMAIL) == TRUE) {
 					$dirty_email = filter_var($input_var[$key], FILTER_SANITIZE_EMAIL);
 					$clean_email = mysql_real_escape_string($dirty_email);
 					$clean_var[$key] = (string)$clean_email;
@@ -231,7 +231,7 @@ function news_validate($input_var, $valid_vars) {
 				// initialise
 				$clean_var[$key] = $dirty_url = $clean_url = '';
 				// validate and sanitise URL
-				if (filter_var($input_var[$key], FILTER_VALIDATE_URL) == true) {
+				if (filter_var($input_var[$key], FILTER_VALIDATE_URL) == TRUE) {
 					$dirty_url = filter_var($input_var[$key], FILTER_SANITIZE_URL);
 					$clean_url = mysql_real_escape_string($dirty_url);
 					$clean_var[$key] = $clean_url;
@@ -243,7 +243,7 @@ function news_validate($input_var, $valid_vars) {
 				// initialise
 				$clean_var[$key] = $clean_float = 0;
 				// validate and sanitise float
-				if (filter_var($input_var[$key], FILTER_VALIDATE_FLOAT) == true) {
+				if (filter_var($input_var[$key], FILTER_VALIDATE_FLOAT) == TRUE) {
 					$clean_float = filter_var($input_var[$key], FILTER_SANITIZE_NUMBER_FLOAT);
 					$clean_var[$key] = (float)$clean_float;
 				}
@@ -251,7 +251,7 @@ function news_validate($input_var, $valid_vars) {
 
 			case 'bool':
 			case 'boolean':
-				$clean_var[$key] = false;
+				$clean_var[$key] = FALSE;
 				if (is_bool($input_var[$key])) {
 					$clean_var[$key] = (bool) $input_var[$key];
 				}

@@ -22,7 +22,7 @@ if (icms_get_module_status("sprockets")) {
 	
 	// initialise
 	$tagList = '';
-	$have_tags = false;
+	$have_tags = FALSE;
 	$article_list = $article_ids = $tag_list = $tag_ids = $tag_array = $taglink_object_array
 		= $taglink_iid_list = array();
 	
@@ -76,27 +76,27 @@ if (icms_get_module_status("sprockets")) {
 			$tag_list[] = '<a href="' . ICMS_URL . '/modules/' . $newsModule->getVar('dirname')
 					. '/article.php?tag_id=' . $key . '" title="' . $tag . '">' . $tag . '</a>';
 		}
-		$have_tags = true;
+		$have_tags = TRUE;
 	}
 	
 	// assign the results to the template
 	if ($have_tags) {
 		$icmsTpl->assign('news_topics_list', $tag_list);
 	} else {
-		$icmsTpl->assign('news_topics_list', false);
+		$icmsTpl->assign('news_topics_list', FALSE);
 	}
 }
 
 // check if the module's breadcrumb should be displayed
-if ($newsConfig['show_breadcrumb'] == true) {
+if ($newsConfig['show_breadcrumb'] == TRUE) {
 	$icmsTpl->assign('news_show_breadcrumb', $newsConfig['show_breadcrumb']);
 } else {
-	$icmsTpl->assign('news_show_breadcrumb', false);
+	$icmsTpl->assign('news_show_breadcrumb', FALSE);
 }
 
-$icmsTpl->assign('news_module_home', news_getModuleName(true, true));
+$icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
 $icmsTpl->assign('news_category_path', _CO_NEWS_ARCHIVE_TAGS);
-$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVE_TAGS, false, _CO_NEWS_ARCHIVE_TAGS_DESCRIPTION);
+$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_ARCHIVE_TAGS, FALSE, _CO_NEWS_ARCHIVE_TAGS_DESCRIPTION);
 $icms_metagen->createMetaTags();
 
 include_once 'footer.php';

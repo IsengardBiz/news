@@ -73,15 +73,15 @@ function news_article_recent_show($options) {
 		$criteria->setLimit($options[0] +1); // spotlighted article will not be included in the list
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
-		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// retrieve the news articles to show in the block
-		$block['recent_news_articles'] = $news_article_handler->getObjects($criteria, true, true);
+		$block['recent_news_articles'] = $news_article_handler->getObjects($criteria, TRUE, TRUE);
 	}
 
 	// check if spotlight mode is active, and if spotlight article has already been retrieved
-	if ($options[4] == true && (!empty($block['recent_news_articles']))) {
+	if ($options[4] == TRUE && (!empty($block['recent_news_articles']))) {
 		if (array_key_exists($options[5], $block['recent_news_articles'])) {
 			$spotlightObj = $block['recent_news_articles'][$options[5]];
 			unset($block['recent_news_articles'][$options[5]]);
@@ -106,10 +106,10 @@ function news_article_recent_show($options) {
 			$block['recent_news_spotlight_lead_image'] = $spotlightObj->get_lead_image_tag();
 			$block['recent_news_lead_image_display_width'] = icms_getConfig('lead_image_display_width', 'news');
 		} else {
-			$block['recent_news_spotlight_lead_image'] = false;
+			$block['recent_news_spotlight_lead_image'] = FALSE;
 		}
 		$block['recent_news_spotlight_description'] = $spotlightObj->getVar('description');
-		$block['recent_news_spotlight_link'] = $spotlightObj->getItemLink(true);
+		$block['recent_news_spotlight_link'] = $spotlightObj->getItemLink(TRUE);
 		$block['recent_news_title'] = _MB_NEWS_ARTICLE_SPOTLIGHT_RECENT_ARTICLES;
 	}
 
@@ -125,7 +125,7 @@ function news_article_recent_show($options) {
 		// formats timestamp according to the block options
 		$date = $article->getVar('date', 'e');
 		$date = date($options[2], $date);
-		$article = $article->toArrayWithoutOverrides(true);
+		$article = $article->toArrayWithoutOverrides(TRUE);
 		$article['date'] = $date;		
 	}
 	return $block;
@@ -155,8 +155,8 @@ function news_article_recent_edit($options) {
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$form .= '<tr><td>' . _MB_NEWS_ARTICLE_RECENT_TAG . '</td>';
-		// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = false)
-		$form_select = new icms_form_elements_Select('', 'options[]', $options[1], '1', false);
+		// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = FALSE)
+		$form_select = new icms_form_elements_Select('', 'options[]', $options[1], '1', FALSE);
 		$tagList = $sprockets_tag_handler->getList();
 		$tagList = array(0 => 'All') + $tagList;
 		$form_select->addOptionArray($tagList);
@@ -227,7 +227,7 @@ function news_article_recent_edit($options) {
 		$criteria->setLimit($options[0]+1);
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
-		$criteria->add(new icms_db_criteria_Item('online_status', true));
+		$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// retrieve the articles
@@ -237,8 +237,8 @@ function news_article_recent_edit($options) {
 	
 	// build a select box of article titles
 	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_SPOTLIGHTED_ARTICLE . '</td>';
-	// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = false)
-	$form_spotlight = new icms_form_elements_Select('', 'options[5]', $options[5], '1', false);
+	// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = FALSE)
+	$form_spotlight = new icms_form_elements_Select('', 'options[5]', $options[5], '1', FALSE);
 	$form_spotlight->addOptionArray($article_array);
 	$form .= '<td>' . $form_spotlight->render() . '</td></tr>';
 	$form .= '</table>';

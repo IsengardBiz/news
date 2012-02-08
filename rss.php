@@ -29,7 +29,7 @@ function encode_entities($field) {
 $newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 $clean_tag_id = $sort_order = '';
 
-$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : false;
+$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : FALSE;
 
 include_once ICMS_ROOT_PATH . '/modules/' . basename(dirname(__FILE__))
 	. '/class/icmsfeed.php';
@@ -64,7 +64,7 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php"';
 
 	$criteria = new icms_db_criteria_Compo();
-	$criteria->add(new icms_db_criteria_Item('online_status', true));
+	$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 	$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 	$criteria->setStart(0);
 	$criteria->setLimit($newsModule->config['number_rss_items']);
@@ -137,10 +137,10 @@ foreach($articleArray as $article) {
 	$flattened_article = $article->toArray();
 
 	// check if creator or submitter should be designated as author
-	if ($newsModule->config['display_creator'] == false) {
+	if ($newsModule->config['display_creator'] == FALSE) {
 		$creator = $site_name;
 	} else {
-		if ($newsModule->config['use_submitter_as_creator'] == true) {
+		if ($newsModule->config['use_submitter_as_creator'] == TRUE) {
 			$member_handler = icms::handler('icms_member');
 			$user = & $member_handler->getUser($article->getVar('submitter', 'e'));
 			$creator = $user->getVar('uname');

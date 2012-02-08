@@ -26,35 +26,35 @@ class NewsArticle extends icms_ipf_seo_Object {
 
 		parent::__construct($handler);
 
-		$this->quickInitVar('article_id', XOBJ_DTYPE_INT, true);
-		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, true);
-		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, false);
-		$this->initNonPersistableVar('tag', XOBJ_DTYPE_INT, 'tag', false, false, false, true);
-		$this->quickInitVar('display_topic_image', XOBJ_DTYPE_INT, true, false, false,
+		$this->quickInitVar('article_id', XOBJ_DTYPE_INT, TRUE);
+		$this->quickInitVar('title', XOBJ_DTYPE_TXTBOX, TRUE);
+		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, FALSE);
+		$this->initNonPersistableVar('tag', XOBJ_DTYPE_INT, 'tag', FALSE, FALSE, FALSE, TRUE);
+		$this->quickInitVar('display_topic_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
 				$newsConfig['display_topic_image']);
-		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, true);
-		$this->quickInitVar('extended_text', XOBJ_DTYPE_TXTAREA, false);
-		$this->quickInitVar('lead_image', XOBJ_DTYPE_IMAGE, false);
-		$this->quickInitVar('display_lead_image', XOBJ_DTYPE_INT, true, false, false, 
+		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, TRUE);
+		$this->quickInitVar('extended_text', XOBJ_DTYPE_TXTAREA, FALSE);
+		$this->quickInitVar('lead_image', XOBJ_DTYPE_IMAGE, FALSE);
+		$this->quickInitVar('display_lead_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 
 				$newsConfig['display_lead_image']);
-		$this->quickInitVar('rights', XOBJ_DTYPE_INT, false);
-		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, true, false, false, _LANGCODE);
-		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, true, false, false,
+		$this->quickInitVar('rights', XOBJ_DTYPE_INT, FALSE);
+		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, _LANGCODE);
+		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
 				$icmsConfig['sitename']);
-		$this->quickInitVar('type', XOBJ_DTYPE_TXTBOX, true, false, false, 'Text');
-		$this->quickInitVar('submitter', XOBJ_DTYPE_INT, true);
-		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, true);
-		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, true, false, false, 1);
-		$this->quickInitVar('federated', XOBJ_DTYPE_INT, true, false, false,
+		$this->quickInitVar('type', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, 'Text');
+		$this->quickInitVar('submitter', XOBJ_DTYPE_INT, TRUE);
+		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, TRUE);
+		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 1);
+		$this->quickInitVar('federated', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
 				$newsConfig['default_federation']);
-		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, true, false, false,
+		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
 				$this->handler->setOaiId());
 		$this->initCommonVar('counter');
 		$this->initCommonVar('dohtml');
 		$this->initCommonVar('dobr');
 		$this->initCommonVar('dosmiley');
 		$this->initCommonVar('docxode');
-		$this->quickInitVar ('article_notification_sent', XOBJ_DTYPE_INT, true, false, false, 0);
+		$this->quickInitVar ('article_notification_sent', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 0);
 
 		$this->setControl('description', 'dhtmltextarea');
 		$this->setControl('extended_text', 'dhtmltextarea');
@@ -170,9 +170,9 @@ class NewsArticle extends icms_ipf_seo_Object {
 		if ($this->handler->identifierName != "") {
 			$controller = new icms_ipf_Controller($this->handler);
 			$ret['itemLink'] = $controller->getItemLink($this);
-			$ret['itemUrl'] = $controller->getItemLink($this, true);
-			$ret['editItemLink'] = $controller->getEditItemLink($this, false, true);
-			$ret['deleteItemLink'] = $controller->getDeleteItemLink($this, false, true);
+			$ret['itemUrl'] = $controller->getItemLink($this, TRUE);
+			$ret['editItemLink'] = $controller->getEditItemLink($this, FALSE, TRUE);
+			$ret['deleteItemLink'] = $controller->getDeleteItemLink($this, FALSE, TRUE);
 			$ret['printAndMailLink'] = $controller->getPrintAndMailLink($this);
 		}
 		
@@ -296,7 +296,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 			
 		} else {
 			
-			$rights = false;
+			$rights = FALSE;
 		}
 		
 		return $rights;
@@ -340,7 +340,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$button = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__)))
 				. '/admin/article.php?article_id=' . $this->getVar('article_id')
 				. '&amp;op=changeStatus">';
-		if ($status == false) {
+		if ($status == FALSE) {
 			$button .= '<img src="../images/button_cancel.png" alt="' . _CO_NEWS_ARTICLE_ONLINE 
 				. '" title="' . _CO_NEWS_ARTICLE_SWITCH_OFFLINE . '" /></a>';
 			
@@ -366,7 +366,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 				. '/admin/article.php?article_id=' . $this->getVar('article_id')
 				. '&amp;op=changeFederation">';
 		
-		if ($status == false) {
+		if ($status == FALSE) {
 			$button .= '<img src="../images/button_cancel.png" alt="' . _CO_NEWS_ARTICLE_ONLINE 
 				. '" title="' . _CO_NEWS_ARTICLE_DISABLE_FEDERATION . '" /></a>';
 			
@@ -394,7 +394,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 
 		$tags = array();
 		$tags['ITEM_TITLE'] = $this->getVar('title');
-		$tags['ITEM_URL'] = $this->getItemLink(true);
+		$tags['ITEM_URL'] = $this->getItemLink(TRUE);
 
 		// global notification
 		$notification_handler->triggerEvent('global', 0, 'article_published', $tags,
@@ -407,12 +407,12 @@ class NewsArticle extends icms_ipf_seo_Object {
 	* @TODO: This functionality might be available from the core; if so should use that and get rid of this
 	*
 	* @param integer $userid uid of the related user
-	* @param bool $name true to return the fullname, false to use the username; if true and the user does not have fullname, username will be used instead
+	* @param bool $name TRUE to return the fullname, FALSE to use the username; if TRUE and the user does not have fullname, username will be used instead
 	* @param array $users array already containing icms::$user objects in which case we will save a query
-	* @param bool $withContact true if we want contact details to be added in the value returned (PM and email links)
+	* @param bool $withContact TRUE if we want contact details to be added in the value returned (PM and email links)
 	* @return string name of user with a link on his profile
 	*/
-	function getLinkedUnameFromId($userid, $name = false, $users = array (), $withContact = false)
+	function getLinkedUnameFromId($userid, $name = FALSE, $users = array (), $withContact = FALSE)
 	{
 		if (!is_numeric($userid)) {
 			return $userid;
