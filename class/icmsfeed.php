@@ -86,12 +86,10 @@ class IcmsFeed {
 
 	/**
 	 * Renders the RSS feed
-	 *
-	 * @global object $xoopsLogger 
 	 */
 	public function render() {
-		global $xoopsLogger;
-		$xoopsLogger->disableLogger();
+		
+		icms::$logger->disableLoger();
 
 		header('Content-Type: application/rss+xml; charset='._CHARSET);
 		$xoopsOption['template_main'] = "db:news_rss.html";

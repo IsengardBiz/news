@@ -102,8 +102,8 @@ if (icms_get_module_status("sprockets"))
 
 		if ($archiveObj->getVar('enable_archive', 'e') == 1 ) {
 
-			// IMPORTANT: need to disable the xoopsLogger because it breaks XML responses
-			$xoopsLogger->disableLogger();
+			// IMPORTANT: need to disable the logger because it breaks XML responses	
+			icms::$logger->disableLogger();
 
 			////////////////////////////////////////////////////////
 			////////// BEGIN OPEN ARCHIVES INITIATIVE API //////////
