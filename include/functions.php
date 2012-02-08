@@ -90,23 +90,17 @@ function news_getModuleAdminLink($moduleName='news') {
  * @param string $moduleName
  * @return string 
  */
-function news_getModuleName($withLink = true, $forBreadCrumb = false, $moduleName = false) {
+function news_getModuleName($withLink = true, $forBreadCrumb = false) {
 	
-	if (!$moduleName) {
-		
-		$newsModule = icms_getModuleInfo(basename(dirname(dirname(__FILE__))));
-		$moduleName = $newsModule->getVar('dirname');
-	}
-	$icmsModuleConfig = icms_getModuleConfig($moduleName);
-	if (!isset ($newsModule)) {
+	if (!icms_get_module_status("news")) {
 		return '';
 	}
 
 	if (!$withLink) {
-		return $newsModule->getVar('name');
+		return icms::$module->getVar('name');
 	} else {
-		$ret = ICMS_URL . '/modules/' . $moduleName . '/';
-		return '<a href="' . $ret . '">' . $newsModule->getVar('name') . '</a>';
+		$ret = ICMS_URL . '/modules/' . icms::$module->getVar('dirname') . '/';
+		return '<a href="' . $ret . '">' . icms::$module->getVar('name') . '</a>';
 	}
 }
 

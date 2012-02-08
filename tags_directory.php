@@ -34,8 +34,6 @@ if (icms_get_module_status("sprockets")) {
 
 	// get a list of tags containing online articles using a JOIN between article and taglink tables
 
-	global $xoopsDB;
-
 	$query = $rows = $tag_article_count = '';
 
 	$query = "SELECT DISTINCT `tid` FROM " . $news_article_handler->table . ", "
@@ -46,7 +44,7 @@ if (icms_get_module_status("sprockets")) {
 			. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 			. " AND `item` = 'article'";
 
-	$result = $xoopsDB->query($query);
+	$result = icms::$xoopsDB->query($query);
 
 	if (!$result) {
 		echo 'Error';

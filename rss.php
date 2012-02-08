@@ -104,8 +104,6 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	
 	// retrieve articles relevant to this tag using a JOIN to the taglinks table
 
-	global $xoopsDB;
-
 	$query = $rows = $tag_article_count = '';
 
 	$query = "SELECT * FROM " . $news_article_handler->table . ", "
@@ -119,7 +117,7 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 			. " ORDER BY `date` DESC"
 			. " LIMIT " . $newsModule->config['number_rss_items'];
 
-	$result = $xoopsDB->query($query);
+	$result = icms::$xoopsDB->query($query);
 
 	if (!$result) {
 		echo 'Error';
