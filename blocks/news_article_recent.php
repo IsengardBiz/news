@@ -155,8 +155,8 @@ function news_article_recent_edit($options) {
 		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$form .= '<tr><td>' . _MB_NEWS_ARTICLE_RECENT_TAG . '</td>';
-		// Parameters XoopsFormSelect: ($caption, $name, $value = null, $size = 1, $multiple = false)
-		$form_select = new XoopsFormSelect('', 'options[]', $options[1], '1', false);
+		// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = false)
+		$form_select = new icms_form_elements_Select('', 'options[]', $options[1], '1', false);
 		$tagList = $sprockets_tag_handler->getList();
 		$tagList = array(0 => 'All') + $tagList;
 		$form_select->addOptionArray($tagList);
@@ -228,7 +228,7 @@ function news_article_recent_edit($options) {
 		$criteria->setSort('date');
 		$criteria->setOrder('DESC');
 		$criteria->add(new icms_db_criteria_Item('online_status', true));
-		$criteria->add(new icms_db_criteria_Itemria('date', time(), '<'));
+		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// retrieve the articles
 		$article_array = $news_article_handler->getList($criteria);
@@ -237,8 +237,8 @@ function news_article_recent_edit($options) {
 	
 	// build a select box of article titles
 	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_SPOTLIGHTED_ARTICLE . '</td>';
-	// Parameters XoopsFormSelect: ($caption, $name, $value = null, $size = 1, $multiple = false)
-	$form_spotlight = new XoopsFormSelect('', 'options[5]', $options[5], '1', false);
+	// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = false)
+	$form_spotlight = new icms_form_elements_Select('', 'options[5]', $options[5], '1', false);
 	$form_spotlight->addOptionArray($article_array);
 	$form .= '<td>' . $form_spotlight->render() . '</td></tr>';
 	$form .= '</table>';
