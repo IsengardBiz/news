@@ -61,7 +61,10 @@ if($articleObj && !$articleObj->isNew()) {
 	////////////////////////////////////////////////////////////////
 	
 	// update hits counter
-	$news_article_handler->updateCounter($articleObj);
+	if (!icms_userIsAdmin(icms::$module->getVar('dirname')))
+	{
+		$news_article_handler->updateCounter($articleObj);
+	}
 
 	// prepare object for display, unset unwanted fields as per module preferences
 	$articleObj->loadTags();
