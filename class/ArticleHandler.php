@@ -224,15 +224,18 @@ class NewsArticleHandler extends icms_ipf_Handler {
 			}
 		}
 
-		// storing tags
-		$sprocketsModule = icms_getModuleInfo('sprockets');
+		// Only update the taglinks if the object is being updated from the add/edit form (POST).
+		// The taglinks should *not* be updated during a GET request (ie. when the toggle buttons
+		// are used to change the completion status or online status). Attempting to do so will 
+		// trigger an error, as the database should not be updated during a GET request.
+		$sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
 		
-		if (icms_get_module_status("sprockets")) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && icms_get_module_status("sprockets")) {
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
 					$sprocketsModule->getVar('dirname'), 'sprockets', 'sprockets');
 			$sprockets_taglink_handler->storeTagsForObject($obj);
 		}
-
+	
 		return true;
 	}
 	
