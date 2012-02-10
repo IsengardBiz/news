@@ -341,13 +341,13 @@ class NewsArticle extends icms_ipf_seo_Object {
 				. '/admin/article.php?article_id=' . $this->getVar('article_id')
 				. '&amp;op=changeStatus">';
 		if ($status == FALSE) {
-			$button .= '<img src="../images/button_cancel.png" alt="' . _CO_NEWS_ARTICLE_ONLINE 
-				. '" title="' . _CO_NEWS_ARTICLE_SWITCH_OFFLINE . '" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_cancel.png" alt="' 
+				. _CO_NEWS_ARTICLE_ONLINE . '" title="' . _CO_NEWS_ARTICLE_SWITCH_OFFLINE . '" /></a>';
 			
 		} else {
 			
-			$button .= '<img src="../images/button_ok.png" alt="' . _CO_NEWS_ARTICLE_OFFLINE
-				. '" title="' . _CO_NEWS_ARTICLE_SWITCH_ONLINE . '" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="'
+					. _CO_NEWS_ARTICLE_OFFLINE . '" title="' . _CO_NEWS_ARTICLE_SWITCH_ONLINE . '" /></a>';
 		}
 		return $button;
 	}
@@ -367,13 +367,15 @@ class NewsArticle extends icms_ipf_seo_Object {
 				. '&amp;op=changeFederation">';
 		
 		if ($status == FALSE) {
-			$button .= '<img src="../images/button_cancel.png" alt="' . _CO_NEWS_ARTICLE_ONLINE 
-				. '" title="' . _CO_NEWS_ARTICLE_DISABLE_FEDERATION . '" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_cancel.png" alt="' 
+					. _CO_NEWS_ARTICLE_ONLINE . '" title="' . _CO_NEWS_ARTICLE_DISABLE_FEDERATION 
+					. '" /></a>';
 			
 		} else {
 			
-			$button .= '<img src="../images/button_ok.png" alt="' . _CO_NEWS_ARTICLE_OFFLINE
-				. '" title="' . _CO_NEWS_ARTICLE_ENABLE_FEDERATION . '" /></a>';
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="' 
+					. _CO_NEWS_ARTICLE_OFFLINE . '" title="' . _CO_NEWS_ARTICLE_ENABLE_FEDERATION 
+					. '" /></a>';
 		}
 		return $button;
 	}
