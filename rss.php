@@ -84,7 +84,7 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	$tag_description = encode_entities($tag_description);
 
 	$news_feed->title = $site_name . ' - ' . $tag_title;
-	$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->getVar('id');
+	$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->getVar('tag_id');
 	$news_feed->description = $tag_description;
 	$news_feed->language = _LANGCODE;
 	$news_feed->charset = _CHARSET;
