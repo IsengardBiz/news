@@ -188,11 +188,13 @@ if ($fromyear != 0 && $frommonth != 0) {
 
 $icmsTpl->assign('lang_newsarchives', _CO_NEWS_ARCHIVES);
 
-// check if the module's breadcrumb should be displayed
-if ($newsConfig['show_breadcrumb'] == TRUE) {
-	$icmsTpl->assign('news_show_breadcrumb', $newsConfig['show_breadcrumb']);
+// check if the module's breadcrumb / RSS icon should be displayed
+if (icms::$module->config['show_breadcrumb'] == TRUE) {
+	$icmsTpl->assign('news_show_breadcrumb', icms::$module->config['show_breadcrumb']);
 } else {
 	$icmsTpl->assign('news_show_breadcrumb', FALSE);
+	$icmsTpl->assign('news_rss_link', 'rss.php');
+	$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS);
 }
 
 $icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
