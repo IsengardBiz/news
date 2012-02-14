@@ -62,13 +62,6 @@
 
 <!-- index page view -->
 
-<{if $news_index_view}>
-	<h1><a href="<{$news_rss_link}>" title="<{$news_rss_title}>">
-		<img src="./images/rss.png" alt="RSS" /></a> <{$smarty.const._CO_NEWS_MD_NAME}>
-		<{if $news_tag_name}> - <{$news_tag_name}><{/if}>
-	</h1>
-<{/if}>
-
 <!-- tag select box -->
 <{if $news_show_tag_select_box}><{$news_tag_select_box}><{/if}>
 

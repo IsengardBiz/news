@@ -11,4 +11,9 @@
 			<{$news_category_path}></span>
 		<{/if}>
 	</div>
+<{else}>
+	<h1><a href="<{$news_rss_link}>" title="<{$news_rss_title}>">
+		<img src="./images/rss.png" alt="RSS" /></a> <{$smarty.const._CO_NEWS_MD_NAME}>
+		<{if $news_tag_name}> - <{$news_tag_name}><{/if}>
+	</h1>
 <{/if}>
