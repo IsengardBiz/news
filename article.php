@@ -15,7 +15,7 @@ include_once 'header.php';
 $xoopsOption['template_main'] = 'news_article.html';
 include_once ICMS_ROOT_PATH . '/header.php';
 
-global $icmsConfig, $newsConfig;
+global $icmsConfig;
 
 $clean_article_id = $clean_story_id = $clean_tag_id = $clean_start = $articleObj
 	= $news_article_handler = $news_tag_name = '';
@@ -104,8 +104,15 @@ if($articleObj && !$articleObj->isNew()) {
 	}
 
 	// display article rights field?
-	if ($newsConfig['display_rights'] == TRUE) {
+	if (icms::$module->config['display_rights'] == TRUE) {
 		$icmsTpl->assign('news_display_rights', TRUE);
+	}
+	
+	// Display RSS feed? This could probably be consolidated as it is checked twice in this script
+	if (icms::$module->config['show_breadcrumb'] == FALSE)
+	{
+		$icmsTpl->assign('news_rss_link', 'rss.php');
+		$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS);
 	}
 
 	// display this article
@@ -113,7 +120,7 @@ if($articleObj && !$articleObj->isNew()) {
 	$icmsTpl->assign('news_index_view', FALSE);
 	
 	// comments
-	if ($newsConfig['com_rule']) {
+	if (icms::$module->config['com_rule']) {
 		$icmsTpl->assign('news_article_comment', TRUE);
 		include_once ICMS_ROOT_PATH . '/include/comment_view.php';
 	}
@@ -146,7 +153,7 @@ if($articleObj && !$articleObj->isNew()) {
 		// prepare buffers to reduce queries
 		$rights_buffer = $sprockets_rights_handler->getObjects(null, TRUE, FALSE);
 
-		// append the tag to the News title and link RSS to tag-specific feed
+		// append the tag to the News title
 		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
 			$news_tag_name = $sprockets_tag_buffer[$clean_tag_id]['title'];
 			$icmsTpl->assign('news_tag_name', $news_tag_name);
@@ -154,7 +161,7 @@ if($articleObj && !$articleObj->isNew()) {
 		}
 		
 		// Prepare a tag select box if sprockets module is installed & set in module preferences
-		if ($newsConfig['show_tag_select_box'] == TRUE) {
+		if (icms::$module->config['show_tag_select_box'] == TRUE) {
 			// prepare a tag navigation select box
 			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
 					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, TRUE, icms::$module->getVar('mid'));
@@ -229,7 +236,7 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"
-					. " LIMIT " . $clean_start . ", " . $newsConfig['number_of_articles_per_page'];
+					. " LIMIT " . $clean_start . ", " . icms::$module->config['number_of_articles_per_page'];
 
 			$result = icms::$xoopsDB->query($query);
 
@@ -250,7 +257,7 @@ if($articleObj && !$articleObj->isNew()) {
 			$criteria = new icms_db_criteria_Compo();
 
 			$criteria->setStart($clean_start);
-			$criteria->setLimit($newsConfig['number_of_articles_per_page']);
+			$criteria->setLimit(icms::$module->config['number_of_articles_per_page']);
 			$criteria->setSort('date');
 			$criteria->setOrder('DESC');
 			$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
@@ -339,7 +346,7 @@ if($articleObj && !$articleObj->isNew()) {
 		$icmsTpl->assign('news_articles_array', $article_object_array);
 
 		// display article rights field?
-		if ($newsConfig['display_rights'] == TRUE) {
+		if (icms::$module->config['display_rights'] == TRUE) {
 			$icmsTpl->assign('news_display_rights', TRUE);
 		}
 	
@@ -356,7 +363,7 @@ if($articleObj && !$articleObj->isNew()) {
 			$article_count = $news_article_handler->getCount($criteria);
 		}
 		
-		$pagenav = new  icms_view_PageNav($article_count, $newsConfig['number_of_articles_per_page'],
+		$pagenav = new  icms_view_PageNav($article_count, icms::$module->config['number_of_articles_per_page'],
 			$clean_start, 'start', $extra_arg);
 		
 		$icmsTpl->assign('news_navbar', $pagenav->renderNav());
@@ -364,8 +371,8 @@ if($articleObj && !$articleObj->isNew()) {
 }
 
 // check if the module's breadcrumb should be displayed
-if ($newsConfig['show_breadcrumb'] == TRUE) {
-	$icmsTpl->assign('news_show_breadcrumb', $newsConfig['show_breadcrumb']);
+if (icms::$module->config['show_breadcrumb'] == TRUE) {
+	$icmsTpl->assign('news_show_breadcrumb', icms::$module->config['show_breadcrumb']);
 } else {
 	$icmsTpl->assign('news_show_breadcrumb', FALSE);
 }
