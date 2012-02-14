@@ -144,6 +144,7 @@ foreach($articleArray as $article) {
 			$member_handler = icms::handler('icms_member');
 			$user = & $member_handler->getUser($article->getVar('submitter', 'e'));
 			$creator = $user->getVar('uname');
+			$creator = encode_entities($creator);
 		} else {
 			$creator = $article->getVar('creator', 'e');
 			$creator = explode('|', $creator);
@@ -152,7 +153,6 @@ foreach($articleArray as $article) {
 			}
 		}
 	}
-	$creator = encode_entities($creator);
 
 	// check if there is an extended text
 	$description = encode_entities($flattened_article['description']);

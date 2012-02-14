@@ -89,7 +89,7 @@ class IcmsFeed {
 	 */
 	public function render() {
 		
-		icms::$logger->disableLoger();
+		icms::$logger->disableLogger();
 
 		header('Content-Type: application/rss+xml; charset='._CHARSET);
 		$xoopsOption['template_main'] = "db:news_rss.html";
