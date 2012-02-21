@@ -167,7 +167,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 	    	$htmltitle = '';
 			$story = array();
 			
-	    	$story['title'] = $article->getItemLink();
+	    	$story['title'] = $article->getItemLinkWithSEOString();
 	    	$story['counter'] = $article->getVar('counter');
 			if (icms_get_module_status("sprockets")) {
 				// use the article_id to extract the array of tags relevant to this article
@@ -176,12 +176,6 @@ if ($fromyear != 0 && $frommonth != 0) {
 				$story['tags'] = FALSE;
 			}
 	    	$story['date'] = formatTimestamp($article->getVar('date', 'e'),$dateformat,$useroffset);
-			
-			// Add SEO friendly string to URL
-			if (!empty($story['short_url']))
-			{
-				$story['itemUrl'] .= "&amp;title=" . $story['short_url'];
-			}
 	
 	    	$icmsTpl->append('stories', $story);
 		}

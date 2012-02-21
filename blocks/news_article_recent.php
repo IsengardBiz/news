@@ -110,13 +110,18 @@ function news_article_recent_show($options) {
 		}
 		$block['recent_news_spotlight_description'] = $spotlightObj->getVar('description');
 		$block['recent_news_spotlight_link'] = $spotlightObj->getItemLink(TRUE);
+		$short_url = $spotlightObj->getVar('short_url');
+		if (!empty($short_url))
+		{
+			$block['recent_news_spotlight_link'] .= '&amp;title=' . $short_url;
+		}
 		$block['recent_news_title'] = _MB_NEWS_ARTICLE_SPOTLIGHT_RECENT_ARTICLES;
 	}
 
 	// prepare article links for display
 	foreach ($block['recent_news_articles'] as &$article) {
 		$title = $article->getVar('title');
-		
+		$itemLink = $article->getItemLinkWithSEOString();
 		// trim the title if its length exceeds the block preferences
 		if (strlen($title) > $options[3]) {
 			$article->setVar('title', substr($title, 0, ($options[3] - 3)) . '...');
@@ -128,11 +133,8 @@ function news_article_recent_show($options) {
 		$article = $article->toArrayWithoutOverrides(TRUE);
 		$article['date'] = $date;
 		
-		// Add SEO friendly string to URL
-		if (!empty($article['short_url']))
-		{
-			$article['itemUrl'] .= "&amp;title=" . $article['short_url'];
-		}
+		// Add the SEO string to the itemLink
+		$article['itemLink'] = $itemLink;
 	}
 	return $block;
 }

@@ -29,6 +29,12 @@ function prepareArticleForDisplay($articleObj, $with_overrides = TRUE) {
 	} else {
 		$articleArray = $articleObj->toArrayWithoutOverrides();
 	}
+	
+	// Add SEO friendly string to URL
+	if (!empty($articleArray['short_url']))
+	{
+		$articleArray['itemLink'] = $articleObj->getItemLinkWithSEOString();
+	}
 
 	// ensure the raw value is used for display_topic_image
 	$articleArray['display_topic_image'] = $articleObj->getVar('display_topic_image', 'e');

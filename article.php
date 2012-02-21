@@ -75,12 +75,6 @@ if($articleObj && !$articleObj->isNew()) {
 	$delete_item_link = $articleObj->getDeleteItemLink(FALSE, TRUE, FALSE);
 
 	$articleArray = prepareArticleForDisplay($articleObj, TRUE); // with DB overrides
-	
-	// Add SEO friendly string to URL
-	if (!empty($articleArray['short_url']))
-	{
-		$articleArray['itemUrl'] .= "&amp;title=" . $articleArray['short_url'];
-	}
 
 	$articleArray['editItemLink'] = $edit_item_link;
 	$articleArray['deleteItemLink'] = $delete_item_link;
@@ -318,12 +312,6 @@ if($articleObj && !$articleObj->isNew()) {
 				$delete_item_link = $article->getDeleteItemLink(FALSE, TRUE, FALSE);
 
 				$article = prepareArticleForDisplay($article, FALSE); // without DB overrides
-				
-				// Add SEO friendly string to URL
-				if (!empty($article['short_url']))
-				{
-					$article['itemUrl'] .= "&amp;title=" . $article['short_url'];
-				}
 
 				$article['editItemLink'] = $edit_item_link;
 				$article['deleteItemLink'] = $delete_item_link;
