@@ -165,7 +165,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 		
 		foreach ($storyarray as $article) {
 	    	$htmltitle = '';
-			$story = array();			
+			$story = array();
 			
 	    	$story['title'] = $article->getItemLink();
 	    	$story['counter'] = $article->getVar('counter');
@@ -176,6 +176,13 @@ if ($fromyear != 0 && $frommonth != 0) {
 				$story['tags'] = FALSE;
 			}
 	    	$story['date'] = formatTimestamp($article->getVar('date', 'e'),$dateformat,$useroffset);
+			
+			// Add SEO friendly string to URL
+			if (!empty($story['short_url']))
+			{
+				$story['itemUrl'] .= "&amp;title=" . $story['short_url'];
+			}
+	
 	    	$icmsTpl->append('stories', $story);
 		}
 	}

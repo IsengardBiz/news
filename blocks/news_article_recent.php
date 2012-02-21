@@ -126,7 +126,13 @@ function news_article_recent_show($options) {
 		$date = $article->getVar('date', 'e');
 		$date = date($options[2], $date);
 		$article = $article->toArrayWithoutOverrides(TRUE);
-		$article['date'] = $date;		
+		$article['date'] = $date;
+		
+		// Add SEO friendly string to URL
+		if (!empty($article['short_url']))
+		{
+			$article['itemUrl'] .= "&amp;title=" . $article['short_url'];
+		}
 	}
 	return $block;
 }
