@@ -14,3 +14,8 @@ Version 1.1
 
 * Updated to meet ICMS 1.3.x specification. No longer compatible with 1.2.x.
 * SEO friendly URLs for articles.
+
+Version 1.11
+------------
+
+* Fix slow index page load when gzip enabled.
