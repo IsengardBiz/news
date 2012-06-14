@@ -368,6 +368,18 @@ if($articleObj && !$articleObj->isNew()) {
 		
 		$icmsTpl->assign('news_navbar', $pagenav->renderNav());
 		$icmsTpl->assign('news_index_view', TRUE);
+		
+		// Meta
+		if (icms_get_module_status("sprockets")) {
+			if ($news_tag_name) {
+				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION . ' '
+						. strtolower($news_tag_name));
+			} else {
+				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
+			}
+		} else {
+			$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
+		}
 }
 
 // check if the module's breadcrumb should be displayed
@@ -378,17 +390,6 @@ if (icms::$module->config['show_breadcrumb'] == TRUE) {
 }
 
 $icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
-
-if (icms_get_module_status("sprockets")) {
-	if ($news_tag_name) {
-		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION . ' '
-				. strtolower($news_tag_name));
-	} else {
-		$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
-	}
-} else {
-	$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
-}
 
 $icms_metagen->createMetaTags();
 
