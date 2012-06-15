@@ -1,0 +1,64 @@
+/**
+* Specific CSS for the module
+*
+* @copyright	http://smartfactory.ca The SmartFactory
+* @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
+* @since		1.0
+* @author		marcan aka Marc-André Lanciault <marcan@smartfactory.ca>
+* @author		Madfish <simon@isengard.biz>
+* @version		$Id$
+*/
+
+.news_headertable {
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px solid;
+	margin-bottom: 10px;
+}
+
+.news_modulename {
+	font-size: 0.8em;
+	text-align: left;
+	font-weight: bold;
+	padding-right: 0.3em;
+	line-height: 18px;
+}
+
+.news_breadcrumb {
+	font-size: 0.8em;
+	line-height: 18px;
+}
+
+.news_adminlinks {
+	padding-top: 15px;
+	padding-bottom: 5px;
+	font-size: 0.8em;
+	text-align: center;
+	line-height: 18px;
+}
+
+.news_article_container {
+	margin-bottom: 35px;
+}
+
+/* used to display the tag icon, floated to the right */
+.news_float_right {
+	float:right;
+	margin: 0em 0em 1em 1em;
+}
+
+/* used to display the tag icon, floated to the left */
+.news_float_left {
+	float:left;
+	margin: 0em 1em 1em 0em;
+}
+
+/* used to vertically space elements to neaten up the display */
+.news_separator {
+	margin-bottom:1em;
+}
+
+/* used on the news index page, to indicate that a story has extended text available in single view */
+.news_read_more {
+	text-align:right; font-style: italic;
+}

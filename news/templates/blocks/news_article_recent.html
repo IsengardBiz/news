@@ -1,0 +1,31 @@
+<{if $block.recent_news_spotlight_title}>
+	<div><h2><a href="<{$block.recent_news_spotlight_link}>"><{$block.recent_news_spotlight_title}></a></h2></div>
+
+	<!-- handle spotlight (lead) image, if present -->
+
+	<{if $block.recent_news_spotlight_lead_image && $block.recent_news_spotlight_display_lead_image !== '0'}>
+		<{if $block.recent_news_spotlight_display_lead_image == '1'}>
+			<div style="float:left; margin: 0em 1em 1em 0em;">
+		<{else}>
+			<div style="float:right; margin: 0em 0em 1em 1em;">
+		<{/if}>
+				<a href="<{$block.recent_news_spotlight_link}>" title="<{$block.recent_news_spotlight_title}>">
+					<{resized_image file=$block.recent_news_spotlight_lead_image width=$block.recent_news_lead_image_display_width height="999" fit="inside"}>
+				</a>
+			</div>
+	<{/if}>
+
+	<!-- end spotlight (lead) image) -->
+
+	<div><p><{$block.recent_news_spotlight_description}></p></div>
+	<{if $block.recent_news_articles}>
+		<h3><{$block.recent_news_title}></h3>
+	<{/if}>
+<{/if}>
+<div>
+	<ul>
+		<{foreach item=recent_news_article from=$block.recent_news_articles}>
+			<li><{$recent_news_article.itemLink}> (<{$recent_news_article.date}>)</li>
+		<{/foreach}>
+	</ul>
+</div>
