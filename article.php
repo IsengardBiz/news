@@ -372,13 +372,15 @@ if($articleObj && !$articleObj->isNew()) {
 		// Meta
 		if (icms_get_module_status("sprockets")) {
 			if ($news_tag_name) {
-				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION . ' '
-						. strtolower($news_tag_name));
+				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION 
+						. ' ' . strtolower($news_tag_name));
 			} else {
-				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
+				$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION_INDEX 
+						. ' ' . $icmsConfig['sitename']);
 			}
 		} else {
-			$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION);
+			$icms_metagen = new icms_ipf_Metagen(_CO_NEWS_META_TITLE, FALSE, _CO_NEWS_META_DESCRIPTION_INDEX 
+					. ' ' . $icmsConfig['sitename']);
 		}
 }
 

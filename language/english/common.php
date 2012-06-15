@@ -83,6 +83,7 @@ define("_CO_NEWS_NEW", "Recent news");
 define("_CO_NEWS_NEW_DSC", "The latest news stories from ");
 define("_CO_NEWS_META_TITLE", "News");
 define("_CO_NEWS_META_DESCRIPTION", "The latest news on ");
+define("_CO_NEWS_META_DESCRIPTION_INDEX", "The latest news from ");
 
 // archive
 define("_CO_NEWS_ARCHIVES", "News archives");
