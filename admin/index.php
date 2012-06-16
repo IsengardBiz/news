@@ -12,5 +12,5 @@
 * @version		$Id$
 */
 
-include 'article.php';
+header('location: article.php');
 exit;
