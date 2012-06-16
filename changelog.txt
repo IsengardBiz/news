@@ -19,3 +19,8 @@ Version 1.11
 ------------
 
 * Fix slow index page load when gzip enabled.
+
+Version 1.12
+------------
+
+* Revert to theme changer block bugfix.
