@@ -1,0 +1,38 @@
+<{includeq file='db:news_header.html'}>
+
+<!-- template based on that of the original XOOPS News module -->
+
+<{if $show_articles == TRUE}>
+<div class="news_separator"><{$lang_storytotal}></div>
+<table class="news_separator">
+<tr>
+	<th><{$lang_articles}></th>
+	<th align="center"><{$lang_tags}></th>
+	<th align="center"><{$lang_views}></th>
+	<th align="center"><{$lang_date}></th>
+</tr>
+<{foreach item=story from=$stories}>
+<tr class="<{cycle values="even,odd"}>">
+	<td><{$story.title}></td>
+	<td><{if $story.tags}><{$story.tags}><{/if}></td>
+	<td align="center"><{$story.counter}></td>
+	<td align="center"><{$story.date}></td>
+</tr>
+<{/foreach}>
+</table>
+<{/if}>
+
+<table>
+<tr>
+    <th><{$smarty.const._CO_NEWS_ARCHIVES}></th>
+</tr>
+<{foreach item=year from=$years}>
+<{foreach item=month from=$year.months}>
+<tr class="even">
+    <td><a href="<{$icms_url}>/modules/news/archive.php?year=<{$year.number}>&amp;month=<{$month.number}>"><{$month.string}> <{$year.number}></a></td>
+</tr>
+<{/foreach}>
+<{/foreach}>
+</table>
+
+<{includeq file='db:news_footer.html'}>

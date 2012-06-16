@@ -1,0 +1,141 @@
+<{includeq file='db:news_header.html'}>
+
+<!-- single item view -->
+
+<{if $news_article}>
+	<div class="news-article-container">
+		<h2><{$news_article.title}></h2>
+		<{if $news_article.creator}>
+			<div class="itemInfo news_separator"><{$smarty.const._CO_NEWS_ARTICLE_POSTED_BY}> <{$news_article.creator}> | <{$news_article.date}>
+		<{else}>
+			<div class="itemInfo news_separator"><{$smarty.const._CO_NEWS_ARTICLE_POSTED_ON}> <{$news_article.date}>
+		<{/if}>
+		<{if $news_article.counter}>
+			| <{$news_article.counter}> <{$smarty.const._CO_NEWS_ARTICLE_READS}>
+		<{/if}>
+		<{if $news_article.tag}>
+			| <{$smarty.const._CO_NEWS_ARTICLE_TAGS}><{$news_article.tag}>
+		<{/if}>
+		<{if $news_is_admin}>
+			<{$news_article.editItemLink}> <{$news_article.deleteItemLink}>
+		<{/if}>
+			</div>		
+		
+		<!-- lead image width is set in module preferences, width takes precedence over height as aspect ratio is maintained -->
+		<{if $news_article.lead_image && $news_article.display_lead_image !== '0'}>
+			<{if $news_article.display_lead_image == '1'}>
+				<div class="news_float_left">
+			<{else}>
+				<div class="news_float_right">
+			<{/if}>
+				<{resized_image file=$news_article.lead_image width=$news_article.lead_image_display_width height="999" fit="inside"}>
+				</div>
+		<{else}>
+			<{if $news_article.icon}>
+				<{if $news_article.display_topic_image == '1'}>
+					<div class="news_float_left">
+						<{foreach item=icon from=$news_article.icon}>
+							<{$icon}>
+						<{/foreach}>
+					</div>
+				<{elseif $news_article.display_topic_image == '2'}>
+					<div class="news_float_right">
+						<{foreach item=icon from=$news_article.icon}>
+							<{$icon}>
+						<{/foreach}>
+					</div>
+				<{/if}>
+			<{/if}>			
+		<{/if}>
+		
+		<div class="news_separator"><{$news_article.description}></div>
+		<{if $news_article.extended_text}>
+			<div class="news_separator"><{$news_article.extended_text}></div>
+		<{/if}>
+		<{if $news_display_rights}>
+			<{if $news_article.rights}>
+				<div><{$news_article.rights}></div>
+			<{/if}>
+		<{/if}>
+	</div>
+<{/if}>
+
+<!-- index page view -->
+
+<!-- tag select box -->
+<{if $news_show_tag_select_box}><{$news_tag_select_box}><{/if}>
+
+<{if $news_articles_array}>
+	<div>		
+		<!-- pagination control -->
+		<{if $news_navbar }><{$news_navbar}><{/if}>
+		
+		<!-- display articles loop -->		
+		<{foreach item=news_article from=$news_articles_array}>
+			<div class="news-article-container">		
+				<h2><{$news_article.itemLink}></h2>
+				<{if $news_article.creator}>
+					<div class="itemInfo news_separator"><{$smarty.const._CO_NEWS_ARTICLE_POSTED_BY}> <{$news_article.creator}> | <{$news_article.date}>
+				<{else}>
+					<div class="itemInfo news_separator"><{$smarty.const._CO_NEWS_ARTICLE_POSTED_ON}> <{$news_article.date}>
+				<{/if}>
+				<{if $news_article.counter}>
+					| <{$news_article.counter}> <{$smarty.const._CO_NEWS_ARTICLE_READS}>
+				<{/if}>
+				<{if $news_article.tag}>
+					| <{$smarty.const._CO_NEWS_ARTICLE_TAGS}><{$news_article.tag}>
+				<{/if}>
+				<{if $news_is_admin}>
+					<{$news_article.editItemLink}> <{$news_article.deleteItemLink}>
+				<{/if}>
+					</div>
+				
+				<!-- lead image width is set in module preferences, width takes precedence over height as aspect ratio is maintained -->
+				<{if $news_article.lead_image && $news_article.display_lead_image !== '0'}>
+					<{if $news_article.display_lead_image == '1'}>
+						<div class="news_float_left">
+					<{else}>
+						<div class="news_float_right">
+					<{/if}>
+							<a href="<{$news_article.itemUrl}>" title="<{$news_article.title}>">
+								<{resized_image file=$news_article.lead_image width=$news_article.lead_image_display_width height="999" fit="inside"}>
+							</a>
+						</div>
+				<{else}>
+					<{if $news_article.icon}>
+						<{if $news_article.display_topic_image == '1'}>
+							<div class="news_float_left">
+								<{foreach item=icon from=$news_article.icon}>
+									<{$icon}>
+								<{/foreach}>
+							</div>
+						<{elseif $news_article.display_topic_image == '2'}>
+							<div class="news_float_right">
+								<{foreach item=icon from=$news_article.icon}>
+									<{$icon}>
+								<{/foreach}>
+							</div>
+						<{/if}>
+					<{/if}>			
+				<{/if}>
+					
+				<div><{$news_article.description}></div>
+				<{if $news_article.extended_text}>
+					<div class="news_read_more"><a href="<{$news_article.itemUrl}>"><{$smarty.const._CO_NEWS_ARTICLE_READ_MORE}></a></div>
+				<{/if}>
+			</div>
+				
+		<{/foreach}>
+		
+		<!-- pagination control -->
+		<{if $news_navbar }><{$news_navbar}><{/if}>
+		
+	</div>
+<{/if}>
+
+<{if $news_article_table}>
+	<h2><{$news_title}></h2>
+	<{$news_article_table}>
+<{/if}>
+
+<{includeq file='db:news_footer.html'}>
