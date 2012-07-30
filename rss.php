@@ -98,9 +98,9 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	}
 	$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
 			'link' => NEWS_URL . 'rss.php?tag_id='
-			. $tagObj->getVar('id'));
+			. $tagObj->getVar('tag_id'));
 	$news_feed->width = 144;
-	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->getVar('id') . '"';
+	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->getVar('tag_id') . '"';
 	
 	// retrieve articles relevant to this tag using a JOIN to the taglinks table
 
