@@ -165,7 +165,10 @@ function news_article_recent_edit($options) {
 		$form .= '<tr><td>' . _MB_NEWS_ARTICLE_RECENT_TAG . '</td>';
 		// Parameters icms_form_elements_Select: ($caption, $name, $value = null, $size = 1, $multiple = FALSE)
 		$form_select = new icms_form_elements_Select('', 'options[]', $options[1], '1', FALSE);
-		$tagList = $sprockets_tag_handler->getList();
+		$criteria = icms_buildCriteria(array('label_type' => '0'));
+		$criteria->setSort('title');
+		$criteria->setOrder('ASC');
+		$tagList = $sprockets_tag_handler->getList($criteria);
 		$tagList = array(0 => 'All') + $tagList;
 		$form_select->addOptionArray($tagList);
 		$form .= '<td>' . $form_select->render() . '</td></tr>';
