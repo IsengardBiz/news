@@ -397,6 +397,58 @@ class NewsArticle extends icms_ipf_seo_Object {
 		}
 		return $button;
 	}
+	
+	/**
+	 * Formats articles for user-side display, prepares them for insertion to templates
+	 * 
+	 * @param object $articleObj
+	 * @return array 
+	 */
+	function prepareArticleForDisplay($with_overrides = TRUE) {
+
+		global $newsConfig;
+
+		$articleArray = array();
+
+		if ($with_overrides) {
+			$articleArray = $this->toArray();
+		} else {
+			$articleArray = $this->toArrayWithoutOverrides();
+		}
+
+		// Add SEO friendly string to URL
+		if (!empty($articleArray['short_url']))
+		{
+			$articleArray['itemLink'] = $this->getItemLinkWithSEOString();
+		}
+
+		// ensure the raw value is used for display_topic_image
+		$articleArray['display_topic_image'] = $this->getVar('display_topic_image', 'e');
+
+		// create an image tag for the lead image
+		$articleArray['lead_image'] = $this->get_lead_image_tag();
+
+		// specify the size of the lead image as per module preferences, for the resized_image plugin
+		$articleArray['lead_image_display_width'] = $newsConfig['lead_image_display_width'];
+
+		// for some reason IPF inserts some content into dynamic text areas that should be empty
+		$articleArray['extended_text'] = trim($articleArray['extended_text']);
+
+		$articleArray['date'] = date($newsConfig['date_format'], $this->getVar('date', 'e'));
+		if ($newsConfig['display_creator'] == FALSE) {
+			unset($articleArray['creator']);
+		} else {
+			if ($newsConfig['use_submitter_as_creator'] == TRUE) {
+				$articleArray['creator'] = $articleArray['submitter'];
+			}
+		}
+		if ($newsConfig['display_counter'] == FALSE) {
+			unset($articleArray['counter']);
+		} else {
+			$articleArray['counter']++;
+		}
+		return $articleArray;
+	}
 
 	/**
 	 * Sends notifications to subscribers when a new article is published, called by afterSave()

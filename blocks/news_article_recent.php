@@ -130,7 +130,7 @@ function news_article_recent_show($options) {
 		// formats timestamp according to the block options
 		$date = $article->getVar('date', 'e');
 		$date = date($options[2], $date);
-		$article = $article->toArrayWithoutOverrides(TRUE);
+		$article = $article->toArrayWithoutOverrides();
 		$article['date'] = $date;
 		
 		// Add the SEO string to the itemLink

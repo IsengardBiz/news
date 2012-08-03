@@ -13,58 +13,6 @@
 if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
 /**
- * Formats articles for user-side display, prepares them for insertion to templates
- * 
- * @param object $articleObj
- * @return array 
- */
-function prepareArticleForDisplay($articleObj, $with_overrides = TRUE) {
-
-	global $newsConfig;
-	
-	$articleArray = array();
-	
-	if ($with_overrides) {
-		$articleArray = $articleObj->toArray();
-	} else {
-		$articleArray = $articleObj->toArrayWithoutOverrides();
-	}
-	
-	// Add SEO friendly string to URL
-	if (!empty($articleArray['short_url']))
-	{
-		$articleArray['itemLink'] = $articleObj->getItemLinkWithSEOString();
-	}
-
-	// ensure the raw value is used for display_topic_image
-	$articleArray['display_topic_image'] = $articleObj->getVar('display_topic_image', 'e');
-	
-	// create an image tag for the lead image
-	$articleArray['lead_image'] = $articleObj->get_lead_image_tag();
-
-	// specify the size of the lead image as per module preferences, for the resized_image plugin
-	$articleArray['lead_image_display_width'] = $newsConfig['lead_image_display_width'];
-	
-	// for some reason IPF inserts some content into dynamic text areas that should be empty
-	$articleArray['extended_text'] = trim($articleArray['extended_text']);
-
-	$articleArray['date'] = date($newsConfig['date_format'], $articleObj->getVar('date', 'e'));
-	if ($newsConfig['display_creator'] == FALSE) {
-		unset($articleArray['creator']);
-	} else {
-		if ($newsConfig['use_submitter_as_creator'] == TRUE) {
-			$articleArray['creator'] = $articleArray['submitter'];
-		}
-	}
-	if ($newsConfig['display_counter'] == FALSE) {
-		unset($articleArray['counter']);
-	} else {
-		$articleArray['counter']++;
-	}
-	return $articleArray;
-}
-
-/**
  * Get module admin link
  *
  * @todo to be move in icms core

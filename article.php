@@ -46,7 +46,8 @@ if (icms_get_module_status("sprockets"))
 	icms_loadLanguageFile("sprockets", "common");
 	$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'), 'sprockets');
 	$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'), 'sprockets');
-	$sprockets_tag_buffer = $sprockets_tag_handler->getObjects(NULL, TRUE, FALSE);
+	$criteria = icms_buildCriteria(array('label_type' => '0'));
+	$sprockets_tag_buffer = $sprockets_tag_handler->getObjects($criteria, TRUE, TRUE);
 }
 
 // check if a single article has been requested
@@ -74,7 +75,7 @@ if($articleObj && !$articleObj->isNew()) {
 	$edit_item_link = $articleObj->getEditItemLink(FALSE, TRUE, FALSE);
 	$delete_item_link = $articleObj->getDeleteItemLink(FALSE, TRUE, FALSE);
 
-	$articleArray = prepareArticleForDisplay($articleObj, TRUE); // with DB overrides
+	$articleArray = $articleObj->prepareArticleForDisplay(TRUE); // with DB overrides
 
 	$articleArray['editItemLink'] = $edit_item_link;
 	$articleArray['deleteItemLink'] = $delete_item_link;
@@ -83,20 +84,19 @@ if($articleObj && !$articleObj->isNew()) {
 	if (icms_get_module_status("sprockets") && !empty($articleArray['tag'])) {
 		
 		$tag_icons = $articleTags = array();
-		$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
-				'sprockets');
 		$articleTags = array_flip($articleArray['tag']);
 		
 		foreach ($articleTags as $key => &$value) {
 			$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-			. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">' . $sprockets_tag_buffer[$key]['title']
-			. '</a>';
+			. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
+					. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
 			
 			// get tag icons, if available
-			if (!empty($sprockets_tag_buffer[$key]['icon'])) {
+			$icon = $sprockets_tag_buffer[$key]->getVar('icon');
+			if (!empty($icon)) {
 				$tag_icons[] = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-					. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">'
-					. $sprockets_tag_buffer[$key]['icon'] . '</a>';
+					. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
+					. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
 			}
 		}
 		$articleArray['tag'] = implode(', ', $articleTags);
@@ -143,10 +143,6 @@ if($articleObj && !$articleObj->isNew()) {
 		// initialise
 		$form = $news_tag_name = '';
 		$tagList = $rights_buffer = $rightsList = array();
-		$sprockets_tag_handler = icms_getModuleHandler('tag',
-				$sprocketsModule->getVar('dirname'), 'sprockets');
-		$sprockets_taglink_handler = icms_getModuleHandler('taglink', 
-			$sprocketsModule->getVar('dirname'), 'sprockets');
 		$sprockets_rights_handler = icms_getModuleHandler('rights', 
 				$sprocketsModule->getVar('dirname'), 'sprockets');
 
@@ -155,9 +151,9 @@ if($articleObj && !$articleObj->isNew()) {
 
 		// append the tag to the News title
 		if (array_key_exists($clean_tag_id, $sprockets_tag_buffer) && ($clean_tag_id !== 0)) {
-			$news_tag_name = $sprockets_tag_buffer[$clean_tag_id]['title'];
+			$news_tag_name = $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e');
 			$icmsTpl->assign('news_tag_name', $news_tag_name);
-			$icmsTpl->assign('news_category_path', $sprockets_tag_buffer[$clean_tag_id]['title']);
+			$icmsTpl->assign('news_category_path', $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 		}
 		
 		// Prepare a tag select box if sprockets module is installed & set in module preferences
@@ -175,9 +171,9 @@ if($articleObj && !$articleObj->isNew()) {
 		if (icms_get_module_status("sprockets") && $clean_tag_id) {
 			$icmsTpl->assign('news_rss_link', 'rss.php?tag_id=' . $clean_tag_id);
 			$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS_ON
-					. $sprockets_tag_buffer[$clean_tag_id]['title']);
+					. $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 			$rss_attributes = array('type' => 'application/rss+xml', 
-				'title' => $icmsConfig['sitename'] . ' - ' . $sprockets_tag_buffer[$clean_tag_id]['title']);
+				'title' => $icmsConfig['sitename'] . ' - ' . $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 			$rss_link = NEWS_URL . 'rss.php?tag_id=' . $clean_tag_id;
 		} else {				
 				$icmsTpl->assign('news_rss_link', 'rss.php');
@@ -311,7 +307,7 @@ if($articleObj && !$articleObj->isNew()) {
 				$edit_item_link = $article->getEditItemLink(FALSE, TRUE, FALSE);
 				$delete_item_link = $article->getDeleteItemLink(FALSE, TRUE, FALSE);
 
-				$article = prepareArticleForDisplay($article, FALSE); // without DB overrides
+				$article = $article->prepareArticleForDisplay(FALSE); // without DB overrides
 
 				$article['editItemLink'] = $edit_item_link;
 				$article['deleteItemLink'] = $delete_item_link;
@@ -321,17 +317,17 @@ if($articleObj && !$articleObj->isNew()) {
 					
 					// get tag links and icons, if available
 					$articleTags = array_flip($article['tag']);
-					
 					foreach ($articleTags as $key => &$value) {
 						$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]['tag_id'] . '">'
-						. $sprockets_tag_buffer[$key]['title'] . '</a>';
+						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
+						. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
 						
-						if (!empty($sprockets_tag_buffer[$key]['icon'])) {
+						$icon = $sprockets_tag_buffer[$key]->getVar('icon');
+						if (!empty($icon)) {
 							$tag_icons[] = '<a href="' . ICMS_URL . '/modules/'
 							. basename(dirname(__FILE__)) . '/article.php?tag_id='
-							. $sprockets_tag_buffer[$key]['tag_id'] . '">' . $sprockets_tag_buffer[$key]['icon']
-							. '</a>';
+							. $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
+							. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
 						}
 					}
 					$article['tag'] = implode(', ', $articleTags);
