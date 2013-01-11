@@ -252,24 +252,15 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		
+		// delete global notifications
 		$notification_handler = icms::handler('icms_data_notification');
-		$module_handler = icms::handler("icms_module");
-		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
-		$module_id = $module->getVar('mid');
+		$newsModule = icms::handler("icms_module")->getByDirname("news");
+		$module_id = $newsModule->getVar('mid');
 		$category = 'global';
 		$item_id = $obj->getVar('article_id');
+		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
 		
 		// delete article bookmarks
-		$category = 'article';
-		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
-		$notification_handler = icms::handler('icms_data_notification');
-		$module_handler = icms::handler("icms_module");
-		$module = $module_handler->getByDirname(basename(dirname(dirname(__FILE__))));
-		$module_id = $module->getVar('mid');
-		$category = 'global';
-		$item_id = $obj->getVar('article_id');
-
-		// delete article notifications
 		$category = 'article';
 		$notification_handler->unsubscribeByItem($module_id, $category, $item_id);
 
