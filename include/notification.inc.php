@@ -29,4 +29,19 @@ function news_notify_iteminfo($category, $item_id){
         $item['url'] = '';
         return $item;
     }
+	
+	if ($category == 'publication') {
+
+		$news_article_handler = icms_getModuleHandler('article',
+			basename(dirname(dirname(__FILE__))), 'news');
+		$articleObj = $news_article_handler->get($item_id);
+		if ($articleObj) {
+			$item['name'] = $articleObj->title();
+			$item['url'] = ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__)))
+				. '/article.php?article_id=' . intval($item_id);
+			return $item;
+		} else {
+			return null;
+		}
+	}
 }
