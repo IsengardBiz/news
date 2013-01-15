@@ -25,8 +25,8 @@ Version 1.12
 
 * Revert to theme changer block bugfix.
 
-Version 1.13 BETA (30/7/2012)
------------------------------
+Version 1.13 Final (15/1/2013)
+------------------------------
 
 * Minor patches to maintain compatibility with Sprockets 2.0.
 * Improve notification handling / code clean up.
