@@ -30,3 +30,8 @@ Version 1.13 Final (15/1/2013)
 
 * Minor patches to maintain compatibility with Sprockets 2.0.
 * Improve notification handling / code clean up.
+
+Version 1.14 Final (22/1/2013)
+------------------------------
+
+* Fix incorrect data type assignment ('string' should have been 'text') in module preferences.
