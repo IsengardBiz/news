@@ -29,21 +29,47 @@ function news_search($queryarray, $andor, $limit, $offset, $userid) {
 	
 	global $newsConfig;
 	
+	$articlesArray = $ret = array();
+	$count = '';
+	
 	$news_article_handler = icms_getModuleHandler('article', basename(dirname(dirname(__FILE__))),
 		'news');
 	$articlesArray = $news_article_handler->getArticlesForSearch($queryarray, $andor, $limit,
 		$offset, $userid);
-
-	$ret = array();
-
-	foreach ($articlesArray as $articleArray) {
+	
+	// Count the number of records
+	$count = count($articlesArray);
+	
+	// Only the first $limit number of records contain publication objects, the rest are padding
+	if (!$limit) {
+		global $icmsConfigSearch;
+		$limit = $icmsConfigSearch['search_per_page'];
+	}
+	
+	// Ensure a value is set for offset as it will be used in calculations later
+	if (!$offset) {
+		$offset = 0;
+	}
+		
+	// Process the actual publications (not the padding)
+	for ($i = 0; $i < $limit; $i++) {
 		$item['image'] = "images/article.png";
-		$item['link'] = $articleArray->getItemLink(TRUE);
-		$item['title'] = $articleArray->getVar('title');
-		$item['time'] = $articleArray->getVar('date', 'e');
-		$item['uid'] = $articleArray->getVar('submitter', 'e');
+		$item['link'] = $articlesArray->getItemLink(TRUE);
+		$item['title'] = $articlesArray->getVar('title');
+		$item['time'] = $articlesArray->getVar('date', 'e');
+		$item['uid'] = $articlesArray->getVar('submitter', 'e');
 		$ret[] = $item;
 		unset($item);
 	}
+	
+	// Restore the padding (required for 'hits' information and pagination controls). The offset
+	// must be padded to the left of the results, and the remainder to the right or else the search
+	// pagination controls will display the wrong results (which will all be empty).
+	// Left padding = -($limit + $offset)
+	$ret = array_pad($ret, -($limit + $offset), 1);
+	
+	// Right padding = $count - ($limit + $offset)
+	$ret = array_pad($ret, $count - ($limit + $offset), 1);
+	
 	return $ret;
 }

@@ -118,11 +118,8 @@ class NewsArticleHandler extends icms_ipf_Handler {
 	 */
 	public function getArticlesForSearch($queryarray, $andor, $limit, $offset, $userid) {
 		
+		$count = $results = '';
 		$criteria = new icms_db_criteria_Compo();
-		$criteria->setStart($offset);
-		$criteria->setLimit($limit);
-		$criteria->setSort('date');
-		$criteria->setOrder('DESC');
 
 		if ($userid != 0) {
 			$criteria->add(new icms_db_criteria_Item('submitter', $userid));
@@ -145,7 +142,49 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 		
-		return $this->getObjects($criteria, TRUE, TRUE);
+		/*
+		 * Improving the efficiency of search
+		 * 
+		 * The general search function is not efficient, because it retrieves all matching records
+		 * even when only a small subset is required, which is usually the case. The full records 
+		 * are retrieved so that they can be counted, which is used to display the number of 
+		 * search results and also to set up the pagination controls. The problem with this approach 
+		 * is that a search generating a very large number of results (eg. > 650) will crash out. 
+		 * Maybe its a memory allocation issue, I don't know.
+		 * 
+		 * A better approach is to run two queries: The first a getCount() to find out how many 
+		 * records there are in total (without actually wasting resources to retrieve them), 
+		 * followed by a getObjects() to retrieve the small subset that are actually needed. 
+		 * Due to the way search works, the object array needs to be padded out 
+		 * with the number of elements counted in order to preserve 'hits' information and to construct
+		 * the pagination controls. So to minimise resources, we can just set their values to '1'.
+		 * 
+		 * In the long term it would be better to (say) pass the count back as element[0] of the 
+		 * results array, but that will require modification to the core and will affect all modules.
+		 * So for the moment, this hack is convenient.
+		 */
+		
+		$criteria->setStart($offset);
+		$criteria->setSort('date');
+		$criteria->setOrder('DESC');
+		
+		// Count the number of search results WITHOUT actually retrieving the objects
+		$count = $this->getCount($criteria);
+		
+		// Retrieve the subset of results that are actually required
+		if (!$limit) {
+			global $icmsConfigSearch;
+			$limit = $icmsConfigSearch['search_per_page'];
+		}
+
+		$criteria->setLimit($limit);
+		$results = $this->getObjects($criteria, TRUE);
+		
+		// Pad the results array out to the counted length to preserve 'hits' and pagination controls.
+		// This approach is not ideal, but it greatly reduces the load for queries with large result sets
+		$results = array_pad($results, $count, 1);
+		
+		return $results;
 	}
 	
 	// ADMIN TABLE FILTERS
