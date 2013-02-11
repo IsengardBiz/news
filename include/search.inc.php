@@ -25,17 +25,12 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
  * @return array 
  */
 
-function news_search($queryarray, $andor, $limit, $offset, $userid) {
+function news_search($queryarray, $andor, $limit, $offset = 0, $userid = 0) {
 	
 	global $newsConfig, $icmsConfigSearch;
 	
 	$articlesArray = $ret = array();
 	$count = $number_to_process = $pubs_left = '';
-	
-	// Ensure a value is set for offset as it will be used in calculations later
-	if (!$offset) {
-		$offset = 0;
-	}
 	
 	$news_article_handler = icms_getModuleHandler('article', basename(dirname(dirname(__FILE__))),
 		'news');
