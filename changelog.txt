@@ -36,7 +36,7 @@ Version 1.14 Final (22/1/2013)
 
 * Fix incorrect data type assignment ('string' should have been 'text') in module preferences.
 
-Version 1.15 Trunk
+Version 1.15 Beta
 ------------------
 
 * Improve efficiency of search function.
