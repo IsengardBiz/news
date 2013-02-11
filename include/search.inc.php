@@ -30,7 +30,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid) {
 	global $newsConfig, $icmsConfigSearch;
 	
 	$articlesArray = $ret = array();
-	$count = $number_to_process = '';
+	$count = $number_to_process = $pubs_left = '';
 	
 	// Ensure a value is set for offset as it will be used in calculations later
 	if (!$offset) {
