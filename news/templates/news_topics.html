@@ -1,0 +1,14 @@
+<{includeq file='db:news_header.html'}>
+
+<h2><{$smarty.const._CO_NEWS_NEWS_TOPICS}></h2>
+<{if $news_topics_list}>
+	<ul>
+		<{foreach item=topic from=$news_topics_list}>
+			<li><{$topic}></li>
+		<{/foreach}>
+	</ul>
+<{else}>
+	<{$smarty.const._CO_NEWS_NO_TOPICS_TO_DISPLAY}>
+<{/if}>
+
+<{includeq file='db:news_footer.html'}>
