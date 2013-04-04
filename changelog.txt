@@ -36,7 +36,12 @@ Version 1.14 Final (22/1/2013)
 
 * Fix incorrect data type assignment ('string' should have been 'text') in module preferences.
 
-Version 1.15 Beta
+Version 1.15 Final
 ------------------
 
 * Improve efficiency of search function.
+
+Version 1.16 Beta
+-----------------
+* Remove some paragraph tags from description field in template (these should be entered in the 
+description itself).
