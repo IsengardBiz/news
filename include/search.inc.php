@@ -51,13 +51,15 @@ function news_search($queryarray, $andor, $limit, $offset = 0, $userid = 0) {
 	
 	// Process the actual articles (not the padding)
 	for ($i = 0; $i < $number_to_process; $i++) {
-		$item['image'] = "images/article.png";
-		$item['link'] = $articlesArray[$i]->getItemLink(TRUE);
-		$item['title'] = $articlesArray[$i]->getVar('title');
-		$item['time'] = $articlesArray[$i]->getVar('date', 'e');
-		$item['uid'] = $articlesArray[$i]->getVar('submitter', 'e');
-		$ret[] = $item;
-		unset($item);
+			if (is_object($articlesArray[$i])) { // Required to prevent crashing on profile view
+			$item['image'] = "images/article.png";
+			$item['link'] = $articlesArray[$i]->getItemLink(TRUE);
+			$item['title'] = $articlesArray[$i]->getVar('title');
+			$item['time'] = $articlesArray[$i]->getVar('date', 'e');
+			$item['uid'] = $articlesArray[$i]->getVar('submitter', 'e');
+			$ret[] = $item;
+			unset($item);
+		}
 	}
 	
 	// Restore the padding (required for 'hits' information and pagination controls). The offset
