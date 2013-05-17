@@ -62,14 +62,16 @@ function news_search($queryarray, $andor, $limit, $offset = 0, $userid = 0) {
 		}
 	}
 	
-	// Restore the padding (required for 'hits' information and pagination controls). The offset
-	// must be padded to the left of the results, and the remainder to the right or else the search
-	// pagination controls will display the wrong results (which will all be empty).
-	// Left padding = -($limit + $offset)
-	$ret = array_pad($ret, -($offset + $number_to_process), 1);
-	
-	// Right padding = $count
-	$ret = array_pad($ret, $count, 1);
+	if ($limit == 0) {
+		// Restore the padding (required for 'hits' information and pagination controls). The offset
+		// must be padded to the left of the results, and the remainder to the right or else the search
+		// pagination controls will display the wrong results (which will all be empty).
+		// Left padding = -($limit + $offset)
+		$ret = array_pad($ret, -($offset + $number_to_process), 1);
+
+		// Right padding = $count
+		$ret = array_pad($ret, $count, 1);
+	}
 	
 	return $ret;
 }
