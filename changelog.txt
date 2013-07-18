@@ -46,3 +46,5 @@ Version 1.16 Beta
 * Remove some paragraph tags from description field in template (these should be entered in the 
 description itself).
 * Fix bug in search function that was crashing profile views
+* Added syndication toggle to include individual articles in RSS feeds (or not).
+* Added default syndication preference.

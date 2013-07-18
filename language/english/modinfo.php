@@ -101,4 +101,8 @@ define("_MI_NEWS_DISPLAY_RIGHTS_DSC", "Toggles the per-article licensing field o
 define("_MI_NEWS_DEFAULT_FEDERATION", "Federate articles by default?");
 define("_MI_NEWS_DEFAULT_FEDERATION_DSC", "Sets the default value on the article submission form 
 	for your convenience. You can override it.");
-//define("", "");
+
+// New in V1.16
+define("_MI_NEWS_DEFAULT_SYNDICATION", "Syndicate (RSS) articles by default?");
+define("_MI_NEWS_DEFAULT_SYNDICATION_DSC", "Sets the default value on the article submission form 
+	for your convenience. You can override it.");

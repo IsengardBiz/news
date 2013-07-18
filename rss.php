@@ -66,6 +66,7 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	$criteria = new icms_db_criteria_Compo();
 	$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 	$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
+	$criteria->add(new icms_db_criteria_Item('syndicated', TRUE));
 	$criteria->setStart(0);
 	$criteria->setLimit($newsModule->config['number_rss_items']);
 
@@ -110,6 +111,7 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 			. $sprockets_taglink_handler->table
 			. " WHERE `article_id` = `iid`"
 			. " AND `online_status` = '1'"
+			. " AND `syndicated` = '1'"
 			. " AND `date` < '" . time() . "'"
 			. " AND `tid` = '" . $clean_tag_id . "'"
 			. " AND `mid` = '" . $newsModule->getVar('mid') . "'"

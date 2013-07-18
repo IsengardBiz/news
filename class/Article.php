@@ -45,6 +45,8 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$this->quickInitVar('submitter', XOBJ_DTYPE_INT, TRUE);
 		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, TRUE);
 		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 1);
+		$this->quickInitVar('syndicated', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
+				$newsConfig['default_syndication']);
 		$this->quickInitVar('federated', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
 				$newsConfig['default_federation']);
 		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
@@ -58,6 +60,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 
 		$this->setControl('description', 'dhtmltextarea');
 		$this->setControl('extended_text', 'dhtmltextarea');
+		$this->setControl('syndicated', 'yesno');
 
 		// only display the tag and rights fields if the sprockets module is installed
 		$sprocketsModule = icms_getModuleInfo('sprockets');

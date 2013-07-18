@@ -122,4 +122,11 @@ define("_CO_NEWS_CAL_DECEMBER", "December");
 // topics
 define("_CO_NEWS_NO_TOPICS_TO_DISPLAY", "There are currently no topics to display.");
 define("_CO_NEWS_NEWS_TOPICS", "News tags");
-//define("", "");
+
+// New in V1.16
+define("_CO_NEWS_ARTICLE_SYNDICATED", "Syndicated?");
+define("_CO_NEWS_ARTICLE_SYNDICATED_DSC", "Include this article in RSS feeds?");
+define("_CO_NEWS_ARTICLE_SYNDICATION_ENABLED", "Enabled");
+define("_CO_NEWS_ARTICLE_SYNDICATION_DISABLED", "Disabled");
+define("_CO_NEWS_ARTICLE_ENABLE_SYNDICATION", "Enable RSS federation");
+define("_CO_NEWS_ARTICLE_DISABLE_SYNDICATION", "Disable RSS federation");

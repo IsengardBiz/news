@@ -34,7 +34,7 @@ $modversion = array(
 /**  Development information */
   'status_version'=> "1.16",
   'status'=> "Trunk",
-  'date'=> "4/4/2013",
+  'date'=> "18/7/2013",
   'author_word'=> "This module is best used with the Sprockets utility module also installed.",
 
 /** Contributors */
@@ -251,6 +251,14 @@ $modversion['config'][] = array(
 	'formtype' => 'textbox',
 	'valuetype' => 'int',
 	'default' => '10');
+
+$modversion['config'][] = array(
+	'name' => 'default_syndication',
+	'title' => '_MI_NEWS_DEFAULT_SYNDICATION',
+	'description' => '_MI_NEWS_DEFAULT_SYNDICATION_DSC',
+	'formtype' => 'yesno',
+	'valuetype' => 'int',
+	'default' => '1');
 
 $modversion['config'][] = array(
 	'name' => 'default_federation',
