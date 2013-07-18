@@ -136,7 +136,8 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 */
 	function getVar($key, $format = 's') {
 		if ($format == 's' && in_array($key, array ('creator', 'display_topic_image',
-				'display_lead_image', 'rights', 'date', 'submitter', 'online_status', 'federated'))) {
+				'display_lead_image', 'rights', 'date', 'submitter', 'online_status', 'syndicated', 
+			'federated'))) {
 			return call_user_func(array ($this,	$key));
 		}
 		return parent :: getVar($key, $format);
@@ -369,6 +370,34 @@ class NewsArticle extends icms_ipf_seo_Object {
 			
 			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="'
 					. _CO_NEWS_ARTICLE_OFFLINE . '" title="' . _CO_NEWS_ARTICLE_SWITCH_ONLINE . '" /></a>';
+		}
+		return $button;
+	}
+	
+	/**
+	 * Converts the syndicated field of an object to a human readable icon with link toggle
+	 *
+	 * @return string 
+	 */
+	public function syndicated() {
+		
+		$status = $button = '';
+		
+		$status = $this->getVar('syndicated', 'e');
+		$button = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(dirname(__FILE__)))
+				. '/admin/article.php?article_id=' . $this->getVar('article_id')
+				. '&amp;op=changeSyndication">';
+		
+		if ($status == FALSE) {
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_cancel.png" alt="' 
+					. _CO_NEWS_ARTICLE_ONLINE . '" title="' . _CO_NEWS_ARTICLE_DISABLE_SYNDICATION 
+					. '" /></a>';
+			
+		} else {
+			
+			$button .= '<img src="' . ICMS_IMAGES_SET_URL . '/actions/button_ok.png" alt="' 
+					. _CO_NEWS_ARTICLE_OFFLINE . '" title="' . _CO_NEWS_ARTICLE_ENABLE_SYNDICATION 
+					. '" /></a>';
 		}
 		return $button;
 	}

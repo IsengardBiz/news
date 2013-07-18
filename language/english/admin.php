@@ -39,3 +39,7 @@ define("_AM_NEWS_ARTICLE_FILTER_BY_TAG", "Filter by tag");
 define("_AM_NEWS_ARTICLE_ALL_ARTICLES", "-- All articles --");
 define("_AM_NEWS_ARTICLE_FEDERATION_ENABLED", "Federation enabled");
 define("_AM_NEWS_ARTICLE_FEDERATION_DISABLED", "Federation disabled");
+
+// New in V1.16
+define("_AM_NEWS_ARTICLE_SYNDICATION_ENABLED", "RSS syndication enabled");
+define("_AM_NEWS_ARTICLE_SYNDICATION_DISABLED", "RSS syndication disabled");

@@ -200,6 +200,17 @@ class NewsArticleHandler extends icms_ipf_Handler {
 	}
 	
 	/**
+	 * Adds a filter for syndication status to the articles table on the admin side
+	 *
+	 * @return  string
+	 */
+	public function syndication_filter() {
+		
+		return array(0 =>  _CO_NEWS_ARTICLE_SYNDICATION_DISABLED, 
+			1 =>  _CO_NEWS_ARTICLE_SYNDICATION_ENABLED);
+	}
+	
+	/**
 	 * Adds a filter for federation status to the articles table on the admin side
 	 *
 	 * @return  string

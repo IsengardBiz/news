@@ -126,7 +126,5 @@ define("_CO_NEWS_NEWS_TOPICS", "News tags");
 // New in V1.16
 define("_CO_NEWS_ARTICLE_SYNDICATED", "Syndicated?");
 define("_CO_NEWS_ARTICLE_SYNDICATED_DSC", "Include this article in RSS feeds?");
-define("_CO_NEWS_ARTICLE_SYNDICATION_ENABLED", "Enabled");
-define("_CO_NEWS_ARTICLE_SYNDICATION_DISABLED", "Disabled");
 define("_CO_NEWS_ARTICLE_ENABLE_SYNDICATION", "Enable RSS federation");
 define("_CO_NEWS_ARTICLE_DISABLE_SYNDICATION", "Disable RSS federation");

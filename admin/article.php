@@ -58,7 +58,7 @@ $news_article_handler = icms_getModuleHandler('article', basename(dirname(dirnam
  * Be sure to include a value for no parameter, if you have a default condition
  */
 $valid_op = array ('mod','changedField','addarticle','del','view','changeStatus',
-	'changeFederation',	'');
+	'changeSyndication', 'changeFederation',	'');
 
 if (isset($_GET['op'])) $clean_op = htmlentities($_GET['op']);
 if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
@@ -103,6 +103,18 @@ if (in_array($clean_op,$valid_op,TRUE)){
 				redirect_header(ICMS_URL . $ret, 2, _AM_NEWS_ARTICLE_OFFLINE);
 			} else {
 				redirect_header(ICMS_URL . $ret, 2, _AM_NEWS_ARTICLE_ONLINE);
+			}
+			
+		break;
+	
+	case "changeSyndication":
+			$status = $ret = '';
+			$status = $news_article_handler->changeOnlineStatus($clean_article_id, 'syndicated');
+			$ret = '/modules/' . basename(dirname(dirname(__FILE__))) . '/admin/article.php';
+			if ($status == 0) {
+				redirect_header(ICMS_URL . $ret, 2, _AM_NEWS_ARTICLE_SYNDICATION_DISABLED);
+			} else {
+				redirect_header(ICMS_URL . $ret, 2, _AM_NEWS_ARTICLE_SYNDICATION_ENABLED);
 			}
 			
 		break;
@@ -192,6 +204,8 @@ if (in_array($clean_op,$valid_op,TRUE)){
 		$objectTable->addColumn(new icms_ipf_view_Column('date'));
 		$objectTable->setDefaultSort('date');
 		$objectTable->setDefaultOrder('DESC');
+		$objectTable->addColumn(new icms_ipf_view_Column('syndicated'));
+			$objectTable->addFilter('syndicated', 'syndication_filter');
 		if (icms_get_module_status("sprockets")) {
 			$objectTable->addColumn(new icms_ipf_view_Column('federated'));
 			$objectTable->addFilter('federated', 'federation_filter');
