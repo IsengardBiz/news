@@ -48,3 +48,4 @@ description itself).
 * Fix bug in search function that was crashing profile views
 * Added syndication toggle to include individual articles in RSS feeds (or not).
 * Added default syndication preference.
+* Add extended_text and creator to searchable fields
