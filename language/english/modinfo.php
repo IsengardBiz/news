@@ -106,3 +106,12 @@ define("_MI_NEWS_DEFAULT_FEDERATION_DSC", "Sets the default value on the article
 define("_MI_NEWS_DEFAULT_SYNDICATION", "Syndicate (RSS) articles by default?");
 define("_MI_NEWS_DEFAULT_SYNDICATION_DSC", "Sets the default value on the article submission form 
 	for your convenience. You can override it.");
+
+// New in V1.17
+define("_MI_NEWS_DISPLAY_FACEBOOK_COMMENTS", "Enable Facebook comments?");
+define("_MI_NEWS_DISPLAY_FACEBOOK_COMMENTSDSC", "You must i) register as a Facebook developer and 
+	ii) create a Facebook comments app for this to work. See the instructions in the docs folder of
+	this module.");
+define("_MI_NEWS_FACEBOOK_COMMENTS_WIDTH", "Width of Facebook comments box (pixels)?");
+define("_MI_NEWS_FACEBOOK_COMMENTS_WIDTHDSC", "Set the width you want the Facebook comments box to 
+	display at, in pixels.");

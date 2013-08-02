@@ -58,6 +58,10 @@
 			<{/if}>
 		<{/if}>
 	</div>
+	<!-- Facebook comments -->
+	<{if $news_article.display_facebook_comments}>
+		<div class="fb-comments" data-href="<{$news_article.itemUrl}>" data-width="<{$news_article.facebook_comments_width}>"></div>
+	<{/if}>
 <{/if}>
 
 <!-- index page view -->

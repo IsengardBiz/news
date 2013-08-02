@@ -17,7 +17,7 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 /**  General Information  */
 $modversion = array(
   'name'=> _MI_NEWS_MD_NAME,
-  'version'=> 1.16,
+  'version'=> 1.17,
   'description'=> _MI_NEWS_MD_DESC,
   'author'=> "Madfish (Simon Wilkinson)",
   'credits'=> "Functionality is based on the legacy News module, but this is a clean rewrite in IPF.",
@@ -32,9 +32,9 @@ $modversion = array(
   'image'=> "images/icon_big.png", /* for backward compatibility */
 
 /**  Development information */
-  'status_version'=> "1.16",
-  'status'=> "Final",
-  'date'=> "1/8/2013",
+  'status_version'=> "1.17",
+  'status'=> "Beta",
+  'date'=> "2/8/2013",
   'author_word'=> "This module is best used with the Sprockets utility module also installed.",
 
 /** Contributors */
@@ -162,6 +162,22 @@ $modversion['config'][] = array(
   'valuetype' => 'array',
   'options' => $topic_image_default_options,
   'default' =>  '0');
+
+$modversion['config'][] = array(
+  'name' => 'display_facebook_comments',
+  'title' => '_MI_NEWS_DISPLAY_FACEBOOK_COMMENTS',
+  'description' => '_MI_NEWS_DISPLAY_FACEBOOK_COMMENTSDSC',
+  'formtype' => 'yesno',
+  'valuetype' => 'int',
+  'default' =>  '0');
+
+$modversion['config'][] = array(
+  'name' => 'facebook_comments_width',
+  'title' => '_MI_NEWS_FACEBOOK_COMMENTS_WIDTH',
+  'description' => '_MI_NEWS_FACEBOOK_COMMENTS_WIDTHDSC',
+  'formtype' => 'text',
+  'valuetype' => 'int',
+  'default' =>  '470');
 
 $modversion['config'][] = array(
   'name' => 'display_lead_image',

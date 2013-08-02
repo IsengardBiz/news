@@ -1,0 +1,28 @@
+﻿Enabling Facebook comments on your news stories
+-----------------------------------------------
+
+This takes about 5 minutes to set up:
+
+1. Register as a Facebook developer, at:
+
+https://developers.facebook.com/
+
+2. Create an comments app (websites => social plugins => comments) and grab the javascript SDK code that Facebook automatically generates for you.
+
+https://developers.facebook.com/docs/reference/plugins/comments/
+
+3. You must edit your active theme.html file. Place the javascript SDK immediately after the opening <body> tag.
+
+4. To enable moderation of comments, add the following meta tag (obviously, with your own Facebook ID) to your theme.html file, this time in the <head> section:
+
+<meta property="fb:admins" content="YOUR_NUMERICAL_FACEBOOK_USER_ID"/>
+
+4. Clear your cache and templates_c directories!
+
+5. Enable Facebook comments and set the size of the comments box in the News module preferences.
+
+If all goes well a comments box should appear at the bottom of each news story when displayed in single view mode.
+
+If you have problems check out the following tutorial and read the instructions provided by Facebook on their dev site as well!
+
+http://socialmouths.com/blog/2012/02/16/add-facebook-comments-to-your-blog/

@@ -114,6 +114,12 @@ if($articleObj && !$articleObj->isNew()) {
 		$icmsTpl->assign('news_rss_link', 'rss.php');
 		$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS);
 	}
+	
+	// Facebook comments integration
+	if (icms::$module->config['display_facebook_comments'] == TRUE) {
+		$articleArray['display_facebook_comments'] = TRUE;
+		$articleArray['facebook_comments_width'] = icms::$module->config['facebook_comments_width'];
+	}
 
 	// display this article
 	$icmsTpl->assign('news_article', $articleArray);
