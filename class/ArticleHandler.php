@@ -260,6 +260,50 @@ class NewsArticleHandler extends icms_ipf_Handler {
 	}
 	
 	/**
+	 * Flush the cache for the News module after adding, editing or deleting an event.
+	 * 
+	 * Ensures that the index/block/single view cache is kept updated if caching is enabled.
+	 * 
+	 * @global array $icmsConfig
+	 * @param type $obj 
+	 */
+	protected function clear_cache(& $obj)
+	{
+		global $icmsConfig;
+		$cache_status = $icmsConfig['module_cache'];
+		$module = icms::handler("icms_module")->getByDirname("news", TRUE);
+		$module_id = $module->getVar("mid");
+			
+		// Check if caching is enabled for this module. The cache time is stored in a serialised 
+		// string in config table (module_cache), and is indicated in seconds. Uncached = 0.
+		if ($cache_status[$module_id] > 0)
+		{			
+			// As PHP's exec() function is often disabled for security reasons
+			try 
+			{	
+				// Index pages
+				exec("find " . ICMS_CACHE_PATH . "/" . "news^%2Fmodules%2Fnews%2Farticle.php^* -delete &");
+				exec("find " . ICMS_CACHE_PATH . "/" . "news^%2Fmodules%2Fnews%2Farticle.php%3Fstart* -delete &");
+				// Archive pages
+				exec("find " . ICMS_CACHE_PATH . "/" . "news^%2Fmodules%2Fnews%2Farchive.php* -delete &");
+				// Blocks
+				exec("find " . ICMS_CACHE_PATH . "/" . "blk_news* -delete &");
+				if (!$obj->isNew())
+				{
+					exec("find " . ICMS_CACHE_PATH . "/" . "news^%2Fmodules%2Fnews%2Farticle.php%3Farticle_id%3D" 
+							. $obj->getVar('article_id', 'e') . "%26* -delete &");
+					exec("find " . ICMS_CACHE_PATH . "/" . "news^%2Fmodules%2Fnews%2Farticle.php%3Farticle_id%3D" 
+							. $obj->getVar('article_id', 'e') . "^* -delete &");
+				}				
+			}
+			catch(Exception $e)
+			{
+				$obj->setErrors($e->getMessage());
+			}
+		}		
+	}
+	
+	/**
 	 * Triggers notifications, called when an article is inserted or updated
 	 *
 	 * @param object $obj NewsArticle object
@@ -289,6 +333,9 @@ class NewsArticleHandler extends icms_ipf_Handler {
 					$sprocketsModule->getVar('dirname'), 'sprockets', 'sprockets');
 			$sprockets_taglink_handler->storeTagsForObject($obj, 'tag', 0);
 		}
+		
+		// Clear cache
+		$this->clear_cache(& $obj);
 	
 		return TRUE;
 	}
@@ -324,6 +371,9 @@ class NewsArticleHandler extends icms_ipf_Handler {
 					$sprocketsModule->getVar('dirname'), 'sprockets');
 			$sprockets_taglink_handler->deleteAllForObject($obj);
 		}
+		
+		// Clear cache
+		$this->clear_cache(& $obj);	
 
 		return TRUE;
 	}
