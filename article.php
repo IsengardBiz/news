@@ -123,7 +123,8 @@ if($articleObj && !$articleObj->isNew()) {
 	
 	// Compatibility with DB templates in legacy installs (create reference, to minimise overhead)
 	$articleArray['lead_image'] = &$articleArray['image'];
-	$articleArray['image_display_width'] = icms::$module->config['image_display_width'];
+	$articleArray['lead_image_display_width'] = icms::$module->config['image_display_width'];
+	$articleArray['image_display_width'] = &$articleArray['lead_image_display_width'];
 
 	// display this article
 	$icmsTpl->assign('news_article', $articleArray);
@@ -323,8 +324,9 @@ if($articleObj && !$articleObj->isNew()) {
 				$article['deleteItemLink'] = $delete_item_link;
 				
 				// Compatibility with DB templates in legacy installs
-				$article['lead_image'] = &$articleArray['image'];
+				$article['lead_image'] = &$article['image'];
 				$article['image_display_width'] = icms::$module->config['image_display_width'];
+				$article['lead_image_display_width'] = &$article['image_display_width'];
 
 				// only if sprockets installed
 				if (icms_get_module_status("sprockets") && !empty($article['tag'])) {
