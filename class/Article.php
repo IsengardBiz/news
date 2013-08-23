@@ -34,9 +34,9 @@ class NewsArticle extends icms_ipf_seo_Object {
 				$newsConfig['display_topic_image']);
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, TRUE);
 		$this->quickInitVar('extended_text', XOBJ_DTYPE_TXTAREA, FALSE);
-		$this->quickInitVar('lead_image', XOBJ_DTYPE_IMAGE, FALSE);
-		$this->quickInitVar('display_lead_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 
-				$newsConfig['display_lead_image']);
+		$this->quickInitVar('image', XOBJ_DTYPE_IMAGE, FALSE);
+		$this->quickInitVar('display_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 
+				$newsConfig['display_image']);
 		$this->quickInitVar('rights', XOBJ_DTYPE_INT, FALSE);
 		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, _LANGCODE);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
@@ -93,14 +93,14 @@ class NewsArticle extends icms_ipf_seo_Object {
 			'method' => 'getTopicImageOptions',
 			'module' => 'news'));
 		
-		$this->setControl('display_lead_image', array(
+		$this->setControl('display_image', array(
 			'name' => 'select',
 			'itemHandler' => 'article',
 			'method' => 'getTopicImageOptions',
 			'module' => 'news'));
 		
 		// image path
-		$this->setControl('lead_image', array('name' => 'image'));
+		$this->setControl('image', array('name' => 'image'));
 		$url = ICMS_URL . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
 		$path = ICMS_ROOT_PATH . '/uploads/' . basename(dirname(dirname(__FILE__))) . '/';
 		$this->setImageDir($url, $path);
@@ -136,7 +136,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 */
 	function getVar($key, $format = 's') {
 		if ($format == 's' && in_array($key, array ('creator', 'display_topic_image',
-				'display_lead_image', 'rights', 'date', 'submitter', 'online_status', 'syndicated', 
+				'display_image', 'rights', 'date', 'submitter', 'online_status', 'syndicated', 
 			'federated'))) {
 			return call_user_func(array ($this,	$key));
 		}
@@ -244,30 +244,30 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 *
 	 * @return string 
 	 */
-	public function get_lead_image_tag() {
+	public function get_image_tag() {
 		
-		$lead_image = $image_tag = '';
+		$image = $image_tag = '';
 		
-		$lead_image = $this->getVar('lead_image', 'e');
-		if (!empty($lead_image)) {
+		$image = $this->getVar('image', 'e');
+		if (!empty($image)) {
 			$image_tag = '/uploads/' . basename(dirname(dirname(__FILE__))) . '/article/'
-				. $lead_image;
+				. $image;
 		}
 
 		return $image_tag;
 	}
 
 	/**
-	 * Converts the display_lead_image field to human readable value
+	 * Converts the display_image field to human readable value
 	 * 
 	 * @return string
 	 */
 	
-	public function display_lead_image() {
+	public function display_image() {
 		
-		$display_lead_image = $this->getVar('display_lead_image', 'e');
+		$display_image = $this->getVar('display_image', 'e');
 		
-		switch ($display_lead_image) {
+		switch ($display_image) {
 			case "1":
 				return _CO_NEWS_ARTICLE_LEFT;
 				break;
@@ -458,10 +458,10 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$articleArray['display_topic_image'] = $this->getVar('display_topic_image', 'e');
 
 		// create an image tag for the lead image
-		$articleArray['lead_image'] = $this->get_lead_image_tag();
+		$articleArray['image'] = $this->get_image_tag();
 
 		// specify the size of the lead image as per module preferences, for the resized_image plugin
-		$articleArray['lead_image_display_width'] = $newsConfig['lead_image_display_width'];
+		$articleArray['image_display_width'] = $newsConfig['image_display_width'];
 
 		// for some reason IPF inserts some content into dynamic text areas that should be empty
 		$articleArray['extended_text'] = trim($articleArray['extended_text']);

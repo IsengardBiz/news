@@ -21,11 +21,11 @@ define("_MI_NEWS_ARTICLES", "Artikel");
 define("_MI_NEWS_TOPIC_IMAGE_DEFAULT", "Tag-Bild Anzeige-Einstellungen");
 define("_MI_NEWS_TOPIC_IMAGE_DEFAULTDSC", "Legt einen Standardwert für das Feld zum Artikeleinsenden fest. 
 	Tag Bilder sind nur dann verfügbar, wenn das Sprockets-Module installiert ist.");
-define("_MI_NEWS_LEAD_IMAGE_DEFAULT", "Artikel-Bild Anzeige-Einstellungen");
-define("_MI_NEWS_LEAD_IMAGE_DEFAULTDSC", "Legt einen Standardwert für das Feld zum Artikeleinsenden fest. 
+define("_MI_NEWS_image_DEFAULT", "Artikel-Bild Anzeige-Einstellungen");
+define("_MI_NEWS_image_DEFAULTDSC", "Legt einen Standardwert für das Feld zum Artikeleinsenden fest. 
 	Sie können ihn überschreiben.");
-define("_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTH", "Artikel-Bild breite (pixels)");
-define("_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTHDSC", "Mit dieser Breite werden Artikel-Bilder angezeigt. Verändern Sie diesen Wert, werden die bestehenden Bilder automatisch angepasst.");
+define("_MI_NEWS_image_DISPLAY_WIDTH", "Artikel-Bild breite (pixels)");
+define("_MI_NEWS_image_DISPLAY_WIDTHDSC", "Mit dieser Breite werden Artikel-Bilder angezeigt. Verändern Sie diesen Wert, werden die bestehenden Bilder automatisch angepasst.");
 define("_MI_NEWS_IMAGE_UPLOAD_HEIGHT", "Maximale HÖHE der hochgeladenen Artikel-Bilder (pixels)");
 define("_MI_NEWS_IMAGE_UPLOAD_HEIGHTDSC", "Dies ist die maximale Höhe für den Bilderupload der Artikel-Bilder. Vergessen Sie nicht, dass die Bilder automatisch von der größe angepasst werden. Es ist also in Ordnung auch größere Maße zuzulassen.");
 define("_MI_NEWS_IMAGE_UPLOAD_WIDTH", "Maximale BREITE der hochgeladenen Artikel-Bilder (pixels)");

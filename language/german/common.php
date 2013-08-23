@@ -23,12 +23,12 @@ define("_CO_NEWS_ARTICLE_TAG", "Tag(s)");
 define("_CO_NEWS_ARTICLE_TAG_DSC", "Sie können mehrere Tags für einen Artikel bestimmen. Tags werden als Filter und Links eingesetzt.");
 define("_CO_NEWS_ARTICLE_DISPLAY_TOPIC_IMAGE", "Tag-Bild anzeigen?");
 define("_CO_NEWS_ARTICLE_DISPLAY_TOPIC_IMAGE_DSC", " Tag-Bilder werden nur angezeigt, wenn kein Spotlight-Bild ausgewählt ist.");
-define("_CO_NEWS_ARTICLE_LEAD_IMAGE", "Artikel-Bild");
-define("_CO_NEWS_ARTICLE_LEAD_IMAGE_DSC", "Artikel-Bilder werden in der Einleitung, sowie im Spotlight-Block des Artikels angezeigt. 
+define("_CO_NEWS_ARTICLE_image", "Artikel-Bild");
+define("_CO_NEWS_ARTICLE_image_DSC", "Artikel-Bilder werden in der Einleitung, sowie im Spotlight-Block des Artikels angezeigt. 
 Die Anzeigegröße ist in den Moduleinstellungen festgelegt und kann dort jeder Zeit angepasst werden (Das Bild wird danach neu berechnet).
 Es werden die Dateiformate .jpg, .png und .gif unterstützt.");
-define("_CO_NEWS_ARTICLE_DISPLAY_LEAD_IMAGE", "Artikel-Bild anzeigen?");
-define("_CO_NEWS_ARTICLE_DISPLAY_LEAD_IMAGEDSC", "Richtet das Artikel-Bild links, oder rechts aus, oder macht es unsichtbar.");
+define("_CO_NEWS_ARTICLE_DISPLAY_image", "Artikel-Bild anzeigen?");
+define("_CO_NEWS_ARTICLE_DISPLAY_imageDSC", "Richtet das Artikel-Bild links, oder rechts aus, oder macht es unsichtbar.");
 define("_CO_NEWS_ARTICLE_DESCRIPTION", "Einleitung");
 define("_CO_NEWS_ARTICLE_DESCRIPTION_DSC", " Tragen Sie hier den Einleitungstext für Ihren Artikel ein. Dieser wird auf der Newsseite dargestellt.");
 define("_CO_NEWS_ARTICLE_EXTENDED_TEXT", "Hauptteil");

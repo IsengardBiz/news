@@ -100,13 +100,17 @@ function news_article_recent_show($options) {
 		//$xoTheme->addStylesheet(ICMS_URL . '/modules/news/module.css');
 
 		$block['recent_news_spotlight_title'] = $spotlightObj->getVar('title');
-		if ($spotlightObj->getVar('lead_image')) {
-			$block['recent_news_spotlight_display_lead_image'] = $spotlightObj->getVar('display_lead_image', 'e');
+		if ($spotlightObj->getVar('image')) {
+			$block['recent_news_spotlight_display_image'] = $spotlightObj->getVar('display_image', 'e');
+			$block['recent_news_spotlight_display_lead_image'] = &$block['recent_news_spotlight_display_image']; // legacy template compatibility
 			$block['recent_news_spotlight_display_topic_image'] = $spotlightObj->getVar('display_topic_image', 'e');
-			$block['recent_news_spotlight_lead_image'] = $spotlightObj->get_lead_image_tag();
-			$block['recent_news_lead_image_display_width'] = icms_getConfig('lead_image_display_width', 'news');
+			$block['recent_news_spotlight_image'] = $spotlightObj->get_image_tag();
+			$block['recent_news_spotlight_lead_image'] = &$block['recent_news_spotlight_image']; // legacy template compatibilty
+			$block['recent_news_image_display_width'] = icms_getConfig('image_display_width', 'news');
+			$block['recent_news_lead_image_display_width'] = &$block['recent_news_image_display_width']; // legacy template compatibility
 		} else {
-			$block['recent_news_spotlight_lead_image'] = FALSE;
+			$block['recent_news_spotlight_image'] = FALSE;
+			$block['recent_news_spotlight_lead_image'] = &$block['recent_news_spotlight_image']; // legacy template compatibility
 		}
 		$block['recent_news_spotlight_description'] = $spotlightObj->getVar('description');
 		$block['recent_news_spotlight_link'] = $spotlightObj->getItemLink(TRUE);

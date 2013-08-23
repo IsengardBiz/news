@@ -23,8 +23,8 @@ class NewsArticleHandler extends icms_ipf_Handler {
 
 		// enable lead image upload. This should use the core mimetype manager when it is improved.
 		$mimetypes = array('image/jpeg', 'image/png', 'image/gif');
-		$this->enableUpload($mimetypes, $newsConfig['lead_image_file_size'],
-			$newsConfig['lead_image_upload_width'], $newsConfig['lead_image_upload_height']);
+		$this->enableUpload($mimetypes, $newsConfig['image_file_size'],
+			$newsConfig['image_upload_width'], $newsConfig['image_upload_height']);
 	}
 	
 	public function getTopicImageOptions() {

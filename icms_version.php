@@ -180,24 +180,24 @@ $modversion['config'][] = array(
   'default' =>  '470');
 
 $modversion['config'][] = array(
-  'name' => 'display_lead_image',
-  'title' => '_MI_NEWS_LEAD_IMAGE_DEFAULT',
-  'description' => '_MI_NEWS_LEAD_IMAGE_DEFAULTDSC',
+  'name' => 'display_image',
+  'title' => '_MI_NEWS_image_DEFAULT',
+  'description' => '_MI_NEWS_image_DEFAULTDSC',
   'formtype' => 'select',
   'valuetype' => 'array',
   'options' => $topic_image_default_options,
   'default' =>  '0');
 
 $modversion['config'][] = array(
-  'name' => 'lead_image_display_width',
-  'title' => '_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTH',
-  'description' => '_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTHDSC',
+  'name' => 'image_display_width',
+  'title' => '_MI_NEWS_image_DISPLAY_WIDTH',
+  'description' => '_MI_NEWS_image_DISPLAY_WIDTHDSC',
   'formtype' => 'text',
   'valuetype' => 'int',
   'default' =>  '300');
 
 $modversion['config'][] = array(
-	'name' => 'lead_image_upload_height',
+	'name' => 'image_upload_height',
 	'title' => '_MI_NEWS_IMAGE_UPLOAD_HEIGHT',
 	'description' => '_MI_LIBRARY_IMAGE_UPLOAD_HEIGHTDSC',
 	'formtype' => 'textbox',
@@ -205,7 +205,7 @@ $modversion['config'][] = array(
 	'default' =>  '4000');
 
 $modversion['config'][] = array(
-	'name' => 'lead_image_upload_width',
+	'name' => 'image_upload_width',
 	'title' => '_MI_NEWS_IMAGE_UPLOAD_WIDTH',
 	'description' => '_MI_LIBRARY_IMAGE_UPLOAD_WIDTHDSC',
 	'formtype' => 'textbox',
@@ -213,7 +213,7 @@ $modversion['config'][] = array(
 	'default' =>  '4000');
 
 $modversion['config'][] = array(
-	'name' => 'lead_image_file_size',
+	'name' => 'image_file_size',
 	'title' => '_MI_NEWS_IMAGE_FILE_SIZE',
 	'description' => '_MI_NEWS_IMAGE_FILE_SIZEDSC',
 	'formtype' => 'textbox',

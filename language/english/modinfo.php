@@ -21,11 +21,11 @@ define("_MI_NEWS_ARTICLES", "Articles");
 define("_MI_NEWS_TOPIC_IMAGE_DEFAULT", "Default tag image display setting");
 define("_MI_NEWS_TOPIC_IMAGE_DEFAULTDSC", "Sets the default value in the article submission form. 
 	Tag images are only available if the Sprockets module is installed.");
-define("_MI_NEWS_LEAD_IMAGE_DEFAULT", "Default lead image display setting");
-define("_MI_NEWS_LEAD_IMAGE_DEFAULTDSC", "Sets the default value in the article submission form. 
+define("_MI_NEWS_image_DEFAULT", "Default lead image display setting");
+define("_MI_NEWS_image_DEFAULTDSC", "Sets the default value in the article submission form. 
 	You can override it.");
-define("_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTH", "Lead image width (pixels)");
-define("_MI_NEWS_LEAD_IMAGE_DISPLAY_WIDTHDSC", "This is the width at which lead images will be 
+define("_MI_NEWS_image_DISPLAY_WIDTH", "Lead image width (pixels)");
+define("_MI_NEWS_image_DISPLAY_WIDTHDSC", "This is the width at which lead images will be 
 	displayed. If you change this value lead images will automatically be rebuilt to the new 
 	specification.");
 define("_MI_NEWS_IMAGE_UPLOAD_HEIGHT", "Maximum HEIGHT of uploaded lead images (pixels)");

@@ -22,13 +22,13 @@
 			</div>		
 		
 		<!-- lead image width is set in module preferences, width takes precedence over height as aspect ratio is maintained -->
-		<{if $news_article.lead_image && $news_article.display_lead_image !== '0'}>
-			<{if $news_article.display_lead_image == '1'}>
+		<{if $news_article.image && $news_article.display_image !== '0'}>
+			<{if $news_article.display_image == '1'}>
 				<div class="news_float_left">
 			<{else}>
 				<div class="news_float_right">
 			<{/if}>
-				<{resized_image file=$news_article.lead_image width=$news_article.lead_image_display_width height="999" fit="inside"}>
+				<{resized_image file=$news_article.image width=$news_article.image_display_width height="999" fit="inside"}>
 				</div>
 		<{else}>
 			<{if $news_article.icon}>
@@ -95,14 +95,14 @@
 					</div>
 				
 				<!-- lead image width is set in module preferences, width takes precedence over height as aspect ratio is maintained -->
-				<{if $news_article.lead_image && $news_article.display_lead_image !== '0'}>
-					<{if $news_article.display_lead_image == '1'}>
+				<{if $news_article.image && $news_article.display_image !== '0'}>
+					<{if $news_article.display_image == '1'}>
 						<div class="news_float_left">
 					<{else}>
 						<div class="news_float_right">
 					<{/if}>
 							<a href="<{$news_article.itemUrl}>" title="<{$news_article.title}>">
-								<{resized_image file=$news_article.lead_image width=$news_article.lead_image_display_width height="999" fit="inside"}>
+								<{resized_image file=$news_article.image width=$news_article.image_display_width height="999" fit="inside"}>
 							</a>
 						</div>
 				<{else}>

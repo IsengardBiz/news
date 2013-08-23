@@ -120,6 +120,9 @@ if($articleObj && !$articleObj->isNew()) {
 		$articleArray['display_facebook_comments'] = TRUE;
 		$articleArray['facebook_comments_width'] = icms::$module->config['facebook_comments_width'];
 	}
+	
+	// Compatibility with DB templates in legacy installs (create reference, to minimise overhead)
+	$articleArray['lead_image'] = &$articleArray['image'];
 
 	// display this article
 	$icmsTpl->assign('news_article', $articleArray);
@@ -317,6 +320,9 @@ if($articleObj && !$articleObj->isNew()) {
 
 				$article['editItemLink'] = $edit_item_link;
 				$article['deleteItemLink'] = $delete_item_link;
+				
+				// Compatibility with DB templates in legacy installs
+				$article['lead_image'] = &$articleArray['image'];
 
 				// only if sprockets installed
 				if (icms_get_module_status("sprockets") && !empty($article['tag'])) {

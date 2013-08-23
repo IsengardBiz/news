@@ -141,11 +141,11 @@ if (in_array($clean_op,$valid_op,TRUE)){
 		if ($clean_article_id) {
 			$articleObj = $news_article_handler->get($clean_article_id);
 			if ($articleObj->getVar('article_id')) {
-				$lead_image = $articleObj->getVar('lead_image', 'e');
-				if ($lead_image) {
-					$lead_image = '<img src="/uploads/' . basename(dirname(dirname(__FILE__))) 
-						. '/article/' . $lead_image . '" alt="' . $articleObj->getVar('title') . '" />';
-					$articleObj->setVar('lead_image', $lead_image);
+				$image = $articleObj->getVar('image', 'e');
+				if ($image) {
+					$image = '<img src="/uploads/' . basename(dirname(dirname(__FILE__))) 
+						. '/article/' . $image . '" alt="' . $articleObj->getVar('title') . '" />';
+					$articleObj->setVar('image', $image);
 				}
 				$articleObj->displaySingleObject();
 			}

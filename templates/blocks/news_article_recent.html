@@ -3,14 +3,14 @@
 
 	<!-- handle spotlight (lead) image, if present -->
 
-	<{if $block.recent_news_spotlight_lead_image && $block.recent_news_spotlight_display_lead_image !== '0'}>
-		<{if $block.recent_news_spotlight_display_lead_image == '1'}>
+	<{if $block.recent_news_spotlight_image && $block.recent_news_spotlight_display_image !== '0'}>
+		<{if $block.recent_news_spotlight_display_image == '1'}>
 			<div style="float:left; margin: 0em 1em 1em 0em;">
 		<{else}>
 			<div style="float:right; margin: 0em 0em 1em 1em;">
 		<{/if}>
 				<a href="<{$block.recent_news_spotlight_link}>" title="<{$block.recent_news_spotlight_title}>">
-					<{resized_image file=$block.recent_news_spotlight_lead_image width=$block.recent_news_lead_image_display_width height="999" fit="inside"}>
+					<{resized_image file=$block.recent_news_spotlight_image width=$block.recent_news_image_display_width height="999" fit="inside"}>
 				</a>
 			</div>
 	<{/if}>

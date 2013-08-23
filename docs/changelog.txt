@@ -55,3 +55,4 @@ Version 1.16 Beta
 * Add preference to enable Facebook comments / set width of comment box.
 * Added short doc on how to configure Facebook comments.
 * Added selective cache clearance when an article is added/edited/deleted when module caching is on
+* Globally renamed the lead_image field to image, for consistency with Sprockets functions and other modules.
