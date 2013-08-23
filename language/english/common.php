@@ -26,13 +26,13 @@ define("_CO_NEWS_ARTICLE_TAG_DSC", "You can apply multiple tags to an article. T
 define("_CO_NEWS_ARTICLE_DISPLAY_TOPIC_IMAGE", "Display tag image?");
 define("_CO_NEWS_ARTICLE_DISPLAY_TOPIC_IMAGE_DSC", " Tag images are only displayed if there is no 
 	spotlight images.");
-define("_CO_NEWS_ARTICLE_image", "Lead image");
-define("_CO_NEWS_ARTICLE_image_DSC", "A feature image that will be displayed in the 
+define("_CO_NEWS_ARTICLE_IMAGE", "Lead image");
+define("_CO_NEWS_ARTICLE_IMAGE_DSC", "A feature image that will be displayed in the 
 	introduction (description field) of the article, and also in the spotlight block. Display size 
 	is specified in module preferences and can be changed at any time (the images will be 
 	rebuilt). Images are restricted to .jpg, .png and .gif");
-define("_CO_NEWS_ARTICLE_DISPLAY_image", "Display lead image?");
-define("_CO_NEWS_ARTICLE_DISPLAY_imageDSC", "Float the image to the left, right or hide it.");
+define("_CO_NEWS_ARTICLE_DISPLAY_IMAGE", "Display lead image?");
+define("_CO_NEWS_ARTICLE_DISPLAY_IMAGEDSC", "Float the image to the left, right or hide it.");
 define("_CO_NEWS_ARTICLE_DESCRIPTION", "Description");
 define("_CO_NEWS_ARTICLE_DESCRIPTION_DSC", " Enter the lead or &#039;teaser&#039; text for your 
 	article here. This will be shown on the news index page.");

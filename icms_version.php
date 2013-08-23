@@ -181,8 +181,8 @@ $modversion['config'][] = array(
 
 $modversion['config'][] = array(
   'name' => 'display_image',
-  'title' => '_MI_NEWS_image_DEFAULT',
-  'description' => '_MI_NEWS_image_DEFAULTDSC',
+  'title' => '_MI_NEWS_IMAGE_DEFAULT',
+  'description' => '_MI_NEWS_IMAGE_DEFAULTDSC',
   'formtype' => 'select',
   'valuetype' => 'array',
   'options' => $topic_image_default_options,
@@ -190,8 +190,8 @@ $modversion['config'][] = array(
 
 $modversion['config'][] = array(
   'name' => 'image_display_width',
-  'title' => '_MI_NEWS_image_DISPLAY_WIDTH',
-  'description' => '_MI_NEWS_image_DISPLAY_WIDTHDSC',
+  'title' => '_MI_NEWS_IMAGE_DISPLAY_WIDTH',
+  'description' => '_MI_NEWS_IMAGE_DISPLAY_WIDTHDSC',
   'formtype' => 'text',
   'valuetype' => 'int',
   'default' =>  '300');
