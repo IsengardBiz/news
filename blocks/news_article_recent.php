@@ -140,6 +140,12 @@ function news_article_recent_show($options) {
 		// Add the SEO string to the itemLink
 		$article['itemLink'] = $itemLink;
 	}
+	
+	// Set some preferences
+	$block['recent_news_image_position'] = $options[6];
+	$block['recent_news_image_width'] = $options[7];
+	$block['recent_news_display_mode'] = $options[8];
+	
 	return $block;
 }
 
@@ -256,6 +262,23 @@ function news_article_recent_edit($options) {
 	$form_spotlight = new icms_form_elements_Select('', 'options[5]', $options[5], '1', FALSE);
 	$form_spotlight->addOptionArray($article_array);
 	$form .= '<td>' . $form_spotlight->render() . '</td></tr>';
+	
+	// Position of teaser images
+	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_IMAGE_POSITION . '</td>';
+	$form_select2 = new icms_form_elements_Select('', 'options[6]', $options[6], '1', FALSE);
+	$form_select2->addOptionArray(array(0 => _MB_NEWS_ARTICLE_IMAGE_NONE, 
+		1 => _MB_NEWS_ARTICLE_IMAGE_LEFT, 2 => _MB_NEWS_ARTICLE_IMAGE_RIGHT));
+	$form .= '<td>' . $form_select2->render() . '</td></tr>';
+	
+	// Size of teaser image (automatically resized and cached by Smarty plugin)	
+	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_IMAGE_WIDTH . '</td>';
+	$form .= '<td><input type="text" name="options[7]" value="' . $options[7] . '" /></td></tr>';
+	
+	// Select display mode: Simple list (0) or teasers (1)
+	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_DISPLAY_MODE . '</td>';
+	$form_select3 = new icms_form_elements_Select('', 'options[8]', $options[8], '1', FALSE);
+	$form_select3->addOptionArray(array(0 => _MB_NEWS_ARTICLE_LIST, 1 => _MB_NEWS_ARTICLE_TEASERS));
+	$form .= '<td>' . $form_select3->render() . '</td></tr>';	
 	$form .= '</table>';
 
 	return $form;

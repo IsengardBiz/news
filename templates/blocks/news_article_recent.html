@@ -22,10 +22,39 @@
 		<h3><{$block.recent_news_title}></h3>
 	<{/if}>
 <{/if}>
-<div>
-	<ul>
+<{if $block.recent_news_display_mode}>
+	<div>
 		<{foreach item=recent_news_article from=$block.recent_news_articles}>
-			<li><{$recent_news_article.itemLink}> (<{$recent_news_article.date}>)</li>
+			<h3><{$recent_news_article.itemLink}></h3>
+			<div class="itemInfo">
+				<{if $recent_news_article.date}><{$smarty.const._MB_NEWS_RECENT_ARTICLES_PUBLISHED}>: <{$recent_news_article.date}><{/if}><{if $recent_news_article.counter}> | <{$recent_news_article.counter}> <{$smarty.const._MB_NEWS_RECENT_ARTICLES_VIEWS}>
+					<{else}>
+						<{if $recent_news_article.counter}><{$recent_news_article.counter}> <{$smarty.const._MB_NEWS_RECENT_ARTICLES_VIEWS}><{/if}>
+					<{/if}>
+					<{if $recent_news_article.tags}>
+						<{if $recent_news_article.date || $recent_news_article.counter}> | 
+							<{$recent_news_article.tags}>
+						<{else}>
+							<{$recent_news_article.tags}>
+						<{/if}>
+					<{/if}>
+			</div>			
+			<{if $recent_news_article.image && $recent_news_article.image_position && $recent_news_article.description}>
+				<div style="<{$block.recent_news_image_position}>">
+					<a href="<{$recent_news_article.url}>"><{resized_image file=$recent_news_article.image width=$block.recent_news_image_width height="999" fit="inside"}></a>
+				</div>
+			<{/if}>
+			<div>
+				<{$recent_news_article.description}>
+			</div>			
 		<{/foreach}>
-	</ul>
-</div>
+	</div>
+<{else}>
+	<div>
+		<ul>
+			<{foreach item=recent_news_article from=$block.recent_news_articles}>
+				<li><{$recent_news_article.itemLink}> (<{$recent_news_article.date}>)</li>
+			<{/foreach}>
+		</ul>
+	</div>
+<{/if}>

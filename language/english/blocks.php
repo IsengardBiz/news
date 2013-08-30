@@ -23,3 +23,15 @@ define("_MB_NEWS_ARTICLE_NO", "No");
 define("_MB_NEWS_ARTICLE_SPOTLIGHTED_ARTICLE", "Spotlighted article:");
 define("_MB_NEWS_ARTICLE_SPOTLIGHT_RECENT_ARTICLES", "Headlines");
 define("_MB_NEWS_ARTICLE_MOST_RECENT_ARTICLE", "-- Most recent article --");
+
+// New in V1.17
+define("_MB_NEWS_ARTICLE_DISPLAY_MODE", "Display mode");
+define("_MB_NEWS_ARTICLE_LIST", "List");
+define("_MB_NEWS_ARTICLE_TEASERS", "Teasers");
+define("_MB_NEWS_RECENT_ARTICLES_PUBLISHED", "Published");
+define("_MB_NEWS_RECENT_ARTICLES_VIEWS", "Views");
+define("_MB_NEWS_ARTICLE_IMAGE_POSITION", "Teaser thumbnail position");
+define("_MB_NEWS_ARTICLE_IMAGE_NONE", "None");
+define("_MB_NEWS_ARTICLE_IMAGE_LEFT", "Left");
+define("_MB_NEWS_ARTICLE_IMAGE_RIGHT", "Right");
+define("_MB_NEWS_ARTICLE_IMAGE_WIDTH", "Width of teaser images (pixels)");

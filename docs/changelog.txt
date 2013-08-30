@@ -50,9 +50,14 @@ description itself).
 * Added default syndication preference.
 * Add extended_text and creator to searchable fields
 
-Version 1.16 Beta
------------------
+Version 1.16 Final
+------------------
 * Add preference to enable Facebook comments / set width of comment box.
 * Added short doc on how to configure Facebook comments.
 * Added selective cache clearance when an article is added/edited/deleted when module caching is on
 * Globally renamed the lead_image field to image, for consistency with Sprockets functions and other modules.
+
+Version 1.17
+------------
+* Recent news block can now be configured to display teasers with thumbnails (or the traditional 
+simple list).
