@@ -139,6 +139,24 @@ function news_article_recent_show($options) {
 		
 		// Add the SEO string to the itemLink
 		$article['itemLink'] = $itemLink;
+		
+		// Optional tagging support (only used in teaser mode)
+		if (icms_get_module_status("sprockets") && $options[8]) {
+			$tags = $tagList = array();
+			$criteria = icms_buildCriteria(array('label_type' => 0));
+			
+			$tagList = $sprockets_tag_handler->getList($criteria, TRUE);
+			foreach ($block['recent_news_articles'] as &$article) {
+				$tagLinks = array();
+				$tags = $sprockets_taglink_handler->getTagsForObject($article['article_id'], $news_article_handler, 0);
+				if ($tags) {
+					foreach ($tags as $tag) {
+						$tagLinks[] = '<a href="' . ICMS_URL . '/modules/article.php?tag_id=' . $tag . '">' . $tagList[$tag] . '</a>';
+					}
+					$article['tags'] = implode(", ", $tagLinks);
+				}
+			}
+		}
 	}
 	
 	// Set some preferences
