@@ -19,12 +19,11 @@ class NewsArticleHandler extends icms_ipf_Handler {
 	public function __construct(& $db) {
 		parent::__construct($db, 'article', 'article_id', 'title', 'description', 'news');
 
-		global $newsConfig;
-
 		// enable lead image upload. This should use the core mimetype manager when it is improved.
 		$mimetypes = array('image/jpeg', 'image/png', 'image/gif');
-		$this->enableUpload($mimetypes, $newsConfig['image_file_size'],
-			$newsConfig['image_upload_width'], $newsConfig['image_upload_height']);
+		$this->enableUpload($mimetypes, icms_getConfig('image_file_size', 'news'),
+			icms_getConfig('image_upload_width', 'news'),
+			icms_getConfig('image_upload_height', 'news'));
 	}
 	
 	public function getTopicImageOptions() {

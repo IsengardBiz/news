@@ -31,12 +31,12 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$this->quickInitVar('creator', XOBJ_DTYPE_TXTBOX, FALSE);
 		$this->initNonPersistableVar('tag', XOBJ_DTYPE_INT, 'tag', FALSE, FALSE, FALSE, TRUE);
 		$this->quickInitVar('display_topic_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
-				$newsConfig['display_topic_image']);
+				icms_getConfig('display_topic_image', 'news'));
 		$this->quickInitVar('description', XOBJ_DTYPE_TXTAREA, TRUE);
 		$this->quickInitVar('extended_text', XOBJ_DTYPE_TXTAREA, FALSE);
 		$this->quickInitVar('image', XOBJ_DTYPE_IMAGE, FALSE);
 		$this->quickInitVar('display_image', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 
-				$newsConfig['display_image']);
+				icms_getconfig('display_image', 'news'));
 		$this->quickInitVar('rights', XOBJ_DTYPE_INT, FALSE);
 		$this->quickInitVar('language', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE, _LANGCODE);
 		$this->quickInitVar('publisher', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
@@ -46,9 +46,9 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$this->quickInitVar('date', XOBJ_DTYPE_LTIME, TRUE);
 		$this->quickInitVar('online_status', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE, 1);
 		$this->quickInitVar('syndicated', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
-				$newsConfig['default_syndication']);
+				icms_getConfig('default_syndication', 'news'));
 		$this->quickInitVar('federated', XOBJ_DTYPE_INT, TRUE, FALSE, FALSE,
-				$newsConfig['default_federation']);
+				icms_getConfig('default_federation', 'news'));
 		$this->quickInitVar('oai_identifier', XOBJ_DTYPE_TXTBOX, TRUE, FALSE, FALSE,
 				$this->handler->setOaiId());
 		$this->initCommonVar('counter');
@@ -342,11 +342,10 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 */
 	public function date() {
 		
-		global $newsConfig;
 		$date = '';
 		$date = $this->getVar('date', 'e');
 		
-		return date($newsConfig['date_format'], $date);
+		return date(icms_getConfig('date_format', 'news'), $date);
 	}
 
 	/**
@@ -438,8 +437,6 @@ class NewsArticle extends icms_ipf_seo_Object {
 	 */
 	function prepareArticleForDisplay($with_overrides = TRUE) {
 
-		global $newsConfig;
-
 		$articleArray = array();
 
 		if ($with_overrides) {
@@ -461,20 +458,20 @@ class NewsArticle extends icms_ipf_seo_Object {
 		$articleArray['image'] = $this->get_image_tag();
 
 		// specify the size of the lead image as per module preferences, for the resized_image plugin
-		$articleArray['image_display_width'] = $newsConfig['image_display_width'];
+		$articleArray['image_display_width'] = icms_getConfig('image_display_width', 'news');
 
 		// for some reason IPF inserts some content into dynamic text areas that should be empty
 		$articleArray['extended_text'] = trim($articleArray['extended_text']);
 
-		$articleArray['date'] = date($newsConfig['date_format'], $this->getVar('date', 'e'));
-		if ($newsConfig['display_creator'] == FALSE) {
+		$articleArray['date'] = date(icms_getConfig('date_format', 'news'), $this->getVar('date', 'e'));
+		if (icms_getConfig('display_creator', 'news') == FALSE) {
 			unset($articleArray['creator']);
 		} else {
-			if ($newsConfig['use_submitter_as_creator'] == TRUE) {
+			if (icms_getConfig('use_submitter_as_creator', 'news') == TRUE) {
 				$articleArray['creator'] = $articleArray['submitter'];
 			}
 		}
-		if ($newsConfig['display_counter'] == FALSE) {
+		if (icms_getConfig('display_counter', 'news') == FALSE) {
 			unset($articleArray['counter']);
 		} else {
 			$articleArray['counter']++;

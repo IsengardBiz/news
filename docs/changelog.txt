@@ -61,3 +61,7 @@ Version 1.17
 ------------
 * Recent news block can now be configured to display teasers with thumbnails (or the traditional 
 simple list).
+
+Version 1.18 (unreleased)
+-------------------------
+* Replace global $newsConfig with icms_getConfig('configname', 'news') in class files.
