@@ -79,7 +79,7 @@ if($articleObj && !$articleObj->isNew()) {
 
 	$articleArray['editItemLink'] = $edit_item_link;
 	$articleArray['deleteItemLink'] = $delete_item_link;
-
+	
 	// do tag lookups (if sprockets module is installed)
 	if (icms_get_module_status("sprockets") && !empty($articleArray['tag'])) {
 		
@@ -125,12 +125,17 @@ if($articleObj && !$articleObj->isNew()) {
 	$articleArray['lead_image'] = &$articleArray['image'];
 	$articleArray['lead_image_display_width'] = icms::$module->config['image_display_width'];
 	$articleArray['image_display_width'] = &$articleArray['lead_image_display_width'];
+	
+	// Adjust image path document root (for correct image display in subdirectory installs)
+	if ($articleArray['lead_image']) {
+		$articleArray['lead_image'] = $document_root . '/' . $articleArray['lead_image'];
+	}
 
-	// display this article
+	// Display this article
 	$icmsTpl->assign('news_article', $articleArray);
 	$icmsTpl->assign('news_index_view', FALSE);
 	
-	// comments
+	// Comments
 	if (icms::$module->config['com_rule']) {
 		$icmsTpl->assign('news_article_comment', TRUE);
 		include_once ICMS_ROOT_PATH . '/include/comment_view.php';
@@ -327,7 +332,12 @@ if($articleObj && !$articleObj->isNew()) {
 				$article['lead_image'] = &$article['image'];
 				$article['image_display_width'] = icms::$module->config['image_display_width'];
 				$article['lead_image_display_width'] = &$article['image_display_width'];
-
+				
+				// Adjust image path document root (for correct image display in subdirectory installs)
+				if ($article['lead_image']) {
+					$article['lead_image'] = $document_root . '/' . $article['lead_image'];
+				}
+				
 				// only if sprockets installed
 				if (icms_get_module_status("sprockets") && !empty($article['tag'])) {
 					

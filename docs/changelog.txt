@@ -65,3 +65,4 @@ simple list).
 Version 1.18 (unreleased)
 -------------------------
 * Replace global $newsConfig with icms_getConfig('configname', 'news') in class files.
+* Calculate document root, allows lead images to be displayed correctly if install is in a subdirectory.
