@@ -87,16 +87,18 @@ if($articleObj && !$articleObj->isNew()) {
 		$articleTags = array_flip($articleArray['tag']);
 		
 		foreach ($articleTags as $key => &$value) {
-			$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-			. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
-					. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
-			
-			// get tag icons, if available
-			$icon = $sprockets_tag_buffer[$key]->getVar('icon');
-			if (!empty($icon)) {
-				$tag_icons[] = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-					. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
-					. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
+			if ($key) {
+				$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
+				. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
+						. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
+
+				// get tag icons, if available
+				$icon = $sprockets_tag_buffer[$key]->getVar('icon');
+				if (!empty($icon)) {
+					$tag_icons[] = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
+						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
+						. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
+				}
 			}
 		}
 		$articleArray['tag'] = implode(', ', $articleTags);
@@ -301,10 +303,10 @@ if($articleObj && !$articleObj->isNew()) {
 
 			foreach ($taglink_buffer as $key => $taglink) {
 
-				if (!array_key_exists($taglink->getItemId(), $article_tag_id_buffer)) {
-					$article_tag_id_buffer[$taglink->getItemId()] = array();
+				if (!array_key_exists($taglink->getVar('iid', 'e'), $article_tag_id_buffer)) {
+					$article_tag_id_buffer[$taglink->getVar('iid', 'e')] = array();
 				}
-				$article_tag_id_buffer[$taglink->getItemId()][] = $taglink->getTagId();
+				$article_tag_id_buffer[$taglink->getVar('iid', 'e')][] = $taglink->getVar('tid', 'e');
 			}
 			
 			// assign each subarray of tags to the matching article, using the item id as marker
@@ -344,16 +346,18 @@ if($articleObj && !$articleObj->isNew()) {
 					// get tag links and icons, if available
 					$articleTags = array_flip($article['tag']);
 					foreach ($articleTags as $key => &$value) {
-						$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
-						. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
-						
-						$icon = $sprockets_tag_buffer[$key]->getVar('icon');
-						if (!empty($icon)) {
-							$tag_icons[] = '<a href="' . ICMS_URL . '/modules/'
-							. basename(dirname(__FILE__)) . '/article.php?tag_id='
-							. $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
-							. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
+						if ($key) {
+							$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
+							. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
+							. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
+
+							$icon = $sprockets_tag_buffer[$key]->getVar('icon');
+							if (!empty($icon)) {
+								$tag_icons[] = '<a href="' . ICMS_URL . '/modules/'
+								. basename(dirname(__FILE__)) . '/article.php?tag_id='
+								. $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
+								. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
+							}
 						}
 					}
 					$article['tag'] = implode(', ', $articleTags);
