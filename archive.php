@@ -136,6 +136,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 		
 		// if Sprockets is installed, prepare tag buffers to reduce database lookups
 		if (icms_get_module_status("sprockets")) {
+			icms_loadLanguageFile("sprockets", "common");
 			$article_ids = array_keys($storyarray);
 			$article_tags_multi_array = array();
 			$sprockets_tag_handler = icms_getModuleHandler('tag', 'sprockets', 'sprockets');
@@ -148,7 +149,7 @@ if ($fromyear != 0 && $frommonth != 0) {
 			$criteria->add(new icms_db_criteria_Item('item', 'article'));
 			$criteria->add(new icms_db_criteria_Item('iid', $article_ids, 'IN'));
 
-			$tag_buffer = $sprockets_tag_handler->getObjects(null, TRUE);
+			$tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
 			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, TRUE, FALSE);
 			
 			// prepare a multidimensional array holding the tags for each story
@@ -156,10 +157,16 @@ if ($fromyear != 0 && $frommonth != 0) {
 				if (!array_key_exists($taglink['iid'], $article_tags_multi_array)) {
 					$article_tags_multi_array[$taglink['iid']] = array();				
 				}
-				$article_tags_multi_array[$taglink['iid']][] = '<a href="' . ICMS_URL
-					. '/modules/' . basename(dirname(__FILE__)) . '/article.php?tag_id='
-					. $taglink['tid'] . '" title="' . $tag_buffer[$taglink['tid']]->getVar('title') . '">'
-					. $tag_buffer[$taglink['tid']]->getVar('title') . '</a>';
+				$link = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__)) 
+						. '/article.php?tag_id=';
+				if ($taglink['tid'] == 0) {
+					$link .= 'untagged';
+				} else {
+					$link .= $taglink['tid'];
+				}
+				$article_tags_multi_array[$taglink['iid']][] = $link . '" title="' 
+						. $tag_buffer[$taglink['tid']]->getVar('title') . '">'
+						. $tag_buffer[$taglink['tid']]->getVar('title') . '</a>';
 			}
 		}
 		

@@ -20,8 +20,16 @@ global $icmsConfig;
 $clean_article_id = $clean_story_id = $clean_tag_id = $clean_start = $articleObj
 	= $news_article_handler = $news_tag_name = '';
 $articleArray = $tagList = array();
+$untagged_content = FALSE;
 
-/** Use a naming convention that indicates the source of the content of the variable */
+// Sanitise the tag_id and start (pagination) parameters
+$untagged_content = FALSE; // Flag indicating that UNTAGGED content should be returned
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
+	
 $clean_article_id = isset($_GET['article_id']) ? intval($_GET['article_id']) : 0 ;
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 $clean_start = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -41,13 +49,11 @@ $document_root = str_replace('modules/' . $directory_name . '/article.php', '', 
 // Optional tagging support (only if Sprockets module installed)
 $sprocketsModule = icms::handler("icms_module")->getByDirname("sprockets");
 
-if (icms_get_module_status("sprockets"))
-{
+if (icms_get_module_status("sprockets")) {
 	icms_loadLanguageFile("sprockets", "common");
 	$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'), 'sprockets');
 	$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'), 'sprockets');
-	$criteria = icms_buildCriteria(array('label_type' => '0'));
-	$sprockets_tag_buffer = $sprockets_tag_handler->getObjects($criteria, TRUE, TRUE);
+	$sprockets_tag_buffer = $sprockets_tag_handler->getTagBuffer(TRUE);
 }
 
 // check if a single article has been requested
@@ -170,13 +176,24 @@ if($articleObj && !$articleObj->isNew()) {
 			$news_tag_name = $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e');
 			$icmsTpl->assign('news_tag_name', $news_tag_name);
 			$icmsTpl->assign('news_category_path', $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
+		} elseif ($untagged_content) {
+			$news_tag_name = $sprockets_tag_buffer[0]->getVar('title', 'e');
+			$icmsTpl->assign('news_tag_name', $news_tag_name);
+			$icmsTpl->assign('news_category_path', $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 		}
 		
 		// Prepare a tag select box if sprockets module is installed & set in module preferences
 		if (icms::$module->config['show_tag_select_box'] == TRUE) {
 			// prepare a tag navigation select box
-			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
-					$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, TRUE, icms::$module->getVar('mid'));
+			if ($untagged_content) {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
+						'untagged', _CO_NEWS_ARTICLE_ALL_TAGS, TRUE, icms::$module->getVar('mid'), 
+						'article', TRUE);
+			} else {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php',
+						$clean_tag_id, _CO_NEWS_ARTICLE_ALL_TAGS, TRUE, icms::$module->getVar('mid'), 
+						'article', TRUE);
+			}
 			$icmsTpl->assign('news_tag_select_box', $tag_select_box);
 			$icmsTpl->assign('news_show_tag_select_box', TRUE);
 		}
@@ -203,12 +220,13 @@ if($articleObj && !$articleObj->isNew()) {
 		// list of articles, filtered by tags (if any), pagination and preferences
 		$article_object_array = array();
 
-		if ($clean_tag_id && icms_get_module_status("sprockets")) {
-
+		// Retrieve tagged or untagged content
+		if (($clean_tag_id || $untagged_content) && icms_get_module_status("sprockets")) {
+			
 			/**
 			 * Retrieve a list of articles JOINED to taglinks by article_id/tag_id/module_id/item
 			 */
-
+						
 			$query = $rows = $tag_article_count = '';
 			$linked_article_ids = array();
 			$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
@@ -224,7 +242,6 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `item` = 'article'";
 			
 			$result = icms::$xoopsDB->query($group_query);
-
 			if (!$result) {
 				echo 'Error';
 				exit;
@@ -234,10 +251,9 @@ if($articleObj && !$articleObj->isNew()) {
 					foreach ($row as $key => $count) {
 						$article_count = $count;
 					}
-					
 				}
 			}
-
+			
 			// second, get the articles
 			$query = "SELECT * FROM " . $news_article_handler->table . ", "
 					. $sprockets_taglink_handler->table
@@ -263,21 +279,18 @@ if($articleObj && !$articleObj->isNew()) {
 					$article_object_array[$row->getVar('article_id')] = $row;
 				}
 			}
-			
+		// Retrieve all content
 		} else {
-
 			$criteria = new icms_db_criteria_Compo();
-
 			$criteria->setStart($clean_start);
-			$criteria->setLimit(icms::$module->config['number_of_articles_per_page']);
 			$criteria->setSort('date');
 			$criteria->setOrder('DESC');
 			$criteria->add(new icms_db_criteria_Item('online_status', TRUE));
 			$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
-			
+			$article_count = $news_article_handler->getCount($criteria); // For pagination
+			$criteria->setLimit(icms::$module->config['number_of_articles_per_page']);
 			$article_object_array = $news_article_handler->getObjects($criteria, TRUE, TRUE);
 		}
-
 		unset($criteria);
 
 		if (icms_get_module_status("sprockets") && (count($article_object_array) > 0)) {
@@ -382,9 +395,7 @@ if($articleObj && !$articleObj->isNew()) {
 			$extra_arg = 'tag_id=' . $clean_tag_id;
 		} else {
 			$extra_arg = FALSE;
-			$article_count = $news_article_handler->getCount($criteria);
 		}
-		
 		$pagenav = new  icms_view_PageNav($article_count, icms::$module->config['number_of_articles_per_page'],
 			$clean_start, 'start', $extra_arg);
 		
@@ -414,7 +425,6 @@ if (icms::$module->config['show_breadcrumb'] == TRUE) {
 }
 
 $icmsTpl->assign('news_module_home', news_getModuleName(TRUE, TRUE));
-
 $icms_metagen->createMetaTags();
 
 include_once 'footer.php';
