@@ -34,8 +34,8 @@ $modversion = array(
 /**  Development information */
   'status_version'=> "1.18",
   'status'=> "Beta",
-  'date'=> "9 January 2015",
-  'author_word'=> "This module is best used with the Sprockets utility module also installed.",
+  'date'=> "13 January 2015",
+  'author_word'=> "This module is best used with the Sprockets utility module also installed (2.01 and higher).",
 
 /** Contributors */
   'developer_website_url' => "https://www.isengard.biz",

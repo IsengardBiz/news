@@ -68,3 +68,4 @@ Version 1.18 (unreleased)
 * Calculate document root, allows lead images to be displayed correctly if install is in a subdirectory.
 * Removed calls to Sprockets methods getTagId() and getItemId() which are redundant and have been removed. 
 * Add handling of 'untagged' articles and related compatibility patches for Sprockets 2.01.
+* Improved efficiency of recent articles block (reduced query load via buffers).

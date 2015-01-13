@@ -76,7 +76,8 @@ function news_article_recent_show($options) {
 		$criteria->add(new icms_db_criteria_Item('date', time(), '<'));
 
 		// retrieve the news articles to show in the block
-		$block['recent_news_articles'] = $news_article_handler->getObjects($criteria, TRUE, TRUE);
+		$article_object_array = $news_article_handler->getObjects($criteria, TRUE, TRUE);
+		$block['recent_news_articles'] = $article_object_array;
 	}
 
 	// check if spotlight mode is active, and if spotlight article has already been retrieved
@@ -142,21 +143,24 @@ function news_article_recent_show($options) {
 	
 	// Optional tagging support (only used in teaser mode)
 	if (icms_get_module_status("sprockets") && $options[8]) {
-		$tags = $tagList = array();
-		$criteria = icms_buildCriteria(array('label_type' => 0));
+		$article_ids = $article_tags = $tagList = array();
 		$sprockets_tag_handler = icms_getModuleHandler('tag', 'sprockets', 'sprockets');
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
 				'sprockets');
-		
-		$tagList = $sprockets_tag_handler->getList($criteria, TRUE);
+		$tagList = $sprockets_tag_handler->getTagBuffer(FALSE);
+		$article_ids = implode(',', array_keys($article_object_array));
+		$article_tags = $sprockets_taglink_handler->getTagsForObjects($article_ids, 'article');		
 		foreach ($block['recent_news_articles'] as &$article) {
-			$tagLinks = array();
-			$tags = $sprockets_taglink_handler->getTagsForObject($article['article_id'], $news_article_handler, 0);
-			if ($tags) {
-				foreach ($tags as $tag) {
-					$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=' . $tag . '">' . $tagList[$tag] . '</a>';
+			if ($article_tags[$article['article_id']]) {
+				foreach ($article_tags[$article['article_id']] as $tag) {
+					if ($tag == '0') {
+						$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=untagged">' . $tagList[$tag] . '</a>';
+					} else {
+						$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=' . $tag . '">' . $tagList[$tag] . '</a>';
+					}
 				}
 				$article['tags'] = implode(", ", $tagLinks);
+				unset($tagLinks);
 			}
 		}
 	}
