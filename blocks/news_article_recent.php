@@ -79,6 +79,31 @@ function news_article_recent_show($options) {
 		$article_object_array = $news_article_handler->getObjects($criteria, TRUE, TRUE);
 		$block['recent_news_articles'] = $article_object_array;
 	}
+	
+	/*
+	 * Determine the relative path to the web root, required for display of uploaded images.
+	 * I don't like to call $GLOBALS['xoops'] but due to differences between Linux and 
+	 * Windows servers finding the relative path to root is a lot more complicated than you'd
+	 * like to think. 
+	 */
+	$script_name = $GLOBALS['xoops']->urls['phpself'];
+	$base_name = basename($script_name);
+	// Block is being displayed on home page without a start module (start = none)
+	if (strpos($script_name, '/modules/') === FALSE) {
+		switch ($base_name) {
+			case "index.php":
+				$document_root = str_replace('index.php', '', $script_name);
+			break;
+		case "index.html":
+				$document_root = str_replace('index.html', '', $script_name);
+			break;
+		case "index.htm":
+				$document_root = str_replace('index.htm', '', $script_name);
+			break;
+		}
+	} else { // Block is being displayed on a module page
+		$document_root = substr($script_name, 0, strpos($script_name, "/modules/"));
+	}
 
 	// check if spotlight mode is active, and if spotlight article has already been retrieved
 	if ($options[4] == TRUE && (!empty($block['recent_news_articles']))) {
@@ -104,7 +129,7 @@ function news_article_recent_show($options) {
 			$block['recent_news_spotlight_display_image'] = $spotlightObj->getVar('display_image', 'e');
 			$block['recent_news_spotlight_display_lead_image'] = &$block['recent_news_spotlight_display_image']; // legacy template compatibility
 			$block['recent_news_spotlight_display_topic_image'] = $spotlightObj->getVar('display_topic_image', 'e');
-			$block['recent_news_spotlight_image'] = $spotlightObj->get_image_tag();
+			$block['recent_news_spotlight_image'] = $document_root  . $spotlightObj->get_image_tag();
 			$block['recent_news_spotlight_lead_image'] = &$block['recent_news_spotlight_image']; // legacy template compatibilty
 			$block['recent_news_image_display_width'] = icms_getConfig('image_display_width', 'news');
 			$block['recent_news_lead_image_display_width'] = &$block['recent_news_image_display_width']; // legacy template compatibility
@@ -126,6 +151,7 @@ function news_article_recent_show($options) {
 	foreach ($block['recent_news_articles'] as &$article) {
 		$title = $article->getVar('title');
 		$itemLink = $article->getItemLinkWithSEOString();
+		$image_tag = $article->get_image_tag();
 		// trim the title if its length exceeds the block preferences
 		if (strlen($title) > $options[3]) {
 			$article->setVar('title', substr($title, 0, ($options[3] - 3)) . '...');
@@ -137,8 +163,16 @@ function news_article_recent_show($options) {
 		$article = $article->toArrayWithoutOverrides();
 		$article['date'] = $date;
 		
+		// Fix the image path
+		if ($article['image']) {
+			$article['image'] = $document_root . $image_tag;
+		}
+		
 		// Add the SEO string to the itemLink
 		$article['itemLink'] = $itemLink;
+		if (!empty($article['short_url'])) {
+			$article['itemUrl'] .= '&amp;title=' . $article['short_url'];
+		}
 	}
 	
 	// Optional tagging support (only used in teaser mode)
@@ -148,8 +182,8 @@ function news_article_recent_show($options) {
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 		$tagList = $sprockets_tag_handler->getTagBuffer(FALSE);
-		$article_ids = implode(',', array_keys($article_object_array));
-		$article_tags = $sprockets_taglink_handler->getTagsForObjects($article_ids, 'article');		
+		$article_ids = array_keys($article_object_array);
+		$article_tags = $sprockets_taglink_handler->getTagsForObjects($article_ids, 'article');	
 		foreach ($block['recent_news_articles'] as &$article) {
 			if ($article_tags[$article['article_id']]) {
 				foreach ($article_tags[$article['article_id']] as $tag) {
@@ -258,15 +292,12 @@ function news_article_recent_edit($options) {
 			exit;
 
 		} else {
-
 			$rows = $news_article_handler->convertResultSet($result);
 			foreach ($rows as $key => $row) {
 				$article_array[$row->getVar('article_id')] = $row->getVar('title');
 			}
 		}
-		
 	} else {
-		
 		$criteria = new icms_db_criteria_Compo();
 		$criteria->setStart(0);
 		$criteria->setLimit($options[0]+1);

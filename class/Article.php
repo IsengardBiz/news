@@ -159,7 +159,7 @@ class NewsArticle extends icms_ipf_seo_Object {
 	public function toArrayWithoutOverrides() {
 		
 		$vars = $this->getVars();
-		$do_not_override = array(0 => 'tag', 1 => 'rights');
+		$do_not_override = array(0 => 'tag', 1 => 'rights', 2 => 'display_image');
 		$ret = array();
 		
 		foreach ($vars as $key => $var) {

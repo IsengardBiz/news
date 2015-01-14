@@ -38,11 +38,15 @@
 							<{$recent_news_article.tags}>
 						<{/if}>
 					<{/if}>
-			</div>			
-			<{if $recent_news_article.image && $recent_news_article.image_position && $recent_news_article.description}>
-				<div style="<{$block.recent_news_image_position}>">
-					<a href="<{$recent_news_article.url}>"><{resized_image file=$recent_news_article.image width=$block.recent_news_image_width height="999" fit="inside"}></a>
-				</div>
+			</div>
+			<{if $recent_news_article.image && $block.recent_news_image_position && $recent_news_article.description}>
+				<{if $block.recent_news_image_position == 1}>
+					<div class="news_float_left">
+				<{else}>
+					<div class="news_float_right">
+				<{/if}>
+						<a href="<{$recent_news_article.itemUrl}>" title="<{$recent_news_article_title}>"><{resized_image file=$recent_news_article.image width=$block.recent_news_image_width height="999" fit="inside"}></a>
+					</div>
 			<{/if}>
 			<div>
 				<{$recent_news_article.description}>

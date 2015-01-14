@@ -85,6 +85,7 @@ if($articleObj && !$articleObj->isNew()) {
 
 	$articleArray['editItemLink'] = $edit_item_link;
 	$articleArray['deleteItemLink'] = $delete_item_link;
+	$articleArray['display_image'] = $articleObj->getVar('display_image', 'e');
 	
 	// do tag lookups (if sprockets module is installed)
 	if (icms_get_module_status("sprockets") && !empty($articleArray['tag'])) {
@@ -228,7 +229,7 @@ if($articleObj && !$articleObj->isNew()) {
 			 */
 						
 			$query = $rows = $tag_article_count = '';
-			$linked_article_ids = array();
+			$linked_article_ids = $tag_icons = array();
 			$newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 			
 			// first, count the number of articles for the pagination control
@@ -293,97 +294,80 @@ if($articleObj && !$articleObj->isNew()) {
 		}
 		unset($criteria);
 
-		if (icms_get_module_status("sprockets") && (count($article_object_array) > 0)) {
-
-			// prepare a list of article_ids, this will be used to create a taglink buffer
-			// that is used to create tag links for each article
-			foreach ($article_object_array as $key => $value) {
-				$linked_article_ids[] = $value->getVar('article_id');
-			}
+		// Process stories for display
+		if ((count($article_object_array) > 0)) {
 			
-			$linked_article_ids = '(' . implode(',', $linked_article_ids) . ')';
-			
-			// prepare multidimensional array of tag_ids with article_id (iid) as key
-			$taglink_buffer = $article_tag_id_buffer = array();
-			$criteria = new  icms_db_criteria_Compo();
-			$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
-			$criteria->add(new icms_db_criteria_Item('item', 'article'));
-			$criteria->add(new icms_db_criteria_Item('iid', $linked_article_ids, 'IN'));
-			$taglink_buffer = $sprockets_taglink_handler->getObjects($criteria, TRUE, TRUE);
-			unset($criteria);
-
-			foreach ($taglink_buffer as $key => $taglink) {
-
-				if (!array_key_exists($taglink->getVar('iid', 'e'), $article_tag_id_buffer)) {
-					$article_tag_id_buffer[$taglink->getVar('iid', 'e')] = array();
+			// Append tags and icons if required
+			if (icms_get_module_status("sprockets")) {
+				// prepare a list of article_ids, this will be used to create a taglink buffer
+				// that is used to create tag links for each article
+				foreach ($article_object_array as $key => $value) {
+					$linked_article_ids[] = $value->getVar('article_id');
 				}
-				$article_tag_id_buffer[$taglink->getVar('iid', 'e')][] = $taglink->getVar('tid', 'e');
+				$tagList = $sprockets_tag_handler->getTagBuffer(TRUE);
+				$taglink_buffer = $sprockets_taglink_handler->getTagsForObjects($linked_article_ids, 'article');
+				foreach ($article_object_array as &$article) {
+					$tagLinks = $icons = array();
+					if ($taglink_buffer[$article->getVar('article_id')]) {
+						foreach ($taglink_buffer[$article->getVar('article_id')] as $tag) {
+							if ($tag == '0') {
+								$tagLinks[] = '<a href="' . ICMS_URL 
+										. '/modules/news/article.php?tag_id=untagged">' 
+										. $tagList[$tag]->getVar('title') . '</a>';
+							} else {
+								$tagLinks[] = '<a href="' . ICMS_URL 
+										. '/modules/news/article.php?tag_id=' . $tag . '">' 
+										. $tagList[$tag]->getVar('title') . '</a>';
+								$icons[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=' 
+										. $tag . '">' . $tagList[$tag]->getVar('icon') . '</a>';
+							}
+						}
+						$article->setVar('tag', implode(", ", $tagLinks));
+						unset($tagLinks);
+					}
+					$tag_icons[$article->getVar('article_id')] = $icons;
+					unset($icons);
+				}
 			}
 			
-			// assign each subarray of tags to the matching article, using the item id as marker
-			foreach ($article_tag_id_buffer as $key => $value) {
-				$article_object_array[$key]->setVar('tag', $value);
-			}
-		}
-		
-		// prepare articles for display
-		if (!empty($article_object_array)) {
-
-			foreach($article_object_array as &$article) {
+			// Convert to array for easy template assignment and assign extra fields
+			foreach ($article_object_array as &$article) {
 				
-				$tag_icons = $edit_item_link = $delete_item_link = '';
-
+				// Prepare additional fields
 				$edit_item_link = $article->getEditItemLink(FALSE, TRUE, FALSE);
 				$delete_item_link = $article->getDeleteItemLink(FALSE, TRUE, FALSE);
 
+				// Convert to array
 				$article = $article->prepareArticleForDisplay(FALSE); // without DB overrides
 
+				// Add additional fields
 				$article['editItemLink'] = $edit_item_link;
 				$article['deleteItemLink'] = $delete_item_link;
-				
+				if (icms_get_module_status("sprockets")) {
+					$article['rights'] = $rights_buffer[$article['rights']]['itemLink'];
+					if ($tag_icons[$article['article_id']]) {
+						$article['icon'] = implode('', $tag_icons[$article['article_id']]);
+					}
+					// display article rights field?
+					if (icms::$module->config['display_rights'] == TRUE) {
+						$icmsTpl->assign('news_display_rights', TRUE);
+					}
+				}
+
 				// Compatibility with DB templates in legacy installs
 				$article['lead_image'] = &$article['image'];
 				$article['image_display_width'] = icms::$module->config['image_display_width'];
 				$article['lead_image_display_width'] = &$article['image_display_width'];
-				
+
 				// Adjust image path document root (for correct image display in subdirectory installs)
 				if ($article['lead_image']) {
 					$article['lead_image'] = $document_root . '/' . $article['lead_image'];
-				}
-				
-				// only if sprockets installed
-				if (icms_get_module_status("sprockets") && !empty($article['tag'])) {
-					
-					// get tag links and icons, if available
-					$articleTags = array_flip($article['tag']);
-					foreach ($articleTags as $key => &$value) {
-						$value = '<a href="' . ICMS_URL . '/modules/' . basename(dirname(__FILE__))
-						. '/article.php?tag_id=' . $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">'
-						. $sprockets_tag_buffer[$key]->getVar('title', 'e') . '</a>';
-						
-						$icon = $sprockets_tag_buffer[$key]->getVar('icon');
-						if (!empty($icon)) {
-							$tag_icons[] = '<a href="' . ICMS_URL . '/modules/'
-							. basename(dirname(__FILE__)) . '/article.php?tag_id='
-							. $sprockets_tag_buffer[$key]->getVar('tag_id', 'e') . '">' 
-							. $sprockets_tag_buffer[$key]->getVar('icon') . '</a>';
-						}
-					}
-					$article['tag'] = implode(', ', $articleTags);
-					$article['icon'] = $tag_icons;
-				}
-				if (icms_get_module_status("sprockets")) {
-					$article['rights'] = $rights_buffer[$article['rights']]['itemLink'];
-				}
+				}	
+				unset($icons);
 			}
 		}
 
 		$icmsTpl->assign('news_articles_array', $article_object_array);
-
-		// display article rights field?
-		if (icms::$module->config['display_rights'] == TRUE) {
-			$icmsTpl->assign('news_display_rights', TRUE);
-		}
 	
 		// pagination
 		$criteria = new icms_db_criteria_Compo();

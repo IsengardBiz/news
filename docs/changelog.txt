@@ -69,3 +69,6 @@ Version 1.18 (unreleased)
 * Removed calls to Sprockets methods getTagId() and getItemId() which are redundant and have been removed. 
 * Add handling of 'untagged' articles and related compatibility patches for Sprockets 2.01.
 * Improved efficiency of recent articles block (reduced query load via buffers).
+* Fixed broken 'display image' controls governing story lead images.
+* Fixed broken teaser image controls in recent article block.
+* Reduce code in article.php by making use of new functions in Sprockets module getTagsForObjects()
