@@ -137,7 +137,7 @@ if (in_array($clean_op,$valid_op,TRUE)){
 
   		$newsModule->displayAdminMenu(0, _AM_NEWS_ARTICLES);
 		
-		// if no op is set, but there is a (valid) soundtrack_id, display a single object
+		// if no op is set, but there is a (valid) article_id, display a single object
 		if ($clean_article_id) {
 			$articleObj = $news_article_handler->get($clean_article_id);
 			if ($articleObj->getVar('article_id')) {

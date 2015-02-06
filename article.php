@@ -202,14 +202,15 @@ if($articleObj && !$articleObj->isNew()) {
 	
 		// RSS feed including autodiscovery link, which is inserted in the module header
 		global $xoTheme;	
-		if (icms_get_module_status("sprockets") && $clean_tag_id) {
+		if (icms_get_module_status("sprockets") && array_key_exists($clean_tag_id, $sprockets_tag_buffer) 
+				&& $sprockets_tag_buffer[$clean_tag_id]->getVar('rss', 'e') == 1) {
 			$icmsTpl->assign('news_rss_link', 'rss.php?tag_id=' . $clean_tag_id);
 			$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS_ON
 					. $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 			$rss_attributes = array('type' => 'application/rss+xml', 
 				'title' => $icmsConfig['sitename'] . ' - ' . $sprockets_tag_buffer[$clean_tag_id]->getVar('title', 'e'));
 			$rss_link = NEWS_URL . 'rss.php?tag_id=' . $clean_tag_id;
-		} else {				
+		} else {
 				$icmsTpl->assign('news_rss_link', 'rss.php');
 				$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS);
 				$rss_attributes = array('type' => 'application/rss+xml', 
@@ -239,7 +240,7 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `online_status` = '1'"
 					. " AND `date` < '" . time() . "'"
 					. " AND `tid` = '" . $clean_tag_id . "'"
-					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
+					. " AND `mid` = '" . (int)$newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'";
 			
 			$result = icms::$xoopsDB->query($group_query);
@@ -262,10 +263,10 @@ if($articleObj && !$articleObj->isNew()) {
 					. " AND `online_status` = '1'"
 					. " AND `date` < '" . time() . "'"
 					. " AND `tid` = '" . $clean_tag_id . "'"
-					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
+					. " AND `mid` = '" . (int)$newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"
-					. " LIMIT " . $clean_start . ", " . icms::$module->config['number_of_articles_per_page'];
+					. " LIMIT " . $clean_start . ", " . (int)icms::$module->config['number_of_articles_per_page'];
 
 			$result = icms::$xoopsDB->query($query);
 

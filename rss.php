@@ -28,6 +28,8 @@ function encode_entities($field) {
 
 $newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 $clean_tag_id = $sort_order = '';
+$default_feed = TRUE;
+$articleArray = array();
 
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : FALSE;
 
@@ -44,8 +46,75 @@ if (icms_get_module_status("sprockets")) {
 			$sprocketsModule->getVar('dirname'), 'sprockets');
 }
 
-// generates a feed of recent news articles across all tags
-if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
+// Check that the tag exists and has RSS feeds enabled
+if ($clean_tag_id && icms_get_module_status("sprockets")) {
+	$tagObj = $sprockets_tag_handler->get($clean_tag_id);
+	if (!empty($tagObj) && !$tagObj->isNew()) {
+		if ($tagObj->getVar('rss', 'e') == 1) {
+			$default_feed = FALSE;
+			// need to remove html tags and problematic characters to meet RSS spec
+			$site_name = encode_entities($icmsConfig['sitename']);
+			$tag_title = encode_entities($tagObj->getVar('title'));
+			$tag_description = strip_tags($tagObj->getVar('description'));
+			$tag_description = encode_entities($tag_description);
+
+			$news_feed->title = $site_name . ' - ' . $tag_title;
+			$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->getVar('tag_id');
+			$news_feed->description = $tag_description;
+			$news_feed->language = _LANGCODE;
+			$news_feed->charset = _CHARSET;
+			$news_feed->category = $newsModule->getVar('name');
+
+			// if there's a tag icon, use it as the feed image
+			if ($tagObj->getVar('icon', 'e')) {
+				$url = $tagObj->getImageDir() . $tagObj->getVar('icon', 'e');
+			} else {
+				$url = ICMS_URL . 'images/logo.gif';
+			}
+			$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
+					'link' => NEWS_URL . 'rss.php?tag_id='
+					. $tagObj->getVar('tag_id'));
+			$news_feed->width = 144;
+			$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->getVar('tag_id') . '"';
+
+			// retrieve articles relevant to this tag using a JOIN to the taglinks table
+
+			$query = $rows = $tag_article_count = '';
+
+			$query = "SELECT * FROM " . $news_article_handler->table . ", "
+					. $sprockets_taglink_handler->table
+					. " WHERE `article_id` = `iid`"
+					. " AND `online_status` = '1'"
+					. " AND `syndicated` = '1'"
+					. " AND `date` < '" . time() . "'"
+					. " AND `tid` = '" . $clean_tag_id . "'"
+					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
+					. " AND `item` = 'article'"
+					. " ORDER BY `date` DESC"
+					. " LIMIT " . $newsModule->config['number_rss_items'];
+
+			$result = icms::$xoopsDB->query($query);
+
+			if (!$result) {
+				echo 'Error';
+				exit;
+
+			} else {
+
+				$rows = $news_article_handler->convertResultSet($result);
+				foreach ($rows as $key => $row) {
+					$articleArray[$row->getVar('article_id')] = $row;
+				}
+			}
+		} else { // RSS is disabled for this tag
+			exit;
+		}
+	} 
+}
+
+if ($default_feed) {
+	// Generate an RSS feed of recent news articles without tag filtering
+	
 	$feed_title = _CO_NEWS_NEW;
 	$site_name = encode_entities($icmsConfig['sitename']);
 	$tag_title = _CO_NEWS_ALL;
@@ -74,64 +143,6 @@ if (empty($clean_tag_id) || !icms_get_module_status("sprockets")) {
 	$criteria->setOrder('DESC');
 
 	$articleArray = $news_article_handler->getObjects($criteria);
-	
-} else { // generates tag-specific feeds
-	
-	// need to remove html tags and problematic characters to meet RSS spec
-	$tagObj = $sprockets_tag_handler->get($clean_tag_id);
-	$site_name = encode_entities($icmsConfig['sitename']);
-	$tag_title = encode_entities($tagObj->getVar('title'));
-	$tag_description = strip_tags($tagObj->getVar('description'));
-	$tag_description = encode_entities($tag_description);
-
-	$news_feed->title = $site_name . ' - ' . $tag_title;
-	$news_feed->url = NEWS_URL . 'article.php?tag_id=' . $tagObj->getVar('tag_id');
-	$news_feed->description = $tag_description;
-	$news_feed->language = _LANGCODE;
-	$news_feed->charset = _CHARSET;
-	$news_feed->category = $newsModule->getVar('name');
-
-	// if there's a tag icon, use it as the feed image
-	if ($tagObj->getVar('icon', 'e')) {
-		$url = $tagObj->getImageDir() . $tagObj->getVar('icon', 'e');
-	} else {
-		$url = ICMS_URL . 'images/logo.gif';
-	}
-	$news_feed->image = array('title' => $news_feed->title, 'url' => $url,
-			'link' => NEWS_URL . 'rss.php?tag_id='
-			. $tagObj->getVar('tag_id'));
-	$news_feed->width = 144;
-	$news_feed->atom_link = '"' . NEWS_URL . 'rss.php?tag_id=' . $tagObj->getVar('tag_id') . '"';
-	
-	// retrieve articles relevant to this tag using a JOIN to the taglinks table
-
-	$query = $rows = $tag_article_count = '';
-
-	$query = "SELECT * FROM " . $news_article_handler->table . ", "
-			. $sprockets_taglink_handler->table
-			. " WHERE `article_id` = `iid`"
-			. " AND `online_status` = '1'"
-			. " AND `syndicated` = '1'"
-			. " AND `date` < '" . time() . "'"
-			. " AND `tid` = '" . $clean_tag_id . "'"
-			. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
-			. " AND `item` = 'article'"
-			. " ORDER BY `date` DESC"
-			. " LIMIT " . $newsModule->config['number_rss_items'];
-
-	$result = icms::$xoopsDB->query($query);
-
-	if (!$result) {
-		echo 'Error';
-		exit;
-
-	} else {
-
-		$rows = $news_article_handler->convertResultSet($result);
-		foreach ($rows as $key => $row) {
-			$articleArray[$row->getVar('article_id')] = $row;
-		}
-	}
 }
 
 // prepare an array of articles
@@ -170,7 +181,7 @@ foreach($articleArray as $article) {
 		'pubdate' => date(DATE_RSS, $article->getVar('date', 'e')),
 		'guid' => $link,
 		'category' => $tag_title
-		);
+	);
 }
 
 $news_feed->render();
