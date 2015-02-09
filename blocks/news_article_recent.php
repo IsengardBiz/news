@@ -59,7 +59,6 @@ function news_article_recent_show($options) {
 			exit;
 
 		} else {
-
 			$rows = $news_article_handler->convertResultSet($result);
 			foreach ($rows as $key => $row) {
 				$article_object_array[$row->getVar('article_id')] = $row;
@@ -186,20 +185,25 @@ function news_article_recent_show($options) {
 				'sprockets');
 		$tagList = $sprockets_tag_handler->getTagBuffer(FALSE);
 		$article_ids = array_keys($article_object_array);
-		$article_tags = $sprockets_taglink_handler->getTagsForObjects($article_ids, 'article');	
-		foreach ($block['recent_news_articles'] as &$article) {
-			if ($article_tags[$article['article_id']]) {
-				foreach ($article_tags[$article['article_id']] as $tag) {
-					if ($tag == '0') {
-						$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=untagged">' . $tagList[$tag] . '</a>';
-					} else {
-						$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=' . $tag . '">' . $tagList[$tag] . '</a>';
+		if (!empty($article_ids)) {
+			$article_tags = $sprockets_taglink_handler->getTagsForObjects($article_ids, 'article');	
+			foreach ($block['recent_news_articles'] as &$article) {
+				if ($article_tags[$article['article_id']]) {
+					foreach ($article_tags[$article['article_id']] as $tag) {
+						if ($tag == '0') {
+							$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=untagged">' . $tagList[$tag] . '</a>';
+						} else {
+							$tagLinks[] = '<a href="' . ICMS_URL . '/modules/news/article.php?tag_id=' . $tag . '">' . $tagList[$tag] . '</a>';
+						}
 					}
+					$article['tags'] = implode(", ", $tagLinks);
+					unset($tagLinks);
 				}
-				$article['tags'] = implode(", ", $tagLinks);
-				unset($tagLinks);
 			}
+		} else {
+			return;
 		}
+		
 	}
 	
 	// Set some preferences
