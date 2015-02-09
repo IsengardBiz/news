@@ -35,3 +35,4 @@ define("_MB_NEWS_ARTICLE_IMAGE_NONE", "None");
 define("_MB_NEWS_ARTICLE_IMAGE_LEFT", "Left");
 define("_MB_NEWS_ARTICLE_IMAGE_RIGHT", "Right");
 define("_MB_NEWS_ARTICLE_IMAGE_WIDTH", "Width of teaser images (pixels)");
+define("_MB_NEWS_ARTICLE_DYNAMIC_TAG", "Dynamic tag filtering (overrides the static tag filter).");

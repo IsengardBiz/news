@@ -88,8 +88,8 @@ $modversion['blocks'][1] = array(
   'description' => _MI_NEWS_ARTICLERECENTDSC,
   'show_func' => 'news_article_recent_show',
   'edit_func' => 'news_article_recent_edit',
-  // number articles | tag | date format | title length | spotlight | spotlighted article | image position | image width | list vs teaser mode
-  'options' => '5|All|j/n/Y|90|0|0|2|150|0',
+  // number articles | tag | date format | title length | spotlight | spotlighted article | image position | image width | list vs teaser mode | dynamic tag filtering
+  'options' => '5|All|j/n/Y|90|0|0|2|150|0|0',
   'template' => 'news_article_recent.html');
 
 /** Templates information */

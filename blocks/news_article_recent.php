@@ -28,11 +28,14 @@ function news_article_recent_show($options) {
 	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->getVar('dirname') . '/include/common.php');
 	
 	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
+	
+	//Check for dynamic tag filtering
+	if ($options[9] == 1 && $_GET['tag_id']) {
+		$options[1] = (int)$_GET['tag_id'];
+	}
 
 	// retrieve the last XX articles
-
 	if (icms_get_module_status("sprockets") && $options[1]) { // filter by tag
-
 		$query = $rows = $tag_article_count = '';
 		$article_object_array = array();
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
@@ -258,12 +261,12 @@ function news_article_recent_edit($options) {
 		if ($options[4] == 1) {
 			$form .= ' checked="checked"';
 		}
-		$form .= '/>' . _MB_NEWS_ARTICLE_YES;
-		$form .= '<input type="radio" name="options[4]" value="0"';
-		if ($options[4] == 0) {
-			$form .= 'checked="checked"';
-		}
-		$form .= '/>' . _MB_NEWS_ARTICLE_NO . '</td></tr>';	
+	$form .= '/>' . _MB_NEWS_ARTICLE_YES;
+	$form .= '<input type="radio" name="options[4]" value="0"';
+	if ($options[4] == 0) {
+		$form .= 'checked="checked"';
+	}
+	$form .= '/>' . _MB_NEWS_ARTICLE_NO . '</td></tr>';	
 	
 	
 	// build select box for choosing article to spotlight - need to filter by tag (if set)
@@ -333,7 +336,21 @@ function news_article_recent_edit($options) {
 	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_DISPLAY_MODE . '</td>';
 	$form_select3 = new icms_form_elements_Select('', 'options[8]', $options[8], '1', FALSE);
 	$form_select3->addOptionArray(array(0 => _MB_NEWS_ARTICLE_LIST, 1 => _MB_NEWS_ARTICLE_TEASERS));
-	$form .= '<td>' . $form_select3->render() . '</td></tr>';	
+	$form .= '<td>' . $form_select3->render() . '</td></tr>';
+	
+	// Dynamic tag filtering - overrides the tag filter
+	$form .= '<tr><td>' . _MB_NEWS_ARTICLE_DYNAMIC_TAG . '</td>';			
+	$form .= '<td><input type="radio" name="options[9]" value="1"';
+	if ($options[9] == 1) {
+		$form .= ' checked="checked"';
+	}
+	$form .= '/>' . _MB_NEWS_ARTICLE_YES;
+	$form .= '<input type="radio" name="options[9]" value="0"';
+	if ($options[9] == 0) {
+		$form .= 'checked="checked"';
+	}
+	$form .= '/>' . _MB_NEWS_ARTICLE_NO . '</td></tr>';
+	
 	$form .= '</table>';
 
 	return $form;
