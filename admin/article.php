@@ -53,6 +53,7 @@ include_once("admin_header.php");
 $clean_article_id = $clean_tag_id = $clean_op = $valid_op = '';
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(dirname(__FILE__))),
 	'news');
+$untagged_content = FALSE;
 
 /** Create a whitelist of valid values, be sure to use appropriate types for each value
  * Be sure to include a value for no parameter, if you have a default condition
@@ -64,6 +65,12 @@ if (isset($_GET['op'])) $clean_op = htmlentities($_GET['op']);
 if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
 
 $clean_article_id = isset($_GET['article_id']) ? (int) $_GET['article_id'] : 0 ;
+// Sanitise the tag_id and start (pagination) parameters
+if (isset($_GET['tag_id'])) {
+	if ($_GET['tag_id'] == 'untagged') {
+		$untagged_content = TRUE;
+	}
+}
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
 
 if (in_array($clean_op,$valid_op,TRUE)){
@@ -156,26 +163,33 @@ if (in_array($clean_op,$valid_op,TRUE)){
 		$sprocketsModule = icms_getModuleInfo('sprockets');
 		
 		if (icms_get_module_status("sprockets")) {
-			
 			$tag_select_box = '';
 			$taglink_array = $tagged_article_list = array();
 			$sprockets_tag_handler = icms_getModuleHandler('tag', $sprocketsModule->getVar('dirname'),
 				'sprockets');
 			$sprockets_taglink_handler = icms_getModuleHandler('taglink',
 					$sprocketsModule->getVar('dirname'), 'sprockets');
-			
-			$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', $clean_tag_id,
-				_AM_NEWS_ARTICLE_ALL_ARTICLES, FALSE, icms::$module->getVar('mid'));
+			if ($untagged_content) {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', 'untagged',
+				_AM_NEWS_ARTICLE_ALL_ARTICLES, FALSE, icms::$module->getVar('mid'), 'article', TRUE);
+			} else {
+				$tag_select_box = $sprockets_tag_handler->getTagSelectBox('article.php', $clean_tag_id,
+				_AM_NEWS_ARTICLE_ALL_ARTICLES, FALSE, icms::$module->getVar('mid'), 'article', TRUE);
+			}
 			if (!empty($tag_select_box)) {
 				echo '<h3>' . _AM_NEWS_ARTICLE_FILTER_BY_TAG . '</h3>';
 				echo $tag_select_box;
 			}
 			
-			if ($clean_tag_id) {
+			if ($untagged_content || $clean_tag_id) {
 				
 				// get a list of article IDs belonging to this tag
 				$criteria = new icms_db_criteria_Compo();
-				$criteria->add(new icms_db_criteria_Item('tid', $clean_tag_id));
+				if ($untagged_content) {
+					$criteria->add(new icms_db_criteria_Item('tid', 0));
+				} else {
+					$criteria->add(new icms_db_criteria_Item('tid', $clean_tag_id));
+				}
 				$criteria->add(new icms_db_criteria_Item('mid', $newsModule->getVar('mid')));
 				$criteria->add(new icms_db_criteria_Item('item', 'article'));
 				$taglink_array = $sprockets_taglink_handler->getObjects($criteria);

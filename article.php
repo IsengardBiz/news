@@ -23,7 +23,6 @@ $articleArray = $tagList = array();
 $untagged_content = FALSE;
 
 // Sanitise the tag_id and start (pagination) parameters
-$untagged_content = FALSE; // Flag indicating that UNTAGGED content should be returned
 if (isset($_GET['tag_id'])) {
 	if ($_GET['tag_id'] == 'untagged') {
 		$untagged_content = TRUE;

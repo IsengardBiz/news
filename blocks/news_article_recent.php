@@ -30,8 +30,8 @@ function news_article_recent_show($options) {
 	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
 	
 	//Check for dynamic tag filtering
-	if ($options[9] == 1 && $_GET['tag_id']) {
-		$options[1] = (int)$_GET['tag_id'];
+	if ($options[9] == 1 && isset($_GET['tag_id'])) {
+		$options[1] = (int)trim($_GET['tag_id']);
 	}
 
 	// retrieve the last XX articles
@@ -168,6 +168,7 @@ function news_article_recent_show($options) {
 		// Fix the image path
 		if ($article['image']) {
 			$article['image'] = $document_root . $image_tag;
+			echo 'document root is ' . $document_root;exit;
 		}
 		
 		// Add the SEO string to the itemLink
