@@ -29,7 +29,7 @@ function news_article_recent_show($options) {
 	
 	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
 	
-	//Check for dynamic tag filtering
+	// Check for dynamic tag filtering
 	if ($options[9] == 1 && isset($_GET['tag_id'])) {
 		$options[1] = (int)trim($_GET['tag_id']);
 	}
@@ -168,7 +168,6 @@ function news_article_recent_show($options) {
 		// Fix the image path
 		if ($article['image']) {
 			$article['image'] = $document_root . $image_tag;
-			echo 'document root is ' . $document_root;exit;
 		}
 		
 		// Add the SEO string to the itemLink
@@ -201,16 +200,17 @@ function news_article_recent_show($options) {
 					unset($tagLinks);
 				}
 			}
-		} else {
-			return;
-		}
-		
+		}		
 	}
 	
 	// Set some preferences
-	$block['recent_news_image_position'] = $options[6];
-	$block['recent_news_image_width'] = $options[7];
-	$block['recent_news_display_mode'] = $options[8];
+	if ($block['recent_news_articles']) {
+		$block['recent_news_image_position'] = $options[6];
+		$block['recent_news_image_width'] = $options[7];
+		$block['recent_news_display_mode'] = $options[8];
+	} else {
+		$block = array();
+	}
 	
 	return $block;
 }
