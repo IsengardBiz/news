@@ -24,18 +24,20 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 function news_article_recent_show($options) {
 	$newsModule = icms_getModuleInfo('news');
 	$sprocketsModule = icms_getModuleInfo('sprockets');
+	$untagged_content = FALSE;
 	
 	include_once(ICMS_ROOT_PATH . '/modules/' . $newsModule->getVar('dirname') . '/include/common.php');
 	
 	$news_article_handler = icms_getModuleHandler('article', $newsModule->getVar('dirname'), 'news');
 	
-	// Check for dynamic tag filtering
+	// Check for dynamic tag filtering, including by untagged content
 	if ($options[9] == 1 && isset($_GET['tag_id'])) {
+		$untagged_content = ($_GET['tag_id'] == 'untagged') ? TRUE : FALSE;
 		$options[1] = (int)trim($_GET['tag_id']);
 	}
 
 	// retrieve the last XX articles
-	if (icms_get_module_status("sprockets") && $options[1]) { // filter by tag
+	if (icms_get_module_status("sprockets") && ($options[1] || $untagged_content)) { // filter by tag
 		$query = $rows = $tag_article_count = '';
 		$article_object_array = array();
 		$sprockets_taglink_handler = icms_getModuleHandler('taglink', $sprocketsModule->getVar('dirname'),
@@ -45,8 +47,11 @@ function news_article_recent_show($options) {
 					. $sprockets_taglink_handler->table
 					. " WHERE `article_id` = `iid`"
 					. " AND `online_status` = '1'"
-					. " AND `date` <= '" . time() . "'"
-					. " AND `tid` = '" . $options[1] . "'"
+					. " AND `date` <= '" . time() . "'";
+		if ($untagged_content) {
+			$options[1] = 0;
+		}
+		$query .= " AND `tid` = '" . $options[1] . "'"
 					. " AND `mid` = '" . $newsModule->getVar('mid') . "'"
 					. " AND `item` = 'article'"
 					. " ORDER BY `date` DESC"

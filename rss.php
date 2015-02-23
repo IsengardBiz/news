@@ -28,10 +28,9 @@ function encode_entities($field) {
 
 $newsModule = icms_getModuleInfo(basename(dirname(__FILE__)));
 $clean_tag_id = $sort_order = '';
-$default_feed = TRUE;
 $articleArray = array();
 
-$clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : FALSE;
+$clean_tag_id = !empty($_GET['tag_id']) ? intval($_GET['tag_id']) : 0;
 
 include_once ICMS_ROOT_PATH . '/modules/' . basename(dirname(__FILE__))
 	. '/class/icmsfeed.php';
@@ -51,7 +50,6 @@ if ($clean_tag_id && icms_get_module_status("sprockets")) {
 	$tagObj = $sprockets_tag_handler->get($clean_tag_id);
 	if (!empty($tagObj) && !$tagObj->isNew()) {
 		if ($tagObj->getVar('rss', 'e') == 1) {
-			$default_feed = FALSE;
 			// need to remove html tags and problematic characters to meet RSS spec
 			$site_name = encode_entities($icmsConfig['sitename']);
 			$tag_title = encode_entities($tagObj->getVar('title'));
@@ -109,12 +107,11 @@ if ($clean_tag_id && icms_get_module_status("sprockets")) {
 		} else { // RSS is disabled for this tag
 			exit;
 		}
-	} 
-}
-
-if ($default_feed) {
+	} else { // Tag does not exist
+		exit;
+	}
+} else {
 	// Generate an RSS feed of recent news articles without tag filtering
-	
 	$feed_title = _CO_NEWS_NEW;
 	$site_name = encode_entities($icmsConfig['sitename']);
 	$tag_title = _CO_NEWS_ALL;

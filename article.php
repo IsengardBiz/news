@@ -201,7 +201,9 @@ if($articleObj && !$articleObj->isNew()) {
 	
 		// RSS feed including autodiscovery link, which is inserted in the module header
 		global $xoTheme;	
-		if (icms_get_module_status("sprockets") && array_key_exists($clean_tag_id, $sprockets_tag_buffer) 
+		if (icms_get_module_status("sprockets") 
+				&& !empty($clean_tag_id)
+				&& array_key_exists($clean_tag_id, $sprockets_tag_buffer) 
 				&& $sprockets_tag_buffer[$clean_tag_id]->getVar('rss', 'e') == 1) {
 			$icmsTpl->assign('news_rss_link', 'rss.php?tag_id=' . $clean_tag_id);
 			$icmsTpl->assign('news_rss_title', _CO_NEWS_SUBSCRIBE_RSS_ON
