@@ -334,7 +334,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		}
 		
 		// Clear cache
-		$this->clear_cache(& $obj);
+		$this->clear_cache($obj);
 	
 		return TRUE;
 	}
@@ -372,7 +372,7 @@ class NewsArticleHandler extends icms_ipf_Handler {
 		}
 		
 		// Clear cache
-		$this->clear_cache(& $obj);	
+		$this->clear_cache($obj);	
 
 		return TRUE;
 	}

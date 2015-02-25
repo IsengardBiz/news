@@ -53,25 +53,20 @@ include_once("admin_header.php");
 $clean_article_id = $clean_tag_id = $clean_op = $valid_op = '';
 $news_article_handler = icms_getModuleHandler('article', basename(dirname(dirname(__FILE__))),
 	'news');
-$untagged_content = FALSE;
-
-/** Create a whitelist of valid values, be sure to use appropriate types for each value
- * Be sure to include a value for no parameter, if you have a default condition
- */
 $valid_op = array ('mod','changedField','addarticle','del','view','changeStatus',
 	'changeSyndication', 'changeFederation',	'');
 
-if (isset($_GET['op'])) $clean_op = htmlentities($_GET['op']);
-if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
-
-$clean_article_id = isset($_GET['article_id']) ? (int) $_GET['article_id'] : 0 ;
 // Sanitise the tag_id and start (pagination) parameters
+$clean_article_id = isset($_GET['article_id']) ? (int) $_GET['article_id'] : 0 ;
+$untagged_content = FALSE;
 if (isset($_GET['tag_id'])) {
 	if ($_GET['tag_id'] == 'untagged') {
 		$untagged_content = TRUE;
 	}
 }
 $clean_tag_id = isset($_GET['tag_id']) ? intval($_GET['tag_id']) : 0 ;
+if (isset($_GET['op'])) $clean_op = htmlentities($_GET['op']);
+if (isset($_POST['op'])) $clean_op = htmlentities($_POST['op']);
 
 if (in_array($clean_op,$valid_op,TRUE)){
   switch ($clean_op) {
