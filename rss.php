@@ -164,7 +164,11 @@ foreach($articleArray as $article) {
 		}
 	}
 
-	// check if there is an extended text
+	// Strip the filtered by HTML purifier notices before they get encoded
+	$flattened_article['description'] = str_replace('<!-- filtered with htmlpurifier -->', '',
+			$flattened_article['description']);
+	$flattened_article['description'] = str_replace('<!-- input filtered -->', '',
+			$flattened_article['description']);
 	$description = encode_entities($flattened_article['description']);
 	$title = encode_entities($flattened_article['title']);
 	$link = encode_entities($flattened_article['itemUrl']);
