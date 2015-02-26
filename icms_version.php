@@ -160,7 +160,7 @@ $modversion['config'][] = array(
   'title' => '_MI_NEWS_TOPIC_IMAGE_DEFAULT',
   'description' => '_MI_NEWS_TOPIC_IMAGE_DEFAULTDSC',
   'formtype' => 'select',
-  'valuetype' => 'array',
+  'valuetype' => 'int',
   'options' => $topic_image_default_options,
   'default' =>  '0');
 
@@ -185,7 +185,7 @@ $modversion['config'][] = array(
   'title' => '_MI_NEWS_IMAGE_DEFAULT',
   'description' => '_MI_NEWS_IMAGE_DEFAULTDSC',
   'formtype' => 'select',
-  'valuetype' => 'array',
+  'valuetype' => 'int',
   'options' => $topic_image_default_options,
   'default' =>  '0');
 
