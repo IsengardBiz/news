@@ -76,4 +76,5 @@ Version 1.18 (unreleased)
 * If dynamic tag filtering is enabled on the recent articles block, but no results are available 
 for the current tag, the block will hide itself (block is not returned).
 * Allow filtering of untagged content
-* Recent articles block will no longer display title if there is no contents.
+* Recent articles block will no longer display title if there is no contents
+* Change image control to imageupload.
