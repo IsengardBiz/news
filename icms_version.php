@@ -17,9 +17,9 @@ if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 /**  General Information  */
 $modversion = array(
   'name'=> _MI_NEWS_MD_NAME,
-  'version'=> 1.17,
+  'version'=> "1.18",
   'description'=> _MI_NEWS_MD_DESC,
-  'author'=> "Madfish (Simon Wilkinson)",
+  'author'=> "Madfish (Simon Wilkinson)", "fiammybe (David Janssens)"
   'credits'=> "Functionality is based on the legacy News module, but this is a clean rewrite in IPF.",
   'help'=> "",
   'license'=> "GNU General Public License (GPL)",
@@ -33,8 +33,8 @@ $modversion = array(
 
 /**  Development information */
   'status_version'=> "1.18",
-  'status'=> "Beta",
-  'date'=> "13 January 2015",
+  'status'=> "Beta 2",
+  'date'=> "26 September 2018",
   'author_word'=> "This module is best used with the Sprockets utility module also installed (2.01 and higher).",
 
 /** Contributors */
@@ -43,9 +43,10 @@ $modversion = array(
   'developer_email' => "simon@isengard.biz");
 
 $modversion['people']['developers'][] = "Madfish (Simon Wilkinson)";
+$modversion['people']['developers'][] = "fiammybe (David Janssens)";
 
 /** Manual */
-$modversion['manual']['wiki'][] = "<a href='http://wiki.impresscms.org/index.php?title=News' target='_blank'>English</a>";
+$modversion['manual']['wiki'][] = "<a href='https://www.impresscms.org/modules/simplywiki/index.php?title=News' target='_blank'>English</a>";
 
 $modversion['warning'] = _CO_ICMS_WARNING_BETA;
 
