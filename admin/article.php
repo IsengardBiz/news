@@ -30,6 +30,7 @@ function editarticle($article_id = 0)
 		$articleObj->loadTags();
 		$newsModule->displayAdminMenu(0, _AM_NEWS_ARTICLES . " > " . _CO_ICMS_EDITING);
 		$sform = $articleObj->getForm(_AM_NEWS_ARTICLE_EDIT, 'addarticle');
+		$articleObj->setVar('submitter', icms::$user->getVar('uid'));
 		$sform->assign($icmsAdminTpl);
 
 	} else {
